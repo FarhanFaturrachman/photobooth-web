@@ -1,8 +1,3 @@
-/**
- * WEB PHOTOBOOTH - FINAL OPTIMIZED
- * Developer: Farhan Faturrachman
- */
-
 let photosTaken = [null, null, null, null]; 
 let currentSlot = 0;
 let stream = null;
@@ -13,62 +8,34 @@ const previewStrip = document.getElementById('preview-strip');
 const canvasResult = document.getElementById('canvas-result');
 const finalPreview = document.getElementById('final-image-preview');
 
-// 1. Fungsi Mulai (Hanya buka kamera, TIDAK moto otomatis)
 async function startCapture() {
     try {
-        stream = await navigator.mediaDevices.getUserMedia({ 
-            video: { width: 1280, height: 720 },
-            audio: false 
-        });
+        stream = await navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } });
         video.srcObject = stream;
-        
-        // Pindah Halaman
         document.getElementById('page-home').classList.remove('active');
         document.getElementById('page-camera').classList.add('active');
-        
-        console.log("Kamera Aktif. Menunggu input manual...");
-    } catch (err) {
-        alert("Gagal akses kamera. Pastikan izin diberikan.");
-    }
+    } catch (err) { alert("Kamera error!"); }
 }
 
-// 2. Logika Ambil Foto Manual
 function triggerManualCapture() {
-    // Cari slot yang kosong (null)
     currentSlot = photosTaken.indexOf(null);
-
-    if (currentSlot !== -1) {
-        runCountdown(3); // Timer 3 detik agar pose siap
-    } else {
-        alert("Semua slot sudah terisi! Hapus salah satu atau lanjut ke frame.");
-    }
+    if (currentSlot !== -1) runCountdown(3);
+    else alert("Slot penuh!");
 }
 
 function runCountdown(sec) {
     let count = sec;
     timerDisplay.innerText = count;
-    
-    // Nonaktifkan tombol sementara agar tidak double klik
-    document.getElementById('btn-capture-manual').disabled = true;
-
     let inv = setInterval(() => {
         count--;
-        if (count > 0) {
-            timerDisplay.innerText = count;
-        } else {
+        if (count > 0) timerDisplay.innerText = count;
+        else {
             clearInterval(inv);
             timerDisplay.innerText = "📸";
-            
             captureToSlot(currentSlot);
-
             setTimeout(() => { 
                 timerDisplay.innerText = "";
-                document.getElementById('btn-capture-manual').disabled = false;
-                
-                // Cek apakah sudah penuh
-                if (photosTaken.indexOf(null) === -1) {
-                    document.getElementById('btn-go-to-frame').style.display = 'inline-block';
-                }
+                if (photosTaken.indexOf(null) === -1) document.getElementById('btn-go-to-frame').style.display = 'inline-block';
             }, 600);
         }
     }, 1000);
@@ -76,24 +43,15 @@ function runCountdown(sec) {
 
 function captureToSlot(slotIndex) {
     const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = 640;
-    tempCanvas.height = 480;
+    tempCanvas.width = 640; tempCanvas.height = 480;
     const ctx = tempCanvas.getContext('2d');
-    
-    // Mirroring fix
-    ctx.translate(tempCanvas.width, 0);
-    ctx.scale(-1, 1);
+    ctx.translate(tempCanvas.width, 0); ctx.scale(-1, 1);
     ctx.drawImage(video, 0, 0, 640, 480);
-    
     const dataUri = tempCanvas.toDataURL('image/png');
     photosTaken[slotIndex] = dataUri;
 
-    // Update tampilan kotak (slot) di sebelah kanan
     const container = document.getElementById(`slot-${slotIndex}`);
-    container.innerHTML = `
-        <img src="${dataUri}" style="width:100%; height:100%; object-fit:cover;">
-        <div class="btn-retake-small" onclick="retakePhoto(${slotIndex})">Ulang</div>
-    `;
+    container.innerHTML = `<img src="${dataUri}" style="width:100%;height:100%;object-fit:cover;"><div class="btn-retake-small" onclick="retakePhoto(${slotIndex})">Ulang</div>`;
 }
 
 function retakePhoto(index) {
@@ -102,18 +60,12 @@ function retakePhoto(index) {
     document.getElementById('btn-go-to-frame').style.display = 'none';
 }
 
-// 3. Logika Frame & Canvas (Presisi Sesuai Gambar Strip Kamu)
 function showFrameSelection() {
-    // Matikan kamera untuk hemat baterai
-    if (stream) stream.getTracks().forEach(track => track.stop());
-
+    if (stream) stream.getTracks().forEach(t => t.stop());
     document.getElementById('page-camera').classList.remove('active');
     document.getElementById('page-frame').classList.add('active');
-    
     const frameContainer = document.getElementById('frame-options');
     frameContainer.innerHTML = '';
-
-    // Tampilkan 10 frame sebagai pilihan
     for(let i=1; i<=10; i++) {
         const frameBtn = document.createElement('img');
         frameBtn.src = `frame/frame${i}.png`; 
@@ -133,43 +85,31 @@ function generateCollage(frameSrc) {
         canvasResult.height = frameImg.height;
         ctx.clearRect(0, 0, canvasResult.width, canvasResult.height);
 
-        // ========================================================
-        // BAGIAN SETTING PRESISI (UBAH ANGKA DI BAWAH INI)
-        // ========================================================
-        
-        // 1. Lebar & Tinggi Foto (Sesuaikan agar pas di kotak hitam)
+        // --- BAGIAN SETTING (EDIT DI SINI) ---
+        //lebar tinggi foto
         const imgW = canvasResult.width * 0.82; 
-        const imgH = imgW * 0.72; // Coba naikkan ke 0.72 atau 0.75 jika kurang tinggi
-
-        // 2. Posisi Horizontal (Tengah)
+        const imgH = imgW * 0.72; 
+        //posisi tengah
         const xPos = (canvasResult.width - imgW) / 2;
-
-        // 3. Jarak Vertikal (Sangat Penting!)
-        const startY = canvasResult.height * 0.040;   // Jarak foto PERTAMA dari atas frame
-        const verticalGap = canvasResult.height * 0.210; // Jarak ANTAR foto (foto 1 ke foto 2, dst)
-
-        // ========================================================
+        
+        const startY = canvasResult.height * 0.030;   // jarak foto pertama ke frame atas
+        const verticalGap = canvasResult.height * 0.210; // Jarak antar foto
+        // -------------------------------------
 
         let processed = 0;
         photosTaken.forEach((data, i) => {
             const pImg = new Image();
             pImg.src = data;
             pImg.onload = () => {
-                // Kalkulasi posisi Y untuk tiap foto berdasarkan index (i)
-                const yPos = startY + (i * verticalGap);
-                
-                // Gambar fotonya dulu
-                ctx.drawImage(pImg, xPos, yPos, imgW, imgH);
+                ctx.drawImage(pImg, xPos, startY + (i * verticalGap), imgW, imgH);
                 processed++;
-
-                // Jika sudah foto ke-4, tempel framenya di atas
                 if (processed === 4) {
                     ctx.drawImage(frameImg, 0, 0, canvasResult.width, canvasResult.height);
-                    
-                    // Update Preview
                     finalPreview.src = canvasResult.toDataURL('image/png');
                     finalPreview.style.display = 'block';
                     document.getElementById('btn-download').style.display = 'inline-block';
+                    // Perkecil area pilih frame saat hasil muncul
+                    document.getElementById('frame-options').style.height = "18vh";
                 }
             };
         });
@@ -178,7 +118,7 @@ function generateCollage(frameSrc) {
 
 document.getElementById('btn-download').onclick = () => {
     const link = document.createElement('a');
-    link.download = `Photobooth_Farhan_${Date.now()}.png`;
+    link.download = `Photo_${Date.now()}.png`;
     link.href = canvasResult.toDataURL('image/png');
     link.click();
 };
