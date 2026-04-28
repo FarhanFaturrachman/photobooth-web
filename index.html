@@ -16,20 +16,28 @@
     </section>
 
     <section id="page-camera">
-        <div id="camera-container">
-            <div class="camera-left">
-                <div class="video-wrapper">
-                    <video id="video" autoplay playsinline></video>
-                    <div id="timer"></div>
-                </div>
-                <div class="controls">
-                    <button id="btn-go-to-frame" style="display:none;" onclick="showFrameSelection()">PILIH FRAME</button>
-                    <button id="btn-retake" style="display:none;" onclick="location.reload()">FOTO ULANG</button>
-                </div>
+    <div id="camera-container">
+        <div class="camera-left">
+            <div class="video-wrapper">
+                <video id="video" autoplay playsinline></video>
+                <div id="timer"></div>
             </div>
-            <div class="camera-right" id="preview-strip"></div>
+            <div class="controls">
+                <button id="btn-capture-manual" onclick="triggerManualCapture()">AMBIL FOTO</button>
+                <button id="btn-go-to-frame" style="display:none;" onclick="showFrameSelection()">LANJUT PILIH FRAME</button>
+            </div>
         </div>
-    </section>
+        <div class="camera-right">
+            <h3>Hasil Foto</h3>
+            <div id="preview-strip">
+                <div class="slot" id="slot-0"><span>1</span></div>
+                <div class="slot" id="slot-1"><span>2</span></div>
+                <div class="slot" id="slot-2"><span>3</span></div>
+                <div class="slot" id="slot-3"><span>4</span></div>
+            </div>
+        </div>
+    </div>
+</section>
 
     <section id="page-frame">
         <h2>Pilih Desain Frame</h2>
