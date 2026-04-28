@@ -1,44 +1,72 @@
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-size: cover;
-    transition: background 0.5s ease;
+/* Update tampilan tombol agar lebih modern */
+button {
+    background: #ff4757;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+    margin: 10px;
 }
 
-section {
-    display: none; /* Sembunyikan semua halaman */
-    height: 100vh;
-    text-align: center;
+button:hover {
+    background: #ff6b81;
+    transform: translateY(-2px);
+}
+
+/* Container Kamera agar terlihat seperti Booth */
+#camera-container {
+    background: #2f3542;
     padding: 20px;
-}
-
-section.active {
-    display: block; /* Hanya tampilkan yang aktif */
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
 }
 
 #video {
-    width: 100%;
-    max-width: 600px;
-    border: 5px solid white;
-    border-radius: 10px;
+    border: 8px solid #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    background: black;
 }
 
-#timer {
-    font-size: 5rem;
-    color: red;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
+/* Sidebar preview foto kecil di samping */
 .camera-right {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 10px;
+    overflow-y: auto;
+    max-height: 500px;
 }
 
 .preview-img {
-    width: 150px;
-    border: 2px solid #ccc;
+    width: 120px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 2px solid white;
+}
+
+/* Grid untuk pilihan frame */
+#frame-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.frame-thumb {
+    width: 100%;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: 0.3s;
+    border: 3px solid transparent;
+}
+
+.frame-thumb:hover {
+    border-color: #ff4757;
+    transform: scale(1.05);
 }
