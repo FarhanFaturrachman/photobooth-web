@@ -39,15 +39,26 @@
         </div>
     </section>
 
-    <section id="page-frame">
+    <section id="page-frame-selection">
+        <h2 class="frame-title-text">Pilih Desain Frame</h2>
+        <div class="frame-selection-wrapper">
+            <div id="frame-options-grid"></div>
+        </div>
+        <div class="action-buttons">
+            <button class="btn-back" onclick="backToCamera()">KEMBALI</button>
+        </div>
+    </section>
+
+    <section id="page-final-preview">
         <h2 class="frame-title-text">Preview</h2>
-        <div id="frame-options" class="scroll-x"></div>
-        
-        <div class="result-container">
-            <img id="final-image-preview" style="display:none;">
-            <div class="action-buttons">
-                <button id="btn-download" class="btn-save" style="display:none;">SIMPAN FOTO</button>
-                <button class="btn-back" onclick="location.reload()">KEMBALI</button>
+        <div class="final-preview-container">
+            <div class="preview-image-box">
+                <img id="final-image-preview">
+            </div>
+            <div class="final-action-buttons">
+                <button id="btn-download" class="btn-save">SIMPAN FOTO</button>
+                <button class="btn-back" onclick="backToFrameSelection()">KEMBALI</button>
+                <button class="btn-main" style="font-size: 2vh; padding: 10px 20px;" onclick="location.reload()">DASHBOARD</button>
             </div>
         </div>
         <canvas id="canvas-result" style="display:none;"></canvas>
