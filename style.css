@@ -1,117 +1,145 @@
+/* ========================================================
+   CSS RE-DESIGN: BIGGER & BOLDER UI
+   ======================================================== */
+
 body {
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('bg.jpg');
+    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('bg.jpg');
     background-size: cover;
+    background-position: center;
     background-attachment: fixed;
     color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Arial Black', Gadget, sans-serif; /* Font lebih tebal */
     margin: 0;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+/* Judul Utama */
+h1 {
+    font-size: 60px; /* Sangat besar */
+    text-shadow: 4px 4px 15px rgba(0,0,0,0.7);
+    margin-bottom: 30px;
+    letter-spacing: 5px;
+}
+
+h2, h3 {
+    font-size: 40px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+p {
+    font-size: 24px;
+    margin-bottom: 40px;
+}
+
+/* Tombol-Tombol Besar */
+button {
+    background: #ff4757;
+    color: white;
+    border: 5px solid white; /* Frame putih pada tombol */
+    padding: 25px 60px; /* Padding extra besar */
+    border-radius: 100px;
+    font-size: 28px; /* Huruf di tombol diperbesar */
+    font-weight: 900;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    text-transform: uppercase;
+}
+
+button:hover {
+    background: #ff6b81;
+    transform: scale(1.1); /* Efek membesar saat hover */
+}
+
+/* Section Management */
 section {
     display: none;
-    height: 100vh;
+    min-height: 100vh;
+    width: 100%;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 40px;
+    box-sizing: border-box;
 }
 
-section.active { display: flex !important; }
-
-.video-wrapper {
-    position: relative;
-    border: 10px solid white;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    line-height: 0;
+section.active {
+    display: flex !important;
 }
 
-#video { width: 100%; max-width: 720px; transform: scaleX(-1); }
-
-#timer {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 150px;
-    font-weight: 900;
-    text-shadow: 0 0 20px rgba(0,0,0,1);
-}
-
-.camera-right {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background: rgba(0,0,0,0.3);
-    padding: 15px;
-    border-radius: 15px;
-    margin-left: 20px;
-}
-
-.preview-img {
-    width: 120px;
-    border: 3px solid white;
-    border-radius: 5px;
-}
-
-#frame-options {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
-    overflow-x: auto;
-    width: 80%;
-}
-
-.frame-thumb {
-    height: 200px;
-    cursor: pointer;
-    border: 3px solid transparent;
-    transition: 0.3s;
-}
-
-.frame-thumb:hover { border-color: #ff4757; transform: translateY(-5px); }
-
-button {
-    background: #ff4757;
-    border: none;
-    padding: 15px 40px;
-    color: white;
-    font-weight: bold;
-    border-radius: 50px;
-    cursor: pointer;
-    font-size: 18px;
-    box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
-}
 /* Layout Kamera & Preview */
 #camera-container {
     display: flex;
-    flex-direction: row; /* Kamera kiri, Preview kanan */
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
     justify-content: center;
-    gap: 30px;
+    gap: 60px; /* Jarak antar panel */
     width: 95%;
 }
 
-.camera-right {
-    width: 150px;
-    background: rgba(0,0,0,0.5);
-    padding: 10px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+/* Box Kamera */
+.video-wrapper {
+    width: 800px; /* Ukuran video diperbesar */
+    border: 12px solid white;
+    border-radius: 30px;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    overflow: hidden;
 }
 
-/* Slot Foto Tetap */
+#video {
+    width: 100%;
+    display: block;
+    transform: scaleX(-1); /* Efek cermin */
+}
+
+/* Timer Besar di Tengah Kamera */
+#timer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 200px; /* Timer sangat besar */
+    color: #ff4757;
+    font-weight: 900;
+    text-shadow: 5px 5px 20px rgba(0,0,0,0.9);
+    pointer-events: none;
+}
+
+/* Panel Preview di Kanan */
+.camera-right {
+    width: 250px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 30px;
+    border-radius: 20px;
+    border: 3px solid #ff4757;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.camera-right h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Slot Foto Preview */
 .slot {
-    width: 130px;
-    height: 90px;
-    background: #333;
-    border: 2px dashed #666;
-    border-radius: 5px;
+    width: 200px; /* Slot foto lebih besar */
+    height: 150px;
+    background: #111;
+    border: 3px solid #444;
+    border-radius: 10px;
+    margin-bottom: 20px;
     position: relative;
-    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: #333;
 }
 
 .slot img {
@@ -120,22 +148,44 @@ button {
     object-fit: cover;
 }
 
-/* Tombol Retake Kecil di atas foto */
+/* Tombol Retake Kecil */
 .btn-retake-small {
     position: absolute;
-    top: 2px; right: 2px;
-    background: rgba(255,0,0,0.8);
-    font-size: 10px;
-    padding: 2px 5px;
-    border-radius: 3px;
+    top: 5px;
+    right: 5px;
+    background: #ff4757;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 5px;
+    font-size: 14px;
     cursor: pointer;
+    border: 2px solid white;
 }
 
-/* Ukuran Frame Thumb di halaman pilih frame agar tidak raksasa */
+/* Pilihan Frame di Halaman Akhir */
 .frame-thumb {
-    width: 120px; /* Ukuran normal */
+    width: 180px; /* Thumbnail frame lebih besar */
     height: auto;
-    object-fit: contain;
-    border: 2px solid #ccc;
-    margin: 5px;
+    margin: 15px;
+    border: 5px solid white;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.frame-thumb:hover {
+    border-color: #ff4757;
+    transform: scale(1.1);
+}
+
+/* Container Hasil Akhir */
+.result-container {
+    margin-top: 30px;
+}
+
+#final-image-preview {
+    max-width: 400px; /* Preview hasil download diperbesar */
+    border: 10px solid white;
+    border-radius: 20px;
+    margin-bottom: 20px;
 }
