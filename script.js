@@ -1,6 +1,7 @@
 let photosTaken = [null, null, null, null]; 
 let currentSlot = 0;
 let stream = null;
+let targetRetakeIndex = null;
 
 const video = document.getElementById('video');
 const timerDisplay = document.getElementById('timer');
@@ -26,9 +27,8 @@ function runCountdown(sec) {
     timerDisplay.innerText = count;
     let inv = setInterval(() => {
         count--;
-        if (count > 0) {
-            timerDisplay.innerText = count;
-        } else {
+        if (count > 0) timerDisplay.innerText = count;
+        else {
             clearInterval(inv);
             timerDisplay.innerText = "📸";
             captureToSlot(currentSlot);
@@ -42,17 +42,52 @@ function runCountdown(sec) {
     }, 1000);
 }
 
+// FUNGSI CAPTURE DENGAN LOGIKA ANTI-GEPENG / ANTI-KEPOTONG
 function captureToSlot(slotIndex) {
     const tempCanvas = document.createElement('canvas');
-    // MENGGUNAKAN RESOLUSI TINGGI AGAR TIDAK PECAH
-    tempCanvas.width = 1280; tempCanvas.height = 720;
+    // Set resolusi portrait agar tidak terpotong saat masuk frame
+    tempCanvas.width = 800; 
+    tempCanvas.height = 1000;
     const ctx = tempCanvas.getContext('2d');
+    
     ctx.translate(tempCanvas.width, 0); ctx.scale(-1, 1);
-    ctx.drawImage(video, 0, 0, 1280, 720);
+    
+    // Ambil bagian tengah video (Center Crop)
+    const sourceWidth = 1280;
+    const sourceHeight = 720;
+    const targetAspect = tempCanvas.width / tempCanvas.height;
+    const drawWidth = sourceHeight * targetAspect;
+    const startX = (sourceWidth - drawWidth) / 2;
+
+    ctx.drawImage(video, startX, 0, drawWidth, sourceHeight, 0, 0, tempCanvas.width, tempCanvas.height);
+    
     const dataUri = tempCanvas.toDataURL('image/png');
     photosTaken[slotIndex] = dataUri;
     document.getElementById(`slot-${slotIndex}`).innerHTML = `<img src="${dataUri}">`;
 }
+
+// LOGIKA MODAL DETAIL (GALLERY PREVIEW)
+function openDetail(index) {
+    if (!photosTaken[index]) return;
+    targetRetakeIndex = index;
+    const modal = document.getElementById('photo-detail-modal');
+    document.getElementById('detail-img-view').src = photosTaken[index];
+    document.getElementById('confirm-box').style.display = 'none';
+    modal.style.display = 'flex';
+}
+
+function closeDetail() { document.getElementById('photo-detail-modal').style.display = 'none'; }
+
+document.getElementById('btn-confirm-retake').onclick = () => {
+    document.getElementById('confirm-box').style.display = 'block';
+};
+
+document.getElementById('btn-yes-retake').onclick = () => {
+    photosTaken[targetRetakeIndex] = null;
+    document.getElementById(`slot-${targetRetakeIndex}`).innerHTML = `<span>${targetRetakeIndex + 1}</span>`;
+    document.getElementById('btn-go-to-frame').style.display = 'none';
+    closeDetail();
+};
 
 function showFrameSelection() {
     if (stream) stream.getTracks().forEach(t => t.stop());
@@ -77,30 +112,19 @@ function generateCollage(frameSrc) {
         canvasResult.width = frameImg.width;
         canvasResult.height = frameImg.height;
         
-        // --- LOGIKA PRESISI AGAR TIDAK KEPOTONG ---
+        // --- SETING PRESISI HASIL KOLASE ---
         const imgW = canvasResult.width * 0.85; 
-        const imgH = imgW * 0.68; // SESUAIKAN DENGAN KOTAK DI FRAME KAMU
+        const imgH = imgW * 0.70; 
         const xPos = (canvasResult.width - imgW) / 2;
-        const startY = canvasResult.height * 0.045; 
-        const gap = canvasResult.height * 0.205;
+        const startY = canvasResult.height * 0.040; 
+        const gap = canvasResult.height * 0.206;
 
         let processed = 0;
         photosTaken.forEach((data, i) => {
             const pImg = new Image();
             pImg.src = data;
             pImg.onload = () => {
-                // LOGIKA CENTER CROP (MENGAMBIL TENGAH FOTO)
-                const imgRatio = pImg.width / pImg.height;
-                const targetRatio = imgW / imgH;
-                let sx, sy, sw, sh;
-                if (imgRatio > targetRatio) {
-                    sw = pImg.height * targetRatio; sh = pImg.height;
-                    sx = (pImg.width - sw) / 2; sy = 0;
-                } else {
-                    sw = pImg.width; sh = pImg.width / targetRatio;
-                    sx = 0; sy = (pImg.height - sh) / 2;
-                }
-                ctx.drawImage(pImg, sx, sy, sw, sh, xPos, startY + (i * gap), imgW, imgH);
+                ctx.drawImage(pImg, xPos, startY + (i * gap), imgW, imgH);
                 processed++;
                 if (processed === 4) {
                     ctx.drawImage(frameImg, 0, 0, canvasResult.width, canvasResult.height);
@@ -112,3 +136,10 @@ function generateCollage(frameSrc) {
         });
     };
 }
+
+document.getElementById('btn-download').onclick = () => {
+    const link = document.createElement('a');
+    link.download = `Photobooth_Adina.png`;
+    link.href = canvasResult.toDataURL('image/png');
+    link.click();
+};
