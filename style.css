@@ -88,6 +88,9 @@ section.active { display: flex !important; }
 .frame-thumb-scroll:hover { transform: translateY(-10px); border-color: #ff4757; }
 
 /* --- PERUBAHAN PAGE 4: PREVIEW (Split Layout seperti Gambar 4) --- */
+/* ... (Pertahankan bagian awal body, home, timer, dan camera dari kode sebelumnya) ... */
+
+/* --- HALAMAN PREVIEW (STYLING FINAL) --- */
 #page-final-preview {
     justify-content: flex-start;
     padding-top: 2vh;
@@ -95,76 +98,87 @@ section.active { display: flex !important; }
 
 .split-preview-container {
     display: flex;
-    flex-direction: row; /* Kiri - Kanan */
-    width: 98vw;
-    height: 85vh;
-    gap: 2vw;
+    flex-direction: row;
+    width: 95vw;
+    height: 82vh;
+    gap: 3vw;
     align-items: center;
     justify-content: center;
 }
 
-/* Sisi Kiri: Daftar Frame (Scroll Vertikal) */
+/* SISI KIRI: DAFTAR FRAME (Grid 2x2 yang diperkecil) */
 .preview-sidebar-frames {
-    width: 25vw;
-    height: 80vh;
+    width: 20vw; /* Diperkecil agar proporsional */
+    height: 75vh;
     background: rgba(0,0,0,0.3);
     border-radius: 20px;
     padding: 15px;
-    overflow: hidden;
+    overflow-y: auto;
+    border: 2px solid rgba(255,255,255,0.1);
 }
 
 #frame-options-sidebar {
-    display: flex;
-    flex-direction: column; /* Berjejer ke bawah */
-    gap: 15px;
-    height: 100%;
-    overflow-y: auto; /* Scroll vertikal */
-    padding-right: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Dibuat 2 kolom (Grid) agar muat banyak */
+    gap: 12px;
 }
 
-/* Thumbnail Frame untuk Sidebar */
 .frame-thumb-sidebar {
     width: 100%;
-    border: 3px solid white;
-    border-radius: 10px;
+    height: auto;
+    border: 2px solid white;
+    border-radius: 8px;
     cursor: pointer;
     transition: 0.2s;
 }
-.frame-thumb-sidebar:hover { border-color: #ff4757; transform: scale(1.03); }
+.frame-thumb-sidebar:hover { transform: scale(1.05); border-color: #ff4757; }
 
-/* Sisi Kanan: Preview Besar & Tombol */
+/* SISI KANAN: PREVIEW UTAMA */
 .preview-main-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    width: 65vw;
-    height: 80vh;
-}
-
-.preview-image-box {
-    margin-bottom: 3vh;
+    width: 60vw;
 }
 
 #final-image-preview {
-    height: 65vh; /* Preview cukup besar */
-    border: 10px solid white;
+    height: 65vh; /* Ukuran preview sedang agar tombol tidak terpotong */
+    border: 8px solid white;
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin-bottom: 3vh;
 }
 
-/* Baris Tombol Aksi di Bawah Preview */
+/* TOMBOL AKSI (SERAGAM & SEJAJAR) */
 .final-action-buttons-row {
     display: flex;
-    flex-direction: row; /* Berjejer ke samping */
-    gap: 20px;
-    justify-content: center;
+    gap: 15px;
 }
 
-.btn-save { background: #2ecc71; padding: 15px 40px; font-size: 2.5vh; }
-.btn-main-sm { font-size: 1.8vh; padding: 10px 20px; background: #3498db; } /* Tombol Dashboard biru */
+.final-action-buttons-row button {
+    /* Membuat semua tombol berukuran sama */
+    width: 180px; 
+    height: 55px;
+    font-size: 1.8vh;
+    border-radius: 50px;
+    border: 3px solid white;
+    font-weight: 900;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.3s;
+    color: white;
+}
 
-/* Utility untuk Scrollbar Rapi */
-.scroll-x::-webkit-scrollbar, .scroll-y::-webkit-scrollbar { width: 8px; height: 8px; }
-.scroll-x::-webkit-scrollbar-thumb, .scroll-y::-webkit-scrollbar-thumb { background: #ff4757; border-radius: 10px; }
-.scroll-x::-webkit-scrollbar-track, .scroll-y::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 10px; }
+/* Warna Tombol Disamakan (Atau gunakan warna identitas brand kamu) */
+.btn-save { background: #2ecc71; } /* Hijau tetap untuk Simpan sebagai pembeda positif */
+.btn-back { background: #ff4757; }
+.btn-dash { background: #3498db; }
+
+.final-action-buttons-row button:hover {
+    transform: translateY(-5px);
+    filter: brightness(1.1);
+}
+
+/* Scrollbar Sidebar */
+.preview-sidebar-frames::-webkit-scrollbar { width: 6px; }
+.preview-sidebar-frames::-webkit-scrollbar-thumb { background: #ff4757; border-radius: 10px; }
