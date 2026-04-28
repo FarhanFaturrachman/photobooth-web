@@ -125,24 +125,19 @@ function showFrameSelection() {
     
     const frameContainer = document.getElementById('frame-options');
     frameContainer.innerHTML = '';
-
-    // Logika agar tidak error 404: 
-    // Kita hanya memunculkan tombol jika file frame-nya memang ada
-    // Untuk sekarang, kita buat manual dulu agar kamu bisa ngetes frame6_1.png
     
     const frameBtn = document.createElement('img');
+    const path = "frames/frame6_1.png"; // Jalur file
     
-    // Cek: Jika user pilih 6 foto, arahkan ke frame6_1.png
-    if (selectedPhotoCount === 6) {
-        frameBtn.src = `frames/frame6_1.png`;
-    } else {
-        // Jika pilih 3 atau 4 foto tapi belum ada frame-nya, 
-        // kita pakai frame6_1 sebagai dummy agar tidak error saat tes
-        frameBtn.src = `frames/frame6_1.png`; 
-        console.warn("Frame untuk jumlah foto ini belum ada, menggunakan frame6_1.png sebagai pengganti.");
-    }
-
+    frameBtn.src = path;
     frameBtn.className = 'frame-thumb';
+    
+    // Tambahkan ini untuk melacak jika gambar gagal dimuat
+    frameBtn.onerror = function() {
+        console.error("Gagal memuat gambar di: " + path);
+        alert("Gambar frame tidak ditemukan di folder frames/frame6_1.png. Pastikan nama file dan folder sudah benar di GitHub!");
+    };
+
     frameBtn.onclick = () => generateCollage(frameBtn.src);
     frameContainer.appendChild(frameBtn);
 }
