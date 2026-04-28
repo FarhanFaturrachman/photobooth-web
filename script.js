@@ -145,8 +145,8 @@ function generateCollage(frameSrc) {
         const xPos = (canvasResult.width - imgW) / 2;
 
         // 3. Jarak Vertikal (Sangat Penting!)
-        const startY = canvasResult.height * 0.045;   // Jarak foto PERTAMA dari atas frame
-        const verticalGap = canvasResult.height * 0.203; // Jarak ANTAR foto (foto 1 ke foto 2, dst)
+        const startY = canvasResult.height * 0.040;   // Jarak foto PERTAMA dari atas frame
+        const verticalGap = canvasResult.height * 0.210; // Jarak ANTAR foto (foto 1 ke foto 2, dst)
 
         // ========================================================
 
