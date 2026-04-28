@@ -8,17 +8,15 @@ const timerDisplay = document.getElementById('timer');
 const canvasResult = document.getElementById('canvas-result');
 const finalPreview = document.getElementById('final-image-preview');
 
-// START CAPTURE
 async function startCapture() {
     try {
         stream = await navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } });
         video.srcObject = stream;
         document.getElementById('page-home').classList.remove('active');
         document.getElementById('page-camera').classList.add('active');
-    } catch (err) { alert("Kamera error! Cek izin kamera."); }
+    } catch (err) { alert("Kamera error! Cek izin browser."); }
 }
 
-// COUNTDOWN & CAPTURE
 function triggerManualCapture() {
     currentSlot = photosTaken.indexOf(null);
     if (currentSlot !== -1) runCountdown(3);
@@ -56,7 +54,6 @@ function captureToSlot(slotIndex) {
     document.getElementById(`slot-${slotIndex}`).innerHTML = `<img src="${dataUri}">`;
 }
 
-// MODAL GALLERY
 function openDetail(index) {
     if (!photosTaken[index]) return;
     targetRetakeIndex = index;
@@ -80,7 +77,6 @@ document.getElementById('btn-yes-retake').onclick = () => {
     closeDetail();
 };
 
-// FRAME SELECTION
 function showFrameSelection() {
     if (stream) stream.getTracks().forEach(t => t.stop());
     document.getElementById('page-camera').classList.remove('active');
@@ -96,7 +92,6 @@ function showFrameSelection() {
     }
 }
 
-// COLLAGE GENERATOR
 function generateCollage(frameSrc) {
     const ctx = canvasResult.getContext('2d');
     const frameImg = new Image();
