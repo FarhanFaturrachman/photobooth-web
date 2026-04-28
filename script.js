@@ -182,8 +182,8 @@ function generateCollage(frameSrc) {
         const w = canvasResult.width;
         const h = canvasResult.height;
         
-        // Setting presisi peletakan foto (sesuaikan gap jika frame berubah)
-        const imgW = w * 0.85; 
+        // Ukuran kotak di frame (Target)
+        const imgW = w * 0.85;  
         const imgH = imgW * 0.70; 
         const xPos = (w - imgW) / 2;
         const startY = h * 0.040; 
@@ -194,20 +194,35 @@ function generateCollage(frameSrc) {
             const pImg = new Image();
             pImg.src = data;
             pImg.onload = () => {
-                ctx.drawImage(pImg, xPos, startY + (i * gap), imgW, imgH);
-                processed++;
+                // --- LOGIKA ANTI GAP (CENTER CROP) ---
+                const imgRatio = pImg.width / pImg.height;
+                const targetRatio = imgW / imgH;
+                let sx, sy, sw, sh;
+
+                if (imgRatio > targetRatio) {
+                    // Foto lebih lebar dari kotak, potong samping
+                    sw = pImg.height * targetRatio;
+                    sh = pImg.height;
+                    sx = (pImg.width - sw) / 2;
+                    sy = 0;
+                } else {
+                    // Foto lebih tinggi dari kotak, potong atas bawah
+                    sw = pImg.width;
+                    sh = pImg.width / targetRatio;
+                    sx = 0;
+                    sy = (pImg.height - sh) / 2;
+                }
+
+                // Gambar dengan koordinat potong (Source) ke koordinat frame (Destination)
+                ctx.drawImage(pImg, sx, sy, sw, sh, xPos, startY + (i * gap), imgW, imgH);
                 
+                processed++;
                 if (processed === 4) {
-                    // Gambar frame di atas foto-foto
                     ctx.drawImage(frameImg, 0, 0, w, h);
-                    
-                    // Update preview image
                     finalPreview.src = canvasResult.toDataURL('image/png');
                     
-                    // Pindah ke halaman preview jika saat ini masih di halaman seleksi
                     if (!document.getElementById('page-final-preview').classList.contains('active')) {
                         switchPage('page-final-preview');
-                        // Muat sidebar grid di halaman preview
                         loadFramesToContainer('frame-options-sidebar', 'frame-thumb-sidebar', true);
                     }
                 }
@@ -215,7 +230,6 @@ function generateCollage(frameSrc) {
         });
     };
 }
-
 /**
  * 6. DOWNLOAD HASIL
  */
