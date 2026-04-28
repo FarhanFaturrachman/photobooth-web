@@ -1,164 +1,155 @@
-/**
- * WEB PHOTOBOOTH - FINAL OPTIMIZED
- * Developer: Farhan Faturrachman
- */
+/* ========================================================
+   DINA PHOTOBOOTH - FINAL STABLE UI
+   ======================================================== */
 
-let photosTaken = [null, null, null, null]; 
-let currentSlot = 0;
-let stream = null;
-
-const video = document.getElementById('video');
-const timerDisplay = document.getElementById('timer');
-const previewStrip = document.getElementById('preview-strip');
-const canvasResult = document.getElementById('canvas-result');
-const finalPreview = document.getElementById('final-image-preview');
-
-// 1. Fungsi Mulai (Membuka Kamera)
-async function startCapture() {
-    try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } });
-        video.srcObject = stream;
-        document.getElementById('page-home').classList.remove('active');
-        document.getElementById('page-camera').classList.add('active');
-    } catch (err) { 
-        alert("Kamera error! Pastikan izin kamera aktif."); 
-    }
+body {
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+    font-family: 'Arial Black', sans-serif;
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
 }
 
-// 2. Ambil Foto Manual
-function triggerManualCapture() {
-    currentSlot = photosTaken.indexOf(null);
-    if (currentSlot !== -1) {
-        runCountdown(3); 
-    } else {
-        alert("Slot penuh! Lanjut pilih frame atau retake foto.");
-    }
+section {
+    display: none;
+    height: 100vh;
+    width: 100vw;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2vh;
 }
 
-function runCountdown(sec) {
-    let count = sec;
-    timerDisplay.innerText = count;
-    document.getElementById('btn-capture-manual').disabled = true;
+section.active { display: flex !important; }
 
-    let inv = setInterval(() => {
-        count--;
-        if (count > 0) {
-            timerDisplay.innerText = count;
-        } else {
-            clearInterval(inv);
-            timerDisplay.innerText = "📸";
-            captureToSlot(currentSlot);
-            setTimeout(() => { 
-                timerDisplay.innerText = "";
-                document.getElementById('btn-capture-manual').disabled = false;
-                if (photosTaken.indexOf(null) === -1) {
-                    document.getElementById('btn-go-to-frame').style.display = 'inline-block';
-                }
-            }, 600);
-        }
-    }, 1000);
+button {
+    background: #ff4757;
+    color: white;
+    border: 0.5vh solid white;
+    padding: 1.5vh 3vw;
+    border-radius: 50px;
+    font-size: 2.5vh;
+    font-weight: 900;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.3s;
 }
 
-function captureToSlot(slotIndex) {
-    const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = 640; 
-    tempCanvas.height = 480;
-    const ctx = tempCanvas.getContext('2d');
-    
-    // Mirroring fix
-    ctx.translate(tempCanvas.width, 0); 
-    ctx.scale(-1, 1);
-    ctx.drawImage(video, 0, 0, 640, 480);
-    
-    const dataUri = tempCanvas.toDataURL('image/png');
-    photosTaken[slotIndex] = dataUri;
+button:hover { transform: scale(1.05); background: #ff6b81; }
 
-    const container = document.getElementById(`slot-${slotIndex}`);
-    // Teks tombol diubah dari "Ulang" menjadi "Ulangi"
-    container.innerHTML = `
-        <img src="${dataUri}" style="width:100%;height:100%;object-fit:cover;">
-        <div class="btn-retake-small" onclick="retakePhoto(${slotIndex})">Ulangi</div>
-    `;
+/* LAYOUT KAMERA */
+#camera-container { display: flex; align-items: center; gap: 3vw; }
+.video-wrapper {
+    width: 55vw;
+    border: 1vh solid white;
+    border-radius: 3vh;
+    position: relative;
+    overflow: hidden;
+    background: black;
+}
+#video { width: 100%; transform: scaleX(-1); }
+#timer {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20vh;
+    color: white;
+    text-shadow: 0 0 3vh rgba(0,0,0,0.8);
+    z-index: 10;
 }
 
-function retakePhoto(index) {
-    photosTaken[index] = null;
-    document.getElementById(`slot-${index}`).innerHTML = `<span>${index + 1}</span>`;
-    document.getElementById('btn-go-to-frame').style.display = 'none';
+/* PREVIEW SLOTS & TOMBOL ULANGI */
+.camera-right { width: 15vw; display: flex; flex-direction: column; gap: 2vh; }
+.slot {
+    width: 100%;
+    height: 12vh;
+    background: rgba(0,0,0,0.3);
+    border: 2px solid white;
+    position: relative; /* Kunci untuk tombol melayang */
+    border-radius: 1vh;
+}
+.slot img { width: 100%; height: 100%; object-fit: cover; border-radius: 1vh; }
+
+/* FIX: TOMBOL ULANGI AGAR TIDAK HILANG */
+.btn-retake-small {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #ff4757;
+    color: white;
+    padding: 5px 10px;
+    font-size: 12px;
+    border: 2px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 999; /* Pastikan di paling atas */
 }
 
-// 3. Pindah ke Halaman Pilih Frame
-function showFrameSelection() {
-    if (stream) stream.getTracks().forEach(t => t.stop());
-    
-    document.getElementById('page-camera').classList.remove('active');
-    document.getElementById('page-frame').classList.add('active');
-    
-    // Reset tampilan jika sebelumnya sudah pernah milih
-    document.getElementById('frame-options').style.display = 'grid';
-    document.querySelector('#page-frame h2').innerText = "Pilih Desain Frame";
-    
-    const frameContainer = document.getElementById('frame-options');
-    frameContainer.innerHTML = '';
-    
-    for(let i=1; i<=10; i++) {
-        const frameBtn = document.createElement('img');
-        frameBtn.src = `frame/frame${i}.png`; 
-        frameBtn.className = 'frame-thumb';
-        frameBtn.onclick = () => generateCollage(frameBtn.src);
-        frameContainer.appendChild(frameBtn);
-    }
+/* HALAMAN PILIH FRAME */
+#page-frame {
+    display: flex;
+    flex-direction: column; /* Default atas-bawah */
+    transition: all 0.5s ease;
 }
 
-// 4. Logika Pembuatan Kolase (Fokus ke Hasil)
-function generateCollage(frameSrc) {
-    const ctx = canvasResult.getContext('2d');
-    const frameImg = new Image();
-    frameImg.src = frameSrc;
-
-    frameImg.onload = () => {
-        canvasResult.width = frameImg.width;
-        canvasResult.height = frameImg.height;
-        ctx.clearRect(0, 0, canvasResult.width, canvasResult.height);
-
-        // --- BAGIAN SETTING PRESISI ---
-        const imgW = canvasResult.width * 0.82; 
-        const imgH = imgW * 0.72; 
-        const xPos = (canvasResult.width - imgW) / 2;
-        
-        const startY = canvasResult.height * 0.030; // Jarak foto pertama dari atas
-        const verticalGap = canvasResult.height * 0.210; // Jarak antar foto
-        // ------------------------------
-
-        let processed = 0;
-        photosTaken.forEach((data, i) => {
-            const pImg = new Image();
-            pImg.src = data;
-            pImg.onload = () => {
-                ctx.drawImage(pImg, xPos, startY + (i * verticalGap), imgW, imgH);
-                processed++;
-
-                if (processed === 4) {
-                    // Gambar Frame di atas foto
-                    ctx.drawImage(frameImg, 0, 0, canvasResult.width, canvasResult.height);
-                    
-                    // Update Tampilan: Sembunyikan Pilihan, Munculkan Hasil
-                    document.getElementById('frame-options').style.display = 'none';
-                    document.querySelector('#page-frame h2').innerText = "Hasil Photobooth Kamu!";
-                    
-                    finalPreview.src = canvasResult.toDataURL('image/png');
-                    finalPreview.style.display = 'block';
-                    document.getElementById('btn-download').style.display = 'inline-block';
-                }
-            };
-        });
-    };
+/* TAMPILAN AWAL: SCROLL SAMPING FULL */
+#frame-options {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 20px;
+    width: 90vw;
+    padding: 20px;
+    scrollbar-width: thin;
 }
 
-// 5. Fungsi Simpan Foto
-document.getElementById('btn-download').onclick = () => {
-    const link = document.createElement('a');
-    link.download = `Photobooth_Farhan_${Date.now()}.png`;
-    link.href = canvasResult.toDataURL('image/png');
-    link.click();
-};
+/* Thumbnail Frame */
+.frame-thumb {
+    flex: 0 0 auto;
+    height: 40vh;
+    border: 3px solid white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* TAMPILAN SETELAH PILIH (Diatur via JS) */
+.split-layout {
+    flex-direction: row !important;
+    justify-content: space-around !important;
+    padding: 5vh !important;
+}
+
+.split-layout #frame-options {
+    flex-direction: column !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    width: 20vw !important;
+    height: 70vh !important;
+}
+
+.split-layout .frame-thumb {
+    height: auto !important;
+    width: 100% !important;
+}
+
+.result-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#final-image-preview {
+    height: 75vh;
+    border: 1vh solid white;
+    border-radius: 2vh;
+    box-shadow: 0 0 5vh black;
+}
+
+.action-buttons { margin-top: 2vh; display: flex; gap: 20px; }
