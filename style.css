@@ -17,114 +17,111 @@ section {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 2vh;
 }
 
 section.active { display: flex !important; }
 
-/* --- GAMBAR 1: HOME IMPROVEMENT --- */
-.hero-title {
-    font-size: 10vh; /* Sangat besar & menarik */
-    margin-bottom: 1vh;
-    text-shadow: 4px 4px 10px rgba(0,0,0,0.8);
+/* --- PERBAIKAN COUNTDOWN RAKSASA --- */
+#timer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 35vh; /* SANGAT BESAR & TEGAS */
+    color: white;
+    font-weight: 900;
+    text-shadow: 0 0 50px rgba(0,0,0,1), 0 0 20px rgba(0,0,0,0.8);
+    z-index: 100;
+    pointer-events: none;
 }
-.hero-subtitle {
-    font-size: 3.5vh;
-    margin-bottom: 5vh;
-    background: rgba(0,0,0,0.5);
-    padding: 10px 30px;
-    border-radius: 50px;
-}
-.btn-main {
+
+/* TOMBOL UTAMA */
+.btn-main, .btn-capture, .btn-next {
     background: #ff4757;
     color: white;
-    border: 6px solid white;
-    padding: 2.5vh 6vw;
-    border-radius: 60px;
-    font-size: 4vh;
+    border: 5px solid white;
+    padding: 15px 40px;
+    border-radius: 50px;
+    font-size: 2.5vh;
     font-weight: 900;
     cursor: pointer;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
     transition: 0.3s;
+    text-transform: uppercase;
 }
-.btn-main:hover { transform: scale(1.1); background: #ff6b81; }
 
-/* --- GAMBAR 2: CAMERA & PREVIEW RATIO --- */
-#camera-container { display: flex; align-items: center; gap: 4vw; }
+/* --- KAMERA & HASIL FOTO (Gambar 1) --- */
+#camera-container { display: flex; align-items: center; gap: 3vw; }
 .video-wrapper { 
     width: 55vw; 
-    border: 10px solid white; 
-    border-radius: 4vh; 
+    border: 12px solid white; 
+    border-radius: 30px; 
+    position: relative; 
     overflow: hidden; 
-    position: relative;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.7);
 }
 #video { width: 100%; transform: scaleX(-1); display: block; }
 
 .camera-right { width: 18vw; }
-.preview-title { font-size: 3vh; text-align: center; margin-bottom: 2vh; }
-
 .slot {
     width: 100%;
-    height: 19vh; /* DIPERBESAR & DIPERTINGGI AGAR PAS PAS PROPORSI WAJAH */
-    background: rgba(0,0,0,0.4);
+    height: 18vh; /* TINGGI IDEAL AGAR TIDAK KEPOTONG */
+    background: rgba(0,0,0,0.5);
     border: 4px solid white;
-    border-radius: 2vh;
-    margin-bottom: 1.5vh;
+    border-radius: 15px;
+    margin-bottom: 10px;
     overflow: hidden;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 4vh;
 }
 .slot img { width: 100%; height: 100%; object-fit: cover; }
 
-/* Tombol Kamera */
-.btn-capture, .btn-next {
-    margin-top: 2vh;
-    padding: 1.5vh 3vw;
-    font-size: 2.5vh;
-    border-radius: 50px;
-    border: 4px solid white;
-    font-weight: bold;
-    cursor: pointer;
-    background: #ff4757;
-    color: white;
+/* --- HALAMAN FRAME (Gambar 2 - KEMBALI KE LAYOUT KEREN) --- */
+#page-frame {
+    display: flex;
+    flex-direction: row !important; /* KIRI-KANAN */
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 20px;
 }
 
-/* --- GAMBAR 3: FRAME SCROLL ASLI --- */
-.frame-title-text { font-size: 5vh; margin-bottom: 3vh; }
-
+/* PANEL KIRI: GRID 4 KOLOM */
 #frame-options {
-    display: flex;
-    flex-direction: row;
-    overflow-x: auto; /* SCROLL KE SAMPING */
-    gap: 30px;
-    width: 90vw;
-    padding: 20px;
-    scrollbar-width: thin;
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important; /* 4 GRID */
+    gap: 15px;
+    width: 35vw;
+    height: 85vh;
+    overflow-y: auto; /* SCROLL ATAS BAWAH */
+    padding: 15px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 20px;
 }
 .frame-thumb {
-    flex: 0 0 auto;
-    height: 45vh; /* Thumbnail besar agar jelas */
-    border: 5px solid white;
-    border-radius: 20px;
+    width: 100%;
+    border: 3px solid white;
+    border-radius: 10px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.2s;
 }
-.frame-thumb:hover { transform: translateY(-10px); border-color: #ff4757; }
+.frame-thumb:hover { border-color: #ff4757; transform: scale(1.05); }
 
-/* HASIL AKHIR */
+/* PANEL KANAN: PREVIEW HASIL */
+.result-container {
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 #final-image-preview {
-    height: 70vh;
+    height: 75vh;
     border: 10px solid white;
-    border-radius: 2vh;
-    margin-top: 2vh;
+    border-radius: 20px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
 }
-.action-buttons { margin-top: 3vh; display: flex; gap: 20px; }
+.action-buttons { margin-top: 20px; display: flex; gap: 20px; }
 
-/* MODAL */
-.modal { display: none; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
-.modal-content { background: #222; padding: 30px; border-radius: 30px; text-align: center; border: 4px solid #ff4757; }
-#detail-img-view { max-height: 60vh; border-radius: 10px; border: 4px solid white; }
+/* SCROLLBAR RAPI */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-thumb { background: #ff4757; border-radius: 10px; }
