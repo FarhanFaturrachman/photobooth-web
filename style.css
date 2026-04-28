@@ -1,4 +1,8 @@
-/* CSS PHOTOBOOTH - FULL SCALE & HORIZONTAL SCROLL */
+/* ========================================================
+   WEB PHOTOBOOTH PRO - FULL SCALE OPTIMIZED
+   Developer: Farhan Faturrachman
+   ======================================================== */
+
 body {
     background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('bg.jpg');
     background-size: cover;
@@ -9,7 +13,7 @@ body {
     margin: 0;
     height: 100vh;
     width: 100vw;
-    overflow: hidden;
+    overflow: hidden; /* Mencegah scroll body agar tampilan clean */
 }
 
 section {
@@ -25,7 +29,13 @@ section {
 
 section.active { display: flex !important; }
 
-/* Tombol Raksasa */
+/* Dashboard Utama */
+.content-home {
+    text-align: center;
+    transform: scale(1.2);
+}
+
+/* Tombol-Tombol Raksasa */
 button {
     background: #ff4757;
     color: white;
@@ -35,15 +45,19 @@ button {
     font-size: 3.5vh;
     font-weight: 900;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.3s ease-in-out;
     text-transform: uppercase;
     box-shadow: 0 1vh 3vh rgba(0,0,0,0.5);
     margin: 10px;
 }
 
-button:hover { transform: scale(1.05); background: #ff6b81; }
+button:hover { 
+    transform: scale(1.05); 
+    background: #ff6b81; 
+    box-shadow: 0 1.5vh 4vh rgba(255, 71, 87, 0.4);
+}
 
-/* Kamera & Preview */
+/* LAYOUT KAMERA & PREVIEW */
 #camera-container {
     display: flex;
     align-items: center;
@@ -65,23 +79,35 @@ button:hover { transform: scale(1.05); background: #ff6b81; }
 
 #video { width: 100%; transform: scaleX(-1); }
 
+/* Timer Raksasa di Tengah Video */
+/* Timer Raksasa di Tengah Video */
 #timer {
     position: absolute;
-    top: 50%; left: 50%;
+    top: 50%; 
+    left: 50%;
     transform: translate(-50%, -50%);
     font-size: 25vh;
-    color: #ff4757;
-    text-shadow: 0 0 4vh rgba(0,0,0,1);
+    
+    /* UBAH KE PUTIH DI SINI */
+    color: white; 
+    
+    font-weight: 900;
+    
+    /* Tambahkan bayangan hitam agar angka tetap terbaca jelas */
+    text-shadow: 0 0 5vh rgba(0,0,0,1), 0 0 2vh rgba(0,0,0,0.8);
+    
     z-index: 100;
+    pointer-events: none;
 }
 
-/* Slot Foto di Kanan */
+/* Panel Preview Samping (Slot 1-4) */
 .camera-right {
     width: 18vw;
     background: rgba(0,0,0,0.6);
     padding: 2vh;
     border-radius: 3vh;
     border: 0.4vh solid #ff4757;
+    backdrop-filter: blur(5px);
 }
 
 .slot {
@@ -93,6 +119,10 @@ button:hover { transform: scale(1.05); background: #ff6b81; }
     position: relative;
     border: 0.3vh solid #555;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3vh;
 }
 
 .btn-retake-small {
@@ -101,44 +131,71 @@ button:hover { transform: scale(1.05); background: #ff6b81; }
     background: #ff4757;
     color: white;
     padding: 0.5vh 1vh;
-    font-size: 1.2vh;
-    border-radius: 0.5vh;
+    font-size: 1.4vh;
+    border-radius: 0.8vh;
     border: 0.2vh solid white;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
 }
 
-/* HALAMAN FRAME: SCROLL SAMPING */
+/* ========================================================
+   HALAMAN PILIH FRAME: JUMBO & HORIZONTAL SCROLL
+   ======================================================== */
+
 #frame-options {
-    display: flex;
+    display: flex; /* Berjajar ke samping */
     flex-wrap: nowrap;
-    overflow-x: auto;
-    gap: 20px;
-    width: 90vw;
+    overflow-x: auto; /* Bisa digeser kanan-kiri */
+    gap: 30px;
+    width: 95vw;
+    height: 60vh; /* Tinggi area pilihan frame diperbesar */
     padding: 20px;
     margin-bottom: 2vh;
+    box-sizing: border-box;
     scrollbar-width: thin;
+    scrollbar-color: #ff4757 rgba(0,0,0,0.2);
 }
 
+/* Thumbnail Frame Dibuat Besar (Jumbo) */
 .frame-thumb {
     flex: 0 0 auto;
-    height: 25vh; /* Ukuran sebelum dipilih */
+    height: 55vh; /* Thumbnail hampir memenuhi area scroll */
     width: auto;
-    border: 0.5vh solid white;
-    border-radius: 15px;
+    object-fit: contain;
+    border: 0.6vh solid white;
+    border-radius: 20px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: rgba(0,0,0,0.2);
+    box-shadow: 0 1vh 3vh rgba(0,0,0,0.5);
 }
 
-/* Hasil Preview Besar */
+.frame-thumb:hover { 
+    transform: scale(1.05) translateY(-10px); 
+    border-color: #ff4757;
+    box-shadow: 0 2vh 5vh rgba(255, 71, 87, 0.4);
+}
+
+/* Hasil Preview Akhir (Setelah Memilih Frame) */
 #final-image-preview {
-    height: 55vh; /* Preview besar di tengah */
+    height: 58vh; /* Hasil kolase tampil besar dan gagah */
     width: auto;
     max-width: 90vw;
-    border: 1vh solid white;
-    border-radius: 20px;
+    border: 1.2vh solid white;
+    border-radius: 25px;
     margin-bottom: 2vh;
+    box-shadow: 0 2vh 6vh rgba(0,0,0,0.8);
+}
+
+.result-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .action-buttons {
     display: flex;
     gap: 20px;
+    margin-top: 1vh;
 }
