@@ -1,45 +1,68 @@
+/* ========================================================
+   DINA PHOTOBOOTH - FULL LOGIC (FINAL STABLE)
+   Developer: Farhan Faturrachman
+   ======================================================== */
+
 let photosTaken = [null, null, null, null]; 
 let stream = null;
 let targetRetakeIndex = null;
-let currentSelectedFrameSrc = null; // Menyimpan frame yang sedang dipilih
+let currentSelectedFrameSrc = null;
 
 const video = document.getElementById('video');
 const timerDisplay = document.getElementById('timer');
 const canvasResult = document.getElementById('canvas-result');
 const finalPreview = document.getElementById('final-image-preview');
 
-async function startCapture() {
-    try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } });
-        video.srcObject = stream;
-        switchPage('page-camera');
-    } catch (err) { alert("Kamera error!"); }
-}
-
+/**
+ * 1. FUNGSI NAVIGASI HALAMAN
+ */
 function switchPage(pageId) {
     document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
     document.getElementById(pageId).classList.add('active');
 }
 
+/**
+ * 2. LOGIKA KAMERA & PENGAMBILAN FOTO
+ */
+async function startCapture() {
+    try {
+        stream = await navigator.mediaDevices.getUserMedia({ 
+            video: { width: 1280, height: 720 } 
+        });
+        video.srcObject = stream;
+        switchPage('page-camera');
+    } catch (err) { 
+        alert("Kamera error! Pastikan izin kamera sudah diizinkan."); 
+    }
+}
+
 function triggerManualCapture() {
     let emptySlot = photosTaken.indexOf(null);
-    if (emptySlot !== -1) runCountdown(3, emptySlot);
-    else alert("Tidak dapat memotret lagi karena foto sudah full 4 foto!");
+    if (emptySlot !== -1) {
+        runCountdown(3, emptySlot);
+    } else {
+        alert("Tidak dapat memotret lagi karena foto sudah full 4 foto!");
+    }
 }
 
 function runCountdown(sec, slot) {
     let count = sec;
     timerDisplay.innerText = count;
+    
     let inv = setInterval(() => {
         count--;
-        if (count > 0) timerDisplay.innerText = count;
-        else {
+        if (count > 0) {
+            timerDisplay.innerText = count;
+        } else {
             clearInterval(inv);
             timerDisplay.innerText = "📸";
             captureToSlot(slot);
             setTimeout(() => { 
                 timerDisplay.innerText = "";
-                if (photosTaken.indexOf(null) === -1) document.getElementById('btn-go-to-frame').style.display = 'inline-block';
+                // Tampilkan tombol lanjut jika 4 foto sudah penuh
+                if (photosTaken.indexOf(null) === -1) {
+                    document.getElementById('btn-go-to-frame').style.display = 'inline-block';
+                }
             }, 600);
         }
     }, 1000);
@@ -50,28 +73,43 @@ function captureToSlot(slotIndex) {
     tempCanvas.width = 1280; 
     tempCanvas.height = 720;
     const ctx = tempCanvas.getContext('2d');
-    ctx.translate(tempCanvas.width, 0); ctx.scale(-1, 1);
+    
+    // Mirroring kamera
+    ctx.translate(tempCanvas.width, 0); 
+    ctx.scale(-1, 1);
     ctx.drawImage(video, 0, 0, 1280, 720);
     
     const dataUri = tempCanvas.toDataURL('image/png');
     photosTaken[slotIndex] = dataUri;
-    document.getElementById(`slot-${slotIndex}`).innerHTML = `<img src="${dataUri}" style="width:100%; height:100%; object-fit:contain; background:#333;">`;
+    
+    // Update tampilan slot dengan object-fit:contain agar tidak ngezoom
+    const slotElement = document.getElementById(`slot-${slotIndex}`);
+    slotElement.innerHTML = `<img src="${dataUri}" style="width:100%; height:100%; object-fit:contain; background:#333;">`;
 }
 
-// MODAL DETAIL (GALLERY PREVIEW)
+/**
+ * 3. LOGIKA MODAL DETAIL (GALLERY PREVIEW)
+ */
 function openDetail(index) {
     if (!photosTaken[index]) return;
     targetRetakeIndex = index;
     const modal = document.getElementById('photo-detail-modal');
+    
     document.getElementById('detail-img-view').src = photosTaken[index];
     document.getElementById('confirm-box').style.display = 'none';
     modal.style.display = 'flex';
 }
 
-function closeDetail() { document.getElementById('photo-detail-modal').style.display = 'none'; }
+function closeDetail() { 
+    document.getElementById('photo-detail-modal').style.display = 'none'; 
+}
 
-document.getElementById('btn-confirm-retake').onclick = () => { document.getElementById('confirm-box').style.display = 'block'; };
+// Tombol ulangi di dalam modal
+document.getElementById('btn-confirm-retake').onclick = () => { 
+    document.getElementById('confirm-box').style.display = 'block'; 
+};
 
+// Konfirmasi ulangi foto
 document.getElementById('btn-yes-retake').onclick = () => {
     photosTaken[targetRetakeIndex] = null;
     document.getElementById(`slot-${targetRetakeIndex}`).innerHTML = `<span>${targetRetakeIndex + 1}</span>`;
@@ -79,22 +117,25 @@ document.getElementById('btn-yes-retake').onclick = () => {
     closeDetail();
 };
 
-// NAVIGASI & LOADING FRAMES
+/**
+ * 4. LOGIKA PEMILIHAN FRAME
+ */
 function loadFramesToContainer(containerId, className, isSidebar = false) {
     const container = document.getElementById(containerId);
     container.innerHTML = '';
+    
     for(let i=1; i<=10; i++) {
         const img = document.createElement('img');
         img.src = `frame/frame${i}.png`; 
         img.className = className;
         img.onclick = () => {
             if (isSidebar) {
-                // Jika di sidebar preview, langsung generate ulang collage
+                // Langsung update preview jika ganti frame di sidebar
                 generateCollage(img.src);
             } else {
-                // Jika di seleksi awal, simpan pilihan dan lanjut ke preview
+                // Simpan pilihan dan proses ke halaman preview
                 currentSelectedFrameSrc = img.src;
-                generateCollage(img.src); // Generate dulu baru pindah
+                generateCollage(img.src); 
             }
         };
         container.appendChild(img);
@@ -102,19 +143,28 @@ function loadFramesToContainer(containerId, className, isSidebar = false) {
 }
 
 function showFrameSelection() {
+    // Stop kamera untuk hemat resource
     if (stream) stream.getTracks().forEach(t => t.stop());
+    
     switchPage('page-frame-selection');
-    // Muat frames untuk seleksi horizontal
+    // Muat frames untuk seleksi horizontal (Scroll Samping)
     loadFramesToContainer('frame-options-scroll', 'frame-thumb-scroll', false);
 }
 
-function backToCamera() { switchPage('page-camera'); startCapture(); } // Start capture lagi
-function backToFrameSelection() { showFrameSelection(); }
+// Fungsi tombol kembali
+function backToCamera() { 
+    switchPage('page-camera'); 
+    startCapture(); 
+}
 
-// COLLAGE GENERATOR
+function backToFrameSelection() { 
+    showFrameSelection(); 
+}
+
+/**
+ * 5. COLLAGE GENERATOR (ANTI-GEPENG)
+ */
 function generateCollage(frameSrc) {
-    // Tampilkan loading jika perlu, karena proses ini mungkin butuh waktu
-    
     const ctx = canvasResult.getContext('2d');
     const frameImg = new Image();
     frameImg.src = frameSrc;
@@ -125,7 +175,8 @@ function generateCollage(frameSrc) {
         
         const w = canvasResult.width;
         const h = canvasResult.height;
-        // Setting presisi (sesuaikan jika frame Anda berbeda rasio)
+        
+        // Setting presisi peletakan foto (sesuaikan gap jika frame berubah)
         const imgW = w * 0.85; 
         const imgH = imgW * 0.70; 
         const xPos = (w - imgW) / 2;
@@ -139,14 +190,18 @@ function generateCollage(frameSrc) {
             pImg.onload = () => {
                 ctx.drawImage(pImg, xPos, startY + (i * gap), imgW, imgH);
                 processed++;
+                
                 if (processed === 4) {
+                    // Gambar frame di atas foto-foto
                     ctx.drawImage(frameImg, 0, 0, w, h);
+                    
+                    // Update preview image
                     finalPreview.src = canvasResult.toDataURL('image/png');
                     
-                    // Jika belum di halaman preview, pindah ke sana
-                    if (document.getElementById('page-final-preview').style.display !== 'flex') {
+                    // Pindah ke halaman preview jika saat ini masih di halaman seleksi
+                    if (!document.getElementById('page-final-preview').classList.contains('active')) {
                         switchPage('page-final-preview');
-                        // Muat frames untuk sidebar vertikal di halaman preview
+                        // Muat sidebar grid di halaman preview
                         loadFramesToContainer('frame-options-sidebar', 'frame-thumb-sidebar', true);
                     }
                 }
@@ -155,9 +210,12 @@ function generateCollage(frameSrc) {
     };
 }
 
+/**
+ * 6. DOWNLOAD HASIL
+ */
 document.getElementById('btn-download').onclick = () => {
     const link = document.createElement('a');
-    link.download = `Photobooth_Dina.png`;
+    link.download = `Photobooth_Adina_${Date.now()}.png`;
     link.href = finalPreview.src;
     link.click();
 };
