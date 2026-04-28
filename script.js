@@ -85,7 +85,7 @@ function showFrameSelection() {
     
     // Langsung tampilkan Frame6_1.png sebagai pilihan (atau ganti nama ke Frame4_1.png)
     const frameBtn = document.createElement('img');
-    frameBtn.src = `frames/Frame6_1.png`; 
+    frameBtn.src = `frames/frame6_1.png`; 
     frameBtn.className = 'frame-thumb';
     frameBtn.style.width = "200px";
     frameBtn.onclick = () => generateCollage(frameBtn.src);
