@@ -1,7 +1,7 @@
 /* ========================================================
    DINA PHOTOBOOTH - FULL STABLE CSS (Final Version)
    Developer: Farhan Faturrachman
-   Settings: Camera Aspect Ratio 4:3 + Animated UI
+   Settings: Camera Aspect Ratio 4:3 + Slim Result Sidebar
    ======================================================== */
 
 /* RESET & BASE STYLE */
@@ -97,11 +97,11 @@ section.active { display: flex !important; }
     pointer-events: none;
 }
 
-#camera-container { display: flex; gap: 2vw; align-items: center; }
+#camera-container { display: flex; gap: 3vw; align-items: center; justify-content: center; width: 95vw; }
 
 .video-wrapper { 
-    width: 50vw; 
-    aspect-ratio: 4 / 3; /* Mengunci Tampilan Kamera 4:3 */
+    width: 55vw; 
+    aspect-ratio: 4 / 3; 
     border: 10px solid white; 
     border-radius: 20px; 
     overflow: hidden; 
@@ -111,19 +111,26 @@ section.active { display: flex !important; }
 
 #video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
 
+/* --- PERBAIKAN: UKURAN HASIL FOTO DIPERKECIL --- */
 .camera-right { 
-    width: 14vw; 
+    width: 13vw; /* Diperkecil dari 18vw/14vw */
     display: flex;
     flex-direction: column;
-    gap: 8px; /* Memberi jarak antar slot */
+    gap: 8px;
 }
 
-/* --- PERBAIKAN SLOT HASIL FOTO (PAS 4:3) --- */
+.preview-title {
+    font-size: 2vh;
+    text-align: center;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
 .slot { 
     width: 100%; 
-    aspect-ratio: 4 / 3; /* Agar kotak slot sama dengan rasio kamera */
-    border: 3px solid white; 
-    border-radius: 10px; 
+    aspect-ratio: 4 / 3; 
+    border: 3px solid white; /* Border lebih tipis agar pas dengan ukuran kecil */
+    border-radius: 8px; 
     cursor: pointer; 
     overflow: hidden; 
     display: flex; 
@@ -135,26 +142,7 @@ section.active { display: flex !important; }
 .slot img { 
     width: 100%; 
     height: 100%; 
-    object-fit: cover; /* Foto memenuhi kotak slot */
-}
-
-/* MODAL DETAIL */
-.modal { 
-    display: none; position: fixed; z-index: 1000; 
-    left: 0; top: 0; width: 100%; height: 100%; 
-    background: rgba(0,0,0,0.9); align-items: center; justify-content: center; 
-}
-
-.modal-content { background: #222; padding: 20px; border-radius: 20px; text-align: center; border: 4px solid #ff4757; position: relative; }
-
-#detail-img-view { max-width: 80vw; max-height: 70vh; border: 4px solid white; }
-
-.close-modal { 
-    position: absolute; top: -20px; right: -20px; 
-    font-size: 40px; cursor: pointer; color: white; 
-    background: #ff4757; width: 50px; height: 50px; 
-    border-radius: 50%; border: 2px solid white; 
-    display: flex; align-items: center; justify-content: center; 
+    object-fit: cover; 
 }
 
 /* TOMBOL UMUM */
@@ -167,7 +155,7 @@ section.active { display: flex !important; }
     font-weight: bold; 
     cursor: pointer;
     text-transform: uppercase; 
-    font-size: 1.8vh; /* Seragamkan ukuran font */
+    font-size: 1.8vh; 
     transition: 0.2s;
 }
 
@@ -216,6 +204,15 @@ section.active { display: flex !important; }
 
 .btn-save { background: #2ecc71 !important; }
 .btn-dash { background: #3498db !important; }
+
+/* MODAL DETAIL */
+.modal { 
+    display: none; position: fixed; z-index: 1000; 
+    left: 0; top: 0; width: 100%; height: 100%; 
+    background: rgba(0,0,0,0.9); align-items: center; justify-content: center; 
+}
+
+.modal-content { background: #222; padding: 20px; border-radius: 20px; text-align: center; border: 4px solid #ff4757; position: relative; }
 
 /* --- ANIMATIONS & UTILITY --- */
 @keyframes bounceIn {
