@@ -1,18 +1,15 @@
-/* ========================================================
-   CSS AUTO-SCALE: MENGIKUTI UKURAN LAYAR & BACKGROUND
-   ======================================================== */
-
+/* CSS PHOTOBOOTH - FULL SCALE & HORIZONTAL SCROLL */
 body {
     background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('bg.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
     color: white;
-    font-family: 'Arial Black', Gadget, sans-serif;
+    font-family: 'Arial Black', sans-serif;
     margin: 0;
-    overflow: hidden; /* Mencegah scroll agar tetap rapi */
     height: 100vh;
     width: 100vw;
+    overflow: hidden;
 }
 
 section {
@@ -22,59 +19,42 @@ section {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    box-sizing: border-box;
     padding: 2vh;
+    box-sizing: border-box;
 }
 
-section.active {
-    display: flex !important;
-}
+section.active { display: flex !important; }
 
-/* Judul yang membesar otomatis sesuai tinggi layar */
-h1 {
-    font-size: 8vh; 
-    margin-bottom: 4vh;
-    text-shadow: 0.5vh 0.5vh 2vh rgba(0,0,0,0.7);
-    letter-spacing: 1vw;
-    text-transform: uppercase;
-}
-
-h2 { font-size: 5vh; margin-bottom: 3vh; }
-
-/* Tombol Raksasa & Responsif */
+/* Tombol Raksasa */
 button {
     background: #ff4757;
     color: white;
     border: 0.8vh solid white;
-    padding: 3vh 6vw; /* Ukuran tombol mengikuti lebar & tinggi layar */
+    padding: 2.5vh 5vw;
     border-radius: 10vh;
-    font-size: 4vh; /* Tulisan tombol sangat besar */
+    font-size: 3.5vh;
     font-weight: 900;
     cursor: pointer;
     transition: 0.3s;
-    box-shadow: 0 1vh 3vh rgba(0,0,0,0.5);
     text-transform: uppercase;
+    box-shadow: 0 1vh 3vh rgba(0,0,0,0.5);
+    margin: 10px;
 }
 
-button:hover {
-    transform: scale(1.05);
-    background: #ff6b81;
-}
+button:hover { transform: scale(1.05); background: #ff6b81; }
 
-/* Layout Kamera Utama */
+/* Kamera & Preview */
 #camera-container {
     display: flex;
-    flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 4vw;
     width: 95vw;
 }
 
-/* Area Video (Gagah & Lebar) */
 .video-wrapper {
-    width: 60vw; /* Mengambil 60% lebar layar agar terlihat penuh */
-    max-width: 1100px;
+    width: 60vw;
+    max-width: 1000px;
     border: 1.5vh solid white;
     border-radius: 4vh;
     position: relative;
@@ -83,95 +63,64 @@ button:hover {
     line-height: 0;
 }
 
-#video {
-    width: 100%;
-    height: auto;
-    transform: scaleX(-1); /* Efek cermin */
-}
+#video { width: 100%; transform: scaleX(-1); }
 
-/* Timer yang mencolok di tengah kamera */
 #timer {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 25vh; /* Seperempat dari tinggi layar laptop */
+    font-size: 25vh;
     color: #ff4757;
-    font-weight: 900;
     text-shadow: 0 0 4vh rgba(0,0,0,1);
-    z-index: 10;
-    pointer-events: none;
+    z-index: 100;
 }
 
-/* Panel Preview (Hasil Foto Sementara) di Kanan */
+/* Slot Foto di Kanan */
 .camera-right {
     width: 18vw;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0,0,0,0.6);
     padding: 2vh;
     border-radius: 3vh;
     border: 0.4vh solid #ff4757;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5vh;
 }
 
-.camera-right h3 { 
-    font-size: 2.5vh; 
-    margin: 0; 
-    text-transform: uppercase;
-}
-
-/* Slot Preview Foto */
 .slot {
-    width: 14vw;
-    height: 10vw; /* Ukuran kotak preview yang mantap */
+    width: 100%;
+    height: 10vw;
     background: #111;
-    border: 0.3vh solid #666;
+    margin-bottom: 1.5vh;
     border-radius: 1.5vh;
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 4vh;
-    color: #333;
+    border: 0.3vh solid #555;
+    overflow: hidden;
 }
 
-.slot img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Tombol Retake Kecil */
 .btn-retake-small {
     position: absolute;
-    top: 0.5vh;
-    right: 0.5vh;
+    top: 0.5vh; right: 0.5vh;
     background: #ff4757;
     color: white;
-    padding: 0.6vh 1.2vh;
-    font-size: 1.4vh;
+    padding: 0.5vh 1vh;
+    font-size: 1.2vh;
     border-radius: 0.5vh;
     border: 0.2vh solid white;
-    font-weight: bold;
 }
-/* Container Pilihan Frame (Dibuat Scroll ke Samping) */
+
+/* HALAMAN FRAME: SCROLL SAMPING */
 #frame-options {
-    display: flex; /* Berjajar ke samping */
+    display: flex;
     flex-wrap: nowrap;
-    overflow-x: auto; /* Bisa di-scroll kanan-kiri */
+    overflow-x: auto;
     gap: 20px;
     width: 90vw;
     padding: 20px;
     margin-bottom: 2vh;
-    scrollbar-width: thin; /* Untuk browser Firefox */
+    scrollbar-width: thin;
 }
 
-/* Ukuran Thumbnail Frame agar tidak kepotong */
 .frame-thumb {
-    flex: 0 0 auto; /* Mencegah gambar gepeng */
-    height: 30vh; /* Tinggi tetap, lebar mengikuti */
+    flex: 0 0 auto;
+    height: 25vh; /* Ukuran sebelum dipilih */
     width: auto;
     border: 0.5vh solid white;
     border-radius: 15px;
@@ -179,32 +128,17 @@ button:hover {
     transition: 0.3s;
 }
 
-.frame-thumb:hover {
-    transform: scale(1.05);
-    border-color: #ff4757;
-}
-
-/* Hasil Preview Setelah Dipilih (Dibuat Besar) */
+/* Hasil Preview Besar */
 #final-image-preview {
-    height: 55vh; /* Dibuat besar agar jelas */
+    height: 55vh; /* Preview besar di tengah */
     width: auto;
     max-width: 90vw;
     border: 1vh solid white;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    margin: 2vh 0;
-}
-
-/* Container tombol aksi */
-.result-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
+    margin-bottom: 2vh;
 }
 
 .action-buttons {
     display: flex;
     gap: 20px;
-    margin-top: 10px;
 }
