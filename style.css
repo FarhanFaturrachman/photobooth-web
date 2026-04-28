@@ -21,113 +21,72 @@ section {
 
 section.active { display: flex !important; }
 
-/* --- HOME PAGE (Gambar 1) --- */
-.hero-title {
-    font-size: 12vh;
-    margin-bottom: 0px;
-    text-shadow: 5px 5px 15px rgba(0,0,0,1);
-}
-.hero-subtitle {
-    font-size: 3.5vh;
-    margin-bottom: 5vh;
-}
-.btn-main {
-    background: #ff4757;
-    color: white;
-    border: 8px solid white;
-    padding: 2.5vh 6vw;
-    border-radius: 60px;
-    font-size: 4vh;
-    font-weight: 900;
-    cursor: pointer;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    transition: 0.3s;
-}
+/* HOME PAGE */
+.hero-title { font-size: 10vh; margin: 0; text-shadow: 5px 5px 15px #000; }
+.hero-subtitle { font-size: 3vh; margin-bottom: 4vh; }
 
-/* --- CAMERA & PREVIEW (Gambar 2) --- */
+/* TIMER RAKSASA */
 #timer {
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 35vh;
+    font-size: 30vh;
     color: white;
     font-weight: 900;
-    text-shadow: 0 0 50px rgba(0,0,0,1);
+    text-shadow: 0 0 50px #000;
     z-index: 100;
-    pointer-events: none;
 }
 
-#camera-container { display: flex; align-items: center; gap: 4vw; }
-.video-wrapper { 
-    width: 55vw; 
-    border: 12px solid white; 
-    border-radius: 4vh; 
-    overflow: hidden; 
-    position: relative;
-}
-#video { width: 100%; transform: scaleX(-1); display: block; }
+/* CAMERA LAYOUT */
+#camera-container { display: flex; gap: 2vw; align-items: center; }
+.video-wrapper { width: 50vw; border: 10px solid white; border-radius: 20px; overflow: hidden; position: relative; }
+#video { width: 100%; transform: scaleX(-1); }
 
-.camera-right { width: 16vw; }
-.preview-title { font-size: 3vh; text-align: center; margin-bottom: 1vh; }
-
+.camera-right { width: 18vw; }
 .slot {
-    width: 100%;
-    height: 20vh; /* DIPERBESAR & LEBIH TINGGI */
-    background: rgba(0,0,0,0.5);
-    border: 4px solid white;
-    border-radius: 1.5vh;
-    margin-bottom: 1.2vh;
-    overflow: hidden;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%; height: 18vh;
+    border: 4px solid white; border-radius: 10px;
+    margin-bottom: 1vh; cursor: pointer;
+    overflow: hidden; display: flex; align-items: center; justify-content: center;
 }
-.slot img { width: 100%; height: 100%; object-fit: cover; }
+.slot img { width: 100%; height: 100%; object-fit: contain; background: #333; }
 
-.btn-capture, .btn-next {
-    background: #ff4757;
-    color: white;
-    border: 4px solid white;
-    padding: 1.5vh 3vw;
-    border-radius: 50px;
-    font-size: 2.5vh;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* --- FRAME SELECTION (Gambar 3) --- */
-.frame-title-text { font-size: 5vh; margin-bottom: 2vh; }
-
-#frame-options {
-    display: flex;
-    flex-direction: row;
-    overflow-x: auto;
-    gap: 30px;
-    width: 90vw;
-    padding: 20px;
-    scrollbar-width: thin;
-}
-.frame-thumb {
-    flex: 0 0 auto;
-    height: 45vh;
-    border: 5px solid white;
-    border-radius: 20px;
-    cursor: pointer;
-}
-
-/* --- PREVIEW AKHIR (Gambar 4) --- */
-.result-container { display: flex; flex-direction: column; align-items: center; margin-top: 2vh; }
-#final-image-preview { height: 70vh; border: 10px solid white; border-radius: 2vh; }
-
-.action-buttons { margin-top: 3vh; display: flex; gap: 20px; }
-.btn-save { background: #2ecc71 !important; padding: 2vh 4vw; font-size: 3vh; border: 4px solid white; border-radius: 50px; cursor: pointer; color: white; font-weight: bold; }
-.btn-back { background: #ff4757 !important; padding: 2vh 4vw; font-size: 3vh; border: 4px solid white; border-radius: 50px; cursor: pointer; color: white; font-weight: bold; }
-
-/* MODAL */
+/* MODAL & CLOSE BUTTON */
 .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
-.modal-content { background: #222; padding: 30px; border-radius: 30px; text-align: center; border: 4px solid #ff4757; position: relative; }
-#detail-img-view { max-height: 60vh; border-radius: 10px; border: 4px solid white; }
-.close-modal { position: absolute; top: 10px; right: 20px; font-size: 40px; cursor: pointer; }
-.btn-retake { background: #ff4757; color: white; padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer; margin-top: 10px; font-weight: bold; }
-.btn-danger { background: #e67e22; color: white; padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+.modal-content { background: #222; padding: 20px; border-radius: 20px; text-align: center; border: 4px solid #ff4757; position: relative; }
+#detail-img-view { max-width: 80vw; max-height: 70vh; border: 4px solid white; }
+.close-modal { 
+    position: absolute; top: -20px; right: -20px; 
+    font-size: 40px; cursor: pointer; color: white;
+    background: linear-gradient(to bottom, #ff4757, #b33939);
+    width: 50px; height: 50px; border-radius: 50%; border: 2px solid white;
+}
+
+/* PAGE: PILIH DESAIN FRAME (Grid 4) */
+#page-frame-selection { padding: 2vh; }
+.frame-selection-wrapper {
+    width: 90vw; height: 70vh;
+    overflow-y: auto; padding: 20px;
+    background: rgba(0,0,0,0.3); border-radius: 20px;
+}
+#frame-options-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+.frame-thumb { width: 100%; border: 4px solid white; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+.frame-thumb:hover { transform: scale(1.05); border-color: #ff4757; }
+
+/* PAGE: PREVIEW HASIL */
+.final-preview-container { display: flex; align-items: center; gap: 4vw; width: 90vw; }
+.preview-image-box { flex: 1; text-align: right; }
+#final-image-preview { height: 75vh; border: 10px solid white; border-radius: 15px; }
+.final-action-buttons { flex: 1; display: flex; flex-direction: column; gap: 2vh; align-items: flex-start; }
+
+/* TOMBOL-TOMBOL */
+.btn-main, .btn-capture, .btn-next, .btn-save, .btn-back {
+    background: #ff4757; color: white; border: 4px solid white;
+    padding: 15px 30px; border-radius: 50px; font-weight: bold; cursor: pointer;
+    text-transform: uppercase; font-size: 2vh;
+}
+.btn-save { background: #2ecc71; padding: 20px 40px; font-size: 2.5vh; }
