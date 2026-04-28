@@ -126,14 +126,25 @@ function showFrameSelection() {
     const frameContainer = document.getElementById('frame-options');
     frameContainer.innerHTML = '';
 
-    // Contoh: Kita asumsikan ada 2 pilihan frame per kategori
-    for (let i = 1; i <= 2; i++) {
-        const frameBtn = document.createElement('img');
-        frameBtn.src = `frames/frame${selectedPhotoCount}_${i}.png`; // misal: frames/frame3_1.png
-        frameBtn.className = 'frame-thumb';
-        frameBtn.onclick = () => generateCollage(frameBtn.src);
-        frameContainer.appendChild(frameBtn);
+    // Logika agar tidak error 404: 
+    // Kita hanya memunculkan tombol jika file frame-nya memang ada
+    // Untuk sekarang, kita buat manual dulu agar kamu bisa ngetes frame6_1.png
+    
+    const frameBtn = document.createElement('img');
+    
+    // Cek: Jika user pilih 6 foto, arahkan ke frame6_1.png
+    if (selectedPhotoCount === 6) {
+        frameBtn.src = `frames/frame6_1.png`;
+    } else {
+        // Jika pilih 3 atau 4 foto tapi belum ada frame-nya, 
+        // kita pakai frame6_1 sebagai dummy agar tidak error saat tes
+        frameBtn.src = `frames/frame6_1.png`; 
+        console.warn("Frame untuk jumlah foto ini belum ada, menggunakan frame6_1.png sebagai pengganti.");
     }
+
+    frameBtn.className = 'frame-thumb';
+    frameBtn.onclick = () => generateCollage(frameBtn.src);
+    frameContainer.appendChild(frameBtn);
 }
 
 function generateCollage(frameSrc) {
