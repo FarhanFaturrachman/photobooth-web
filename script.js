@@ -26,8 +26,13 @@ function switchPage(pageId) {
  */
 async function startCapture() {
     try {
+        // Setting resolusi ke rasio 4:3 (1280 / 960 = 1.33)
         stream = await navigator.mediaDevices.getUserMedia({ 
-            video: { width: 1280, height: 720 } 
+            video: { 
+                width: { ideal: 1280 },
+                height: { ideal: 960 },
+                aspectRatio: 1.3333333333 
+            } 
         });
         video.srcObject = stream;
         switchPage('page-camera');
@@ -70,23 +75,24 @@ function runCountdown(sec, slot) {
 
 function captureToSlot(slotIndex) {
     const tempCanvas = document.createElement('canvas');
+    // Set resolusi canvas ke 4:3
     tempCanvas.width = 1280; 
-    tempCanvas.height = 720;
+    tempCanvas.height = 960; 
     const ctx = tempCanvas.getContext('2d');
     
     // Mirroring kamera
     ctx.translate(tempCanvas.width, 0); 
     ctx.scale(-1, 1);
-    ctx.drawImage(video, 0, 0, 1280, 720);
+    
+    // Gambar video secara penuh ke canvas 4:3
+    ctx.drawImage(video, 0, 0, 1280, 960);
     
     const dataUri = tempCanvas.toDataURL('image/png');
     photosTaken[slotIndex] = dataUri;
     
-    // Update tampilan slot dengan object-fit:contain agar tidak ngezoom
     const slotElement = document.getElementById(`slot-${slotIndex}`);
     slotElement.innerHTML = `<img src="${dataUri}" style="width:100%; height:100%; object-fit:contain; background:#333;">`;
 }
-
 /**
  * 3. LOGIKA MODAL DETAIL (GALLERY PREVIEW)
  */
