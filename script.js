@@ -51,7 +51,7 @@ function captureToSlot(slotIndex) {
     photosTaken[slotIndex] = dataUri;
 
     const container = document.getElementById(`slot-${slotIndex}`);
-    container.innerHTML = `<img src="${dataUri}" style="width:100%;height:100%;object-fit:cover;"><div class="btn-retake-small" onclick="retakePhoto(${slotIndex})">Ulang</div>`;
+    container.innerHTML = `<img src="${dataUri}" style="width:100%;height:100%;object-fit:cover;"><div class="btn-retake-small" onclick="retakePhoto(${slotIndex})">Ulangi</div>`;
 }
 
 function retakePhoto(index) {
