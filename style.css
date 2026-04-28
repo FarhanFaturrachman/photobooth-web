@@ -49,7 +49,7 @@ button:hover { transform: scale(1.05); background: #ff6b81; }
 /* KAMERA LAYOUT */
 #camera-container { display: flex; align-items: center; gap: 3vw; }
 .video-wrapper {
-    width: 55vw;
+    width: 50vw; /* Sedikit dikecilkan agar seimbang dengan slot preview */
     border: 1vh solid white;
     border-radius: 3vh;
     position: relative;
@@ -67,48 +67,76 @@ button:hover { transform: scale(1.05); background: #ff6b81; }
     z-index: 10;
 }
 
-/* PREVIEW SLOTS & TOMBOL ULANGI FIX */
-.camera-right { width: 15vw; display: flex; flex-direction: column; gap: 2vh; }
+/* PREVIEW SLOTS (DIPERBESAR) */
+.camera-right { 
+    width: 20vw; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 1.5vh; 
+}
 .slot {
     width: 100%;
-    height: 12vh;
+    height: 16vh; /* UKURAN DIPERBESAR SESUAI PERMINTAAN */
     background: rgba(0,0,0,0.3);
-    border: 2px solid white;
+    border: 3px solid white;
     position: relative; 
-    border-radius: 1vh;
-    overflow: visible; 
+    border-radius: 1.5vh;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .slot img { 
     width: 100%; 
     height: 100%; 
     object-fit: cover; 
-    border-radius: 1vh; 
     pointer-events: none; 
 }
 
-.btn-retake-small {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    background: #ff4757;
-    color: white;
-    padding: 5px 12px;
-    font-size: 12px;
-    border: 2px solid white;
-    border-radius: 8px;
-    cursor: pointer;
-    z-index: 999;
+/* MODAL GALLERY DETAIL */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.92);
+    align-items: center;
+    justify-content: center;
 }
+.modal-content {
+    background: #222;
+    padding: 25px;
+    border-radius: 25px;
+    position: relative;
+    max-width: 90%;
+    border: 3px solid #ff4757;
+    text-align: center;
+}
+#detail-img-view { 
+    max-height: 65vh; 
+    border: 4px solid white; 
+    border-radius: 15px; 
+    margin-bottom: 15px;
+}
+.close-modal { 
+    position: absolute; 
+    top: 10px; right: 20px; 
+    font-size: 45px; 
+    cursor: pointer; 
+    color: white;
+}
+.modal-controls p { margin: 15px 0; font-size: 2.2vh; }
 
 /* HALAMAN FRAME */
 #page-frame {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    transition: all 0.5s ease;
 }
 
-/* TAMPILAN AWAL: SCROLL SAMPING */
+/* TAMPILAN AWAL SEBELUM PILIH FRAME */
 #frame-options {
     display: flex;
     flex-direction: row;
@@ -130,23 +158,21 @@ button:hover { transform: scale(1.05); background: #ff6b81; }
     transition: 0.3s;
 }
 
-/* ========================================================
-   TAMPILAN SETELAH PILIH (SPLIT LAYOUT - GRID 4 KOLOM)
-   ======================================================== */
+/* SPLIT LAYOUT (SETELAH PILIH FRAME) */
 .split-layout {
     flex-direction: row !important;
     justify-content: space-around !important;
     padding: 2vh !important;
 }
 
-/* Panel Kiri: Grid 4 Kolom & Scroll Atas-Bawah */
+/* Panel Kiri (Grid 4 Kolom) */
 .split-layout #frame-options {
     display: grid !important;
-    grid-template-columns: repeat(4, 1fr) !important; /* 4 KOLOM SEJAJAR */
+    grid-template-columns: repeat(4, 1fr) !important;
     flex-direction: unset !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
-    width: 35vw !important; /* Lebar panel kiri ditambah sedikit agar 4 kolom muat */
+    width: 35vw !important;
     height: 85vh !important;
     padding: 10px;
     gap: 10px !important;
@@ -155,19 +181,10 @@ button:hover { transform: scale(1.05); background: #ff6b81; }
 .split-layout .frame-thumb {
     height: auto !important;
     width: 100% !important;
-    margin-bottom: 0px;
     border: 2px solid white;
 }
 
-/* Scrollbar Custom */
-.split-layout #frame-options::-webkit-scrollbar {
-    width: 6px;
-}
-.split-layout #frame-options::-webkit-scrollbar-thumb {
-    background: #ff4757;
-    border-radius: 10px;
-}
-
+/* Hasil Preview (Besar & Kanan) */
 .result-container {
     display: flex;
     flex-direction: column;
@@ -175,12 +192,15 @@ button:hover { transform: scale(1.05); background: #ff6b81; }
     width: 55vw;
 }
 
-/* Preview Hasil (Tetap Besar) */
 #final-image-preview {
-    height: 75vh;
-    border: 1vh solid white;
+    height: 80vh; /* DIPERBESAR AGAR MAXIMAL */
+    border: 1.2vh solid white;
     border-radius: 2vh;
-    box-shadow: 0 0 4vh rgba(0,0,0,0.7);
+    box-shadow: 0 0 5vh rgba(0,0,0,0.8);
 }
 
 .action-buttons { margin-top: 2vh; display: flex; gap: 20px; }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: #ff4757; border-radius: 10px; }
