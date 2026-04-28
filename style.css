@@ -157,27 +157,42 @@ button:hover {
     font-weight: bold;
 }
 
-/* Halaman Pilih Frame */
+/* Container Pilihan Frame - Kembali ke Format Grid */
 #frame-options {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2vw;
-    max-height: 60vh;
-    overflow-y: auto;
+    display: grid;
+    /* Membuat grid otomatis: minimal 150px per gambar, maksimal bagi rata */
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+    gap: 3vh; /* Jarak antar frame */
+    width: 80vw; /* Lebar area pemilihan */
+    max-height: 55vh; /* Batas tinggi agar tidak menutupi tombol download */
+    overflow-y: auto; /* Jika frame banyak, bisa di-scroll ke bawah */
     padding: 2vh;
-}
-
-.frame-thumb {
-    width: 12vw; /* Thumbnail frame mengikuti skala layar */
-    border: 0.6vh solid white;
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 2vh;
-    transition: 0.3s;
+    margin-bottom: 3vh;
 }
 
-#final-image-preview {
-    height: 60vh; /* Preview hasil download lebih besar */
-    border: 1.2vh solid white;
-    border-radius: 3vh;
-    margin-bottom: 2vh;
+/* Ukuran Thumbnail Frame */
+.frame-thumb {
+    width: 100%; /* Mengikuti lebar kolom grid */
+    height: auto;
+    cursor: pointer;
+    border: 0.5vh solid white;
+    border-radius: 1.5vh;
+    transition: 0.3s;
+    background: rgba(0,0,0,0.3);
+}
+
+.frame-thumb:hover {
+    transform: scale(1.05);
+    border-color: #ff4757;
+    box-shadow: 0 0 20px rgba(255, 71, 87, 0.5);
+}
+
+/* Merapikan area hasil akhir */
+.result-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2vh;
 }
