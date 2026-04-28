@@ -1,3 +1,8 @@
+/* ========================================================
+   DINA PHOTOBOOTH - FULL STABLE UI (GRID VERSION)
+   Developer: Farhan Faturrachman
+   ======================================================== */
+
 /* RESET & BASE */
 body {
     background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('bg.jpg');
@@ -71,7 +76,7 @@ button:hover { transform: scale(1.05); background: #ff6b81; }
     border: 2px solid white;
     position: relative; 
     border-radius: 1vh;
-    overflow: visible; /* Penting agar tombol melayang terlihat */
+    overflow: visible; 
 }
 .slot img { 
     width: 100%; 
@@ -125,26 +130,41 @@ button:hover { transform: scale(1.05); background: #ff6b81; }
     transition: 0.3s;
 }
 
-/* TAMPILAN SETELAH PILIH (SPLIT LAYOUT) */
+/* ========================================================
+   TAMPILAN SETELAH PILIH (SPLIT LAYOUT - GRID 2 BARIS)
+   ======================================================== */
 .split-layout {
     flex-direction: row !important;
     justify-content: space-around !important;
     padding: 5vh !important;
 }
 
+/* Panel Kiri: Dibuat Grid 2 Kolom & Scroll Atas-Bawah */
 .split-layout #frame-options {
-    flex-direction: column !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important; /* 2 Kolom Sejajar */
+    flex-direction: unset !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
-    width: 20vw !important;
+    width: 25vw !important; /* Hemat ruang */
     height: 75vh !important;
-    padding-right: 10px;
+    padding-right: 15px;
+    gap: 15px !important;
 }
 
 .split-layout .frame-thumb {
     height: auto !important;
     width: 100% !important;
-    margin-bottom: 10px;
+    margin-bottom: 0px; /* Jarak sudah diatur oleh gap grid */
+}
+
+/* Custom Scrollbar untuk Grid Frame */
+.split-layout #frame-options::-webkit-scrollbar {
+    width: 6px;
+}
+.split-layout #frame-options::-webkit-scrollbar-thumb {
+    background: #ff4757;
+    border-radius: 10px;
 }
 
 .result-container {
@@ -153,6 +173,7 @@ button:hover { transform: scale(1.05); background: #ff6b81; }
     align-items: center;
 }
 
+/* Preview Hasil (Tetap Besar) */
 #final-image-preview {
     height: 75vh;
     border: 1.2vh solid white;
