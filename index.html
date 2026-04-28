@@ -16,45 +16,42 @@
     </section>
 
     <section id="page-camera">
-    <div id="camera-container">
-        <div class="camera-left">
-            <div class="video-wrapper">
-                <video id="video" autoplay playsinline></video>
-                <div id="timer"></div>
+        <div id="camera-container">
+            <div class="camera-left">
+                <div class="video-wrapper">
+                    <video id="video" autoplay playsinline></video>
+                    <div id="timer"></div>
+                </div>
+                <div class="controls">
+                    <button id="btn-capture-manual" onclick="triggerManualCapture()">AMBIL FOTO</button>
+                    <button id="btn-go-to-frame" style="display:none;" onclick="showFrameSelection()">LANJUT PILIH FRAME</button>
+                </div>
             </div>
-            <div class="controls">
-                <button id="btn-capture-manual" onclick="triggerManualCapture()">AMBIL FOTO</button>
-                <button id="btn-go-to-frame" style="display:none;" onclick="showFrameSelection()">LANJUT PILIH FRAME</button>
+            <div class="camera-right">
+                <h3>Hasil Foto</h3>
+                <div id="preview-strip">
+                    <div class="slot" id="slot-0"><span>1</span></div>
+                    <div class="slot" id="slot-1"><span>2</span></div>
+                    <div class="slot" id="slot-2"><span>3</span></div>
+                    <div class="slot" id="slot-3"><span>4</span></div>
+                </div>
             </div>
         </div>
-        <div class="camera-right">
-            <h3>Hasil Foto</h3>
-            <div id="preview-strip">
-                <div class="slot" id="slot-0"><span>1</span></div>
-                <div class="slot" id="slot-1"><span>2</span></div>
-                <div class="slot" id="slot-2"><span>3</span></div>
-                <div class="slot" id="slot-3"><span>4</span></div>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
 
     <section id="page-frame">
-    <h2>Pilih Frame</h2>
-    
-    <div id="frame-options"></div>
-    
-    <div class="result-container">
-        <img id="final-image-preview" style="display:none;">
+        <h2 id="frame-title">Pilih Desain Frame</h2>
+        <div id="frame-options"></div>
         
-        <div class="action-buttons">
-            <button id="btn-download" style="display:none;">SIMPAN FOTO</button>
-            <button onclick="location.reload()">KEMBALI</button>
+        <div class="result-container">
+            <img id="final-image-preview" style="display:none;">
+            <div class="action-buttons">
+                <button id="btn-download" style="display:none;">SIMPAN FOTO</button>
+                <button onclick="location.reload()">KEMBALI</button>
+            </div>
         </div>
-    </div>
-    
-    <canvas id="canvas-result" style="display:none;"></canvas>
-</section>
+        <canvas id="canvas-result" style="display:none;"></canvas>
+    </section>
 
     <script src="script.js"></script>
 </body>
