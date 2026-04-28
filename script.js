@@ -1,5 +1,4 @@
 let photosTaken = [null, null, null, null]; 
-let currentSlot = 0;
 let stream = null;
 let targetRetakeIndex = null;
 
@@ -12,17 +11,22 @@ async function startCapture() {
     try {
         stream = await navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } });
         video.srcObject = stream;
-        document.getElementById('page-home').classList.remove('active');
-        document.getElementById('page-camera').classList.add('active');
+        switchPage('page-camera');
     } catch (err) { alert("Kamera error!"); }
 }
 
-function triggerManualCapture() {
-    currentSlot = photosTaken.indexOf(null);
-    if (currentSlot !== -1) runCountdown(3);
+function switchPage(pageId) {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
 }
 
-function runCountdown(sec) {
+function triggerManualCapture() {
+    let emptySlot = photosTaken.indexOf(null);
+    if (emptySlot !== -1) runCountdown(3, emptySlot);
+    else alert("Tidak dapat memotret lagi karena foto sudah full 4 foto!");
+}
+
+function runCountdown(sec, slot) {
     let count = sec;
     timerDisplay.innerText = count;
     let inv = setInterval(() => {
@@ -31,56 +35,43 @@ function runCountdown(sec) {
         else {
             clearInterval(inv);
             timerDisplay.innerText = "📸";
-            captureToSlot(currentSlot);
+            captureToSlot(slot);
             setTimeout(() => { 
                 timerDisplay.innerText = "";
-                if (photosTaken.indexOf(null) === -1) {
-                    document.getElementById('btn-go-to-frame').style.display = 'inline-block';
-                }
+                if (photosTaken.indexOf(null) === -1) document.getElementById('btn-go-to-frame').style.display = 'inline-block';
             }, 600);
         }
     }, 1000);
 }
 
-// FUNGSI CAPTURE DENGAN LOGIKA ANTI-GEPENG / ANTI-KEPOTONG
 function captureToSlot(slotIndex) {
     const tempCanvas = document.createElement('canvas');
-    // Set resolusi portrait agar tidak terpotong saat masuk frame
-    tempCanvas.width = 800; 
-    tempCanvas.height = 1000;
+    tempCanvas.width = 1280; 
+    tempCanvas.height = 720;
     const ctx = tempCanvas.getContext('2d');
-    
     ctx.translate(tempCanvas.width, 0); ctx.scale(-1, 1);
-    
-    // Ambil bagian tengah video (Center Crop)
-    const sourceWidth = 1280;
-    const sourceHeight = 720;
-    const targetAspect = tempCanvas.width / tempCanvas.height;
-    const drawWidth = sourceHeight * targetAspect;
-    const startX = (sourceWidth - drawWidth) / 2;
-
-    ctx.drawImage(video, startX, 0, drawWidth, sourceHeight, 0, 0, tempCanvas.width, tempCanvas.height);
+    ctx.drawImage(video, 0, 0, 1280, 720);
     
     const dataUri = tempCanvas.toDataURL('image/png');
     photosTaken[slotIndex] = dataUri;
-    document.getElementById(`slot-${slotIndex}`).innerHTML = `<img src="${dataUri}">`;
+    // Menggunakan object-fit: contain agar foto terlihat FULL tidak ngezoom
+    document.getElementById(`slot-${slotIndex}`).innerHTML = `<img src="${dataUri}" style="width:100%; height:100%; object-fit:contain;">`;
 }
 
-// LOGIKA MODAL DETAIL (GALLERY PREVIEW)
 function openDetail(index) {
     if (!photosTaken[index]) return;
     targetRetakeIndex = index;
     const modal = document.getElementById('photo-detail-modal');
+    // Menampilkan gambar secara utuh (Full)
     document.getElementById('detail-img-view').src = photosTaken[index];
+    document.getElementById('detail-img-view').style.objectFit = "contain";
     document.getElementById('confirm-box').style.display = 'none';
     modal.style.display = 'flex';
 }
 
 function closeDetail() { document.getElementById('photo-detail-modal').style.display = 'none'; }
 
-document.getElementById('btn-confirm-retake').onclick = () => {
-    document.getElementById('confirm-box').style.display = 'block';
-};
+document.getElementById('btn-confirm-retake').onclick = () => { document.getElementById('confirm-box').style.display = 'block'; };
 
 document.getElementById('btn-yes-retake').onclick = () => {
     photosTaken[targetRetakeIndex] = null;
@@ -89,20 +80,22 @@ document.getElementById('btn-yes-retake').onclick = () => {
     closeDetail();
 };
 
+// NAVIGASI
 function showFrameSelection() {
-    if (stream) stream.getTracks().forEach(t => t.stop());
-    document.getElementById('page-camera').classList.remove('active');
-    document.getElementById('page-frame').classList.add('active');
-    const frameContainer = document.getElementById('frame-options');
-    frameContainer.innerHTML = '';
+    switchPage('page-frame-selection');
+    const grid = document.getElementById('frame-options-grid');
+    grid.innerHTML = '';
     for(let i=1; i<=10; i++) {
-        const frameBtn = document.createElement('img');
-        frameBtn.src = `frame/frame${i}.png`; 
-        frameBtn.className = 'frame-thumb';
-        frameBtn.onclick = () => generateCollage(frameBtn.src);
-        frameContainer.appendChild(frameBtn);
+        const img = document.createElement('img');
+        img.src = `frame/frame${i}.png`; 
+        img.className = 'frame-thumb';
+        img.onclick = () => generateCollage(img.src);
+        grid.appendChild(img);
     }
 }
+
+function backToCamera() { switchPage('page-camera'); }
+function backToFrameSelection() { switchPage('page-frame-selection'); }
 
 function generateCollage(frameSrc) {
     const ctx = canvasResult.getContext('2d');
@@ -112,12 +105,13 @@ function generateCollage(frameSrc) {
         canvasResult.width = frameImg.width;
         canvasResult.height = frameImg.height;
         
-        // --- SETING PRESISI HASIL KOLASE ---
-        const imgW = canvasResult.width * 0.85; 
+        const w = canvasResult.width;
+        const h = canvasResult.height;
+        const imgW = w * 0.85; 
         const imgH = imgW * 0.70; 
-        const xPos = (canvasResult.width - imgW) / 2;
-        const startY = canvasResult.height * 0.040; 
-        const gap = canvasResult.height * 0.206;
+        const xPos = (w - imgW) / 2;
+        const startY = h * 0.040; 
+        const gap = h * 0.206;
 
         let processed = 0;
         photosTaken.forEach((data, i) => {
@@ -127,10 +121,9 @@ function generateCollage(frameSrc) {
                 ctx.drawImage(pImg, xPos, startY + (i * gap), imgW, imgH);
                 processed++;
                 if (processed === 4) {
-                    ctx.drawImage(frameImg, 0, 0, canvasResult.width, canvasResult.height);
+                    ctx.drawImage(frameImg, 0, 0, w, h);
                     finalPreview.src = canvasResult.toDataURL('image/png');
-                    finalPreview.style.display = 'block';
-                    document.getElementById('btn-download').style.display = 'inline-block';
+                    switchPage('page-final-preview');
                 }
             };
         });
@@ -139,7 +132,7 @@ function generateCollage(frameSrc) {
 
 document.getElementById('btn-download').onclick = () => {
     const link = document.createElement('a');
-    link.download = `Photobooth_Adina.png`;
-    link.href = canvasResult.toDataURL('image/png');
+    link.download = `Photobooth_Dina.png`;
+    link.href = finalPreview.src;
     link.click();
 };
