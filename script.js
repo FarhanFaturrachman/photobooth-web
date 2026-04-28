@@ -126,7 +126,6 @@ function showFrameSelection() {
 function generateCollage(frameSrc) {
     const ctx = canvasResult.getContext('2d');
     const frameImg = new Image();
-    frameImg.crossOrigin = "anonymous";
     frameImg.src = frameSrc;
 
     frameImg.onload = () => {
@@ -134,28 +133,40 @@ function generateCollage(frameSrc) {
         canvasResult.height = frameImg.height;
         ctx.clearRect(0, 0, canvasResult.width, canvasResult.height);
 
-        // KORDINAT PRESISI UNTUK FRAME 4 SLOT VERTIKAL
-        const imgW = canvasResult.width * 0.82; 
-        const imgH = imgW * 0.70; 
-        const xPos = (canvasResult.width - imgW) / 2;
+        // ========================================================
+        // BAGIAN SETTING PRESISI (UBAH ANGKA DI BAWAH INI)
+        // ========================================================
         
-        const startY = canvasResult.height * 0.045; 
-        const verticalGap = canvasResult.height * 0.198; 
+        // 1. Lebar & Tinggi Foto (Sesuaikan agar pas di kotak hitam)
+        const imgW = canvasResult.width * 0.82; 
+        const imgH = imgW * 0.72; // Coba naikkan ke 0.72 atau 0.75 jika kurang tinggi
+
+        // 2. Posisi Horizontal (Tengah)
+        const xPos = (canvasResult.width - imgW) / 2;
+
+        // 3. Jarak Vertikal (Sangat Penting!)
+        const startY = canvasResult.height * 0.045;   // Jarak foto PERTAMA dari atas frame
+        const verticalGap = canvasResult.height * 0.203; // Jarak ANTAR foto (foto 1 ke foto 2, dst)
+
+        // ========================================================
 
         let processed = 0;
         photosTaken.forEach((data, i) => {
             const pImg = new Image();
             pImg.src = data;
             pImg.onload = () => {
+                // Kalkulasi posisi Y untuk tiap foto berdasarkan index (i)
                 const yPos = startY + (i * verticalGap);
+                
+                // Gambar fotonya dulu
                 ctx.drawImage(pImg, xPos, yPos, imgW, imgH);
                 processed++;
 
-                // Gambar frame di layer paling atas setelah semua foto masuk
+                // Jika sudah foto ke-4, tempel framenya di atas
                 if (processed === 4) {
                     ctx.drawImage(frameImg, 0, 0, canvasResult.width, canvasResult.height);
                     
-                    // Tampilkan preview hasil akhir
+                    // Update Preview
                     finalPreview.src = canvasResult.toDataURL('image/png');
                     finalPreview.style.display = 'block';
                     document.getElementById('btn-download').style.display = 'inline-block';
