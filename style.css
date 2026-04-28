@@ -1,7 +1,4 @@
-/* ========================================================
-   DINA PHOTOBOOTH - FINAL STABLE UI
-   ======================================================== */
-
+/* RESET & BASE */
 body {
     background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('bg.jpg');
     background-size: cover;
@@ -23,6 +20,7 @@ section {
     align-items: center;
     justify-content: center;
     padding: 2vh;
+    box-sizing: border-box;
 }
 
 section.active { display: flex !important; }
@@ -38,11 +36,12 @@ button {
     cursor: pointer;
     text-transform: uppercase;
     transition: 0.3s;
+    margin: 10px;
 }
 
 button:hover { transform: scale(1.05); background: #ff6b81; }
 
-/* LAYOUT KAMERA */
+/* KAMERA LAYOUT */
 #camera-container { display: flex; align-items: center; gap: 3vw; }
 .video-wrapper {
     width: 55vw;
@@ -63,41 +62,48 @@ button:hover { transform: scale(1.05); background: #ff6b81; }
     z-index: 10;
 }
 
-/* PREVIEW SLOTS & TOMBOL ULANGI */
+/* PREVIEW SLOTS & TOMBOL ULANGI FIX */
 .camera-right { width: 15vw; display: flex; flex-direction: column; gap: 2vh; }
 .slot {
     width: 100%;
     height: 12vh;
     background: rgba(0,0,0,0.3);
     border: 2px solid white;
-    position: relative; /* Kunci untuk tombol melayang */
+    position: relative; 
     border-radius: 1vh;
+    overflow: visible; /* Penting agar tombol melayang terlihat */
 }
-.slot img { width: 100%; height: 100%; object-fit: cover; border-radius: 1vh; }
+.slot img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    border-radius: 1vh; 
+    pointer-events: none; 
+}
 
-/* FIX: TOMBOL ULANGI AGAR TIDAK HILANG */
 .btn-retake-small {
     position: absolute;
     top: -10px;
     right: -10px;
     background: #ff4757;
     color: white;
-    padding: 5px 10px;
+    padding: 5px 12px;
     font-size: 12px;
     border: 2px solid white;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    z-index: 999; /* Pastikan di paling atas */
+    z-index: 999;
 }
 
-/* HALAMAN PILIH FRAME */
+/* HALAMAN FRAME */
 #page-frame {
     display: flex;
-    flex-direction: column; /* Default atas-bawah */
+    flex-direction: column;
+    justify-content: center;
     transition: all 0.5s ease;
 }
 
-/* TAMPILAN AWAL: SCROLL SAMPING FULL */
+/* TAMPILAN AWAL: SCROLL SAMPING */
 #frame-options {
     display: flex;
     flex-direction: row;
@@ -107,19 +113,19 @@ button:hover { transform: scale(1.05); background: #ff6b81; }
     width: 90vw;
     padding: 20px;
     scrollbar-width: thin;
+    scrollbar-color: #ff4757 transparent;
 }
 
-/* Thumbnail Frame */
 .frame-thumb {
     flex: 0 0 auto;
     height: 40vh;
-    border: 3px solid white;
-    border-radius: 10px;
+    border: 4px solid white;
+    border-radius: 15px;
     cursor: pointer;
     transition: 0.3s;
 }
 
-/* TAMPILAN SETELAH PILIH (Diatur via JS) */
+/* TAMPILAN SETELAH PILIH (SPLIT LAYOUT) */
 .split-layout {
     flex-direction: row !important;
     justify-content: space-around !important;
@@ -131,12 +137,14 @@ button:hover { transform: scale(1.05); background: #ff6b81; }
     overflow-y: auto !important;
     overflow-x: hidden !important;
     width: 20vw !important;
-    height: 70vh !important;
+    height: 75vh !important;
+    padding-right: 10px;
 }
 
 .split-layout .frame-thumb {
     height: auto !important;
     width: 100% !important;
+    margin-bottom: 10px;
 }
 
 .result-container {
@@ -147,9 +155,9 @@ button:hover { transform: scale(1.05); background: #ff6b81; }
 
 #final-image-preview {
     height: 75vh;
-    border: 1vh solid white;
+    border: 1.2vh solid white;
     border-radius: 2vh;
-    box-shadow: 0 0 5vh black;
+    box-shadow: 0 0 5vh rgba(0,0,0,0.7);
 }
 
 .action-buttons { margin-top: 2vh; display: flex; gap: 20px; }
