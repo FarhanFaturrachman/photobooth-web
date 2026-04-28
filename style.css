@@ -70,3 +70,17 @@ button:hover {
     border-color: #ff4757;
     transform: scale(1.05);
 }
+/* Sembunyikan semua section secara default */
+section {
+    display: none; 
+    height: 100vh;
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Hanya tampilkan section yang memiliki class 'active' */
+section.active {
+    display: block !important; 
+}
