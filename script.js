@@ -186,8 +186,8 @@ function generateCollage(frameSrc) {
         const imgW = w * 0.85;  
         const imgH = imgW * 0.70; 
         const xPos = (w - imgW) / 2;
-        const startY = h * 0.030; 
-        const gap = h * 0.210;
+        const startY = h * 0.035; 
+        const gap = h * 0.208;
 
         let processed = 0;
         photosTaken.forEach((data, i) => {
