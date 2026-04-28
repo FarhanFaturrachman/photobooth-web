@@ -1,6 +1,7 @@
 let photosTaken = [null, null, null, null]; 
 let stream = null;
 let targetRetakeIndex = null;
+let currentSelectedFrameSrc = null; // Menyimpan frame yang sedang dipilih
 
 const video = document.getElementById('video');
 const timerDisplay = document.getElementById('timer');
@@ -54,17 +55,15 @@ function captureToSlot(slotIndex) {
     
     const dataUri = tempCanvas.toDataURL('image/png');
     photosTaken[slotIndex] = dataUri;
-    // Menggunakan object-fit: contain agar foto terlihat FULL tidak ngezoom
-    document.getElementById(`slot-${slotIndex}`).innerHTML = `<img src="${dataUri}" style="width:100%; height:100%; object-fit:contain;">`;
+    document.getElementById(`slot-${slotIndex}`).innerHTML = `<img src="${dataUri}" style="width:100%; height:100%; object-fit:contain; background:#333;">`;
 }
 
+// MODAL DETAIL (GALLERY PREVIEW)
 function openDetail(index) {
     if (!photosTaken[index]) return;
     targetRetakeIndex = index;
     const modal = document.getElementById('photo-detail-modal');
-    // Menampilkan gambar secara utuh (Full)
     document.getElementById('detail-img-view').src = photosTaken[index];
-    document.getElementById('detail-img-view').style.objectFit = "contain";
     document.getElementById('confirm-box').style.display = 'none';
     modal.style.display = 'flex';
 }
@@ -80,33 +79,53 @@ document.getElementById('btn-yes-retake').onclick = () => {
     closeDetail();
 };
 
-// NAVIGASI
-function showFrameSelection() {
-    switchPage('page-frame-selection');
-    const grid = document.getElementById('frame-options-grid');
-    grid.innerHTML = '';
+// NAVIGASI & LOADING FRAMES
+function loadFramesToContainer(containerId, className, isSidebar = false) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
     for(let i=1; i<=10; i++) {
         const img = document.createElement('img');
         img.src = `frame/frame${i}.png`; 
-        img.className = 'frame-thumb';
-        img.onclick = () => generateCollage(img.src);
-        grid.appendChild(img);
+        img.className = className;
+        img.onclick = () => {
+            if (isSidebar) {
+                // Jika di sidebar preview, langsung generate ulang collage
+                generateCollage(img.src);
+            } else {
+                // Jika di seleksi awal, simpan pilihan dan lanjut ke preview
+                currentSelectedFrameSrc = img.src;
+                generateCollage(img.src); // Generate dulu baru pindah
+            }
+        };
+        container.appendChild(img);
     }
 }
 
-function backToCamera() { switchPage('page-camera'); }
-function backToFrameSelection() { switchPage('page-frame-selection'); }
+function showFrameSelection() {
+    if (stream) stream.getTracks().forEach(t => t.stop());
+    switchPage('page-frame-selection');
+    // Muat frames untuk seleksi horizontal
+    loadFramesToContainer('frame-options-scroll', 'frame-thumb-scroll', false);
+}
 
+function backToCamera() { switchPage('page-camera'); startCapture(); } // Start capture lagi
+function backToFrameSelection() { showFrameSelection(); }
+
+// COLLAGE GENERATOR
 function generateCollage(frameSrc) {
+    // Tampilkan loading jika perlu, karena proses ini mungkin butuh waktu
+    
     const ctx = canvasResult.getContext('2d');
     const frameImg = new Image();
     frameImg.src = frameSrc;
+    
     frameImg.onload = () => {
         canvasResult.width = frameImg.width;
         canvasResult.height = frameImg.height;
         
         const w = canvasResult.width;
         const h = canvasResult.height;
+        // Setting presisi (sesuaikan jika frame Anda berbeda rasio)
         const imgW = w * 0.85; 
         const imgH = imgW * 0.70; 
         const xPos = (w - imgW) / 2;
@@ -123,7 +142,13 @@ function generateCollage(frameSrc) {
                 if (processed === 4) {
                     ctx.drawImage(frameImg, 0, 0, w, h);
                     finalPreview.src = canvasResult.toDataURL('image/png');
-                    switchPage('page-final-preview');
+                    
+                    // Jika belum di halaman preview, pindah ke sana
+                    if (document.getElementById('page-final-preview').style.display !== 'flex') {
+                        switchPage('page-final-preview');
+                        // Muat frames untuk sidebar vertikal di halaman preview
+                        loadFramesToContainer('frame-options-sidebar', 'frame-thumb-sidebar', true);
+                    }
                 }
             };
         });
