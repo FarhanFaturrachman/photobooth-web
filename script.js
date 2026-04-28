@@ -1,13 +1,19 @@
+/**
+ * WEB PHOTOBOOTH - DINA EDITION (FINAL STABLE)
+ * Fitur: Gallery Modal Preview & Konfirmasi Ulangi
+ */
+
 let photosTaken = [null, null, null, null]; 
 let currentSlot = 0;
 let stream = null;
+let targetRetakeIndex = null; // Untuk melacak foto mana yang mau diulang
 
 const video = document.getElementById('video');
 const timerDisplay = document.getElementById('timer');
 const canvasResult = document.getElementById('canvas-result');
 const finalPreview = document.getElementById('final-image-preview');
 
-// 1. FUNGSI MULAI (Fix Stuck Halaman 1)
+// 1. FUNGSI MULAI
 async function startCapture() {
     try {
         stream = await navigator.mediaDevices.getUserMedia({ 
@@ -26,7 +32,7 @@ async function startCapture() {
 function triggerManualCapture() {
     currentSlot = photosTaken.indexOf(null);
     if (currentSlot !== -1) runCountdown(3);
-    else alert("Slot penuh! Silakan pilih frame atau ulangi foto.");
+    else alert("Slot penuh! Klik foto untuk melihat detail atau mengulang.");
 }
 
 function runCountdown(sec) {
@@ -66,17 +72,42 @@ function captureToSlot(slotIndex) {
     photosTaken[slotIndex] = dataUri;
 
     const container = document.getElementById(`slot-${slotIndex}`);
-    container.innerHTML = `
-        <img src="${dataUri}">
-        <div class="btn-retake-small" onclick="retakePhoto(${slotIndex})">Ulangi</div>
-    `;
+    // Slot sekarang bisa diklik untuk buka detail (Gallery Preview)
+    container.innerHTML = `<img src="${dataUri}" onclick="openDetail(${slotIndex})" style="cursor:pointer;">`;
 }
 
-function retakePhoto(index) {
-    photosTaken[index] = null;
-    document.getElementById(`slot-${index}`).innerHTML = `<span>${index + 1}</span>`;
-    document.getElementById('btn-go-to-frame').style.display = 'none';
+// --- FUNGSI MODAL DETAIL (GALLERY PREVIEW) ---
+function openDetail(index) {
+    if (!photosTaken[index]) return;
+    targetRetakeIndex = index;
+    
+    const modal = document.getElementById('photo-detail-modal');
+    document.getElementById('detail-img-view').src = photosTaken[index];
+    
+    // Reset tampilan tombol konfirmasi di dalam modal
+    document.getElementById('btn-confirm-retake').style.display = 'inline-block';
+    document.getElementById('confirm-box').style.display = 'none';
+    
+    modal.style.display = 'flex';
 }
+
+function closeDetail() {
+    document.getElementById('photo-detail-modal').style.display = 'none';
+}
+
+// Logika saat tombol "ULANGI FOTO INI" diklik
+document.getElementById('btn-confirm-retake').onclick = () => {
+    document.getElementById('btn-confirm-retake').style.display = 'none';
+    document.getElementById('confirm-box').style.display = 'block';
+};
+
+// Logika saat konfirmasi "YA, YAKIN" diklik
+document.getElementById('btn-yes-retake').onclick = () => {
+    photosTaken[targetRetakeIndex] = null;
+    document.getElementById(`slot-${targetRetakeIndex}`).innerHTML = `<span>${targetRetakeIndex + 1}</span>`;
+    document.getElementById('btn-go-to-frame').style.display = 'none';
+    closeDetail();
+};
 
 // 3. SELEKSI FRAME
 function showFrameSelection() {
@@ -139,7 +170,10 @@ function generateCollage(frameSrc) {
                     
                     // Aktifkan Split Layout
                     document.getElementById('page-frame').classList.add('split-layout');
-                    document.getElementById('frame-title').innerText = "Hasil Photobooth";
+                    
+                    // Teks "Hasil Photobooth" dihapus agar lebih bersih
+                    const titleElem = document.getElementById('frame-title');
+                    if(titleElem) titleElem.style.display = 'none';
                     
                     finalPreview.src = canvasResult.toDataURL('image/png');
                     finalPreview.style.display = 'block';
@@ -152,7 +186,7 @@ function generateCollage(frameSrc) {
 
 document.getElementById('btn-download').onclick = () => {
     const link = document.createElement('a');
-    link.download = `Photobooth_Farhan.png`;
+    link.download = `Photobooth_Adina_${Date.now()}.png`;
     link.href = canvasResult.toDataURL('image/png');
     link.click();
 };
