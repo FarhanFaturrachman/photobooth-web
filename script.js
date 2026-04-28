@@ -127,7 +127,7 @@ function showFrameSelection() {
     frameContainer.innerHTML = '';
     
     const frameBtn = document.createElement('img');
-    const path = "frames/Frame6_1.png"; // Jalur file
+    const path = "frames/frame6_1.png"; // Jalur file
     
     frameBtn.src = path;
     frameBtn.className = 'frame-thumb';
