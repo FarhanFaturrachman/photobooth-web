@@ -40,16 +40,21 @@
 </section>
 
     <section id="page-frame">
-        <h2>Pilih Desain Frame</h2>
-        <div id="frame-options"></div>
-        <div class="result-container">
-            <canvas id="canvas-result" style="display:none;"></canvas>
-            <img id="final-image-preview" style="display:none; max-width: 300px; border: 5px solid white;">
-            <br>
+    <h2>Pilih Desain Frame</h2>
+    
+    <div id="frame-options"></div>
+    
+    <div class="result-container">
+        <canvas id="canvas-result" style="display:none;"></canvas>
+        
+        <img id="final-image-preview" style="display:none;">
+        
+        <div class="action-buttons">
             <button id="btn-download" style="display:none;">SIMPAN FOTO</button>
-            <button onclick="location.reload()" class="btn-secondary">KEMBALI</button>
+            <button onclick="location.reload()">KEMBALI</button>
         </div>
-    </section>
+    </div>
+</section>
 
     <script src="script.js"></script>
 </body>
