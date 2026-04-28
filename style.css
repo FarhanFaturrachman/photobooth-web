@@ -1,0 +1,44 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-size: cover;
+    transition: background 0.5s ease;
+}
+
+section {
+    display: none; /* Sembunyikan semua halaman */
+    height: 100vh;
+    text-align: center;
+    padding: 20px;
+}
+
+section.active {
+    display: block; /* Hanya tampilkan yang aktif */
+}
+
+#video {
+    width: 100%;
+    max-width: 600px;
+    border: 5px solid white;
+    border-radius: 10px;
+}
+
+#timer {
+    font-size: 5rem;
+    color: red;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.camera-right {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.preview-img {
+    width: 150px;
+    border: 2px solid #ccc;
+}
