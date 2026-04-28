@@ -1,7 +1,7 @@
 /* ========================================================
    DINA PHOTOBOOTH - FULL STABLE CSS (Final Version)
    Developer: Farhan Faturrachman
-   Settings: Camera Aspect Ratio 4:3 + Fix Navigation
+   Settings: Camera Aspect Ratio 4:3 + Animated UI
    ======================================================== */
 
 /* RESET & BASE STYLE */
@@ -52,6 +52,7 @@ section.active { display: flex !important; }
     animation: bounceIn 1.5s ease;
 }
 
+/* ANIMASI HAPPY BIRTHDAY (hero-subtitle) */
 .hero-subtitle {
     font-size: 3.5vh;
     font-weight: bold;
@@ -60,9 +61,12 @@ section.active { display: flex !important; }
     padding: 10px 30px;
     border-radius: 10px;
     margin-bottom: 40px;
+    border: 2px solid #ff4757;
+    /* Animasi Baru: Muncul dari bawah & efek Glow */
+    animation: fadeInUp 1.2s ease-out forwards, glowText 2s infinite alternate;
 }
 
-/* TOMBOL MULAI (btn-main) - DIPERBAIKI AGAR JALAN */
+/* TOMBOL MULAI (btn-main) */
 .btn-main {
     background: #ffffff !important;
     color: #ff4757 !important;
@@ -143,7 +147,7 @@ section.active { display: flex !important; }
     border: 2px solid white; display: flex; align-items: center; justify-content: center; 
 }
 
-/* TOMBOL UMUM (DIPERBAIKI AGAR SINKRON DENGAN SCRIPT) */
+/* TOMBOL UMUM */
 .btn-capture, .btn-next, .btn-save, .btn-back, .btn-dash {
     background: #ff4757; 
     color: white; 
@@ -203,11 +207,21 @@ section.active { display: flex !important; }
 .btn-save { background: #2ecc71; }
 .btn-dash { background: #3498db; }
 
-/* UTILITY */
+/* --- ANIMATIONS & UTILITY --- */
 @keyframes bounceIn {
     0% { transform: scale(0.5); opacity: 0; }
     70% { transform: scale(1.1); opacity: 1; }
     100% { transform: scale(1); }
+}
+
+@keyframes fadeInUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes glowText {
+    from { text-shadow: 0 0 5px #fff, 0 0 10px #ff4757; }
+    to { text-shadow: 0 0 15px #fff, 0 0 30px #ff4757; }
 }
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }
