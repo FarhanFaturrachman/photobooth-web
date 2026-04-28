@@ -30,19 +30,17 @@
             <div class="camera-right">
                 <h3>Hasil Foto</h3>
                 <div id="preview-strip">
-                    <div class="slot" id="slot-0"><span>1</span></div>
-                    <div class="slot" id="slot-1"><span>2</span></div>
-                    <div class="slot" id="slot-2"><span>3</span></div>
-                    <div class="slot" id="slot-3"><span>4</span></div>
+                    <div class="slot" id="slot-0" onclick="openDetail(0)"><span>1</span></div>
+                    <div class="slot" id="slot-1" onclick="openDetail(1)"><span>2</span></div>
+                    <div class="slot" id="slot-2" onclick="openDetail(2)"><span>3</span></div>
+                    <div class="slot" id="slot-3" onclick="openDetail(3)"><span>4</span></div>
                 </div>
             </div>
         </div>
     </section>
 
     <section id="page-frame">
-        <h2 id="frame-title">Pilih Desain Frame</h2>
         <div id="frame-options"></div>
-        
         <div class="result-container">
             <img id="final-image-preview" style="display:none;">
             <div class="action-buttons">
@@ -52,6 +50,21 @@
         </div>
         <canvas id="canvas-result" style="display:none;"></canvas>
     </section>
+
+    <div id="photo-detail-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeDetail()">&times;</span>
+            <img id="detail-img-view" src="">
+            <div class="modal-controls">
+                <button id="btn-confirm-retake">ULANGI FOTO INI</button>
+                <div id="confirm-box" style="display:none;">
+                    <p>Yakin ingin menghapus dan mengulang foto ini?</p>
+                    <button id="btn-yes-retake" style="background:#ffa502; color:black;">YA, YAKIN</button>
+                    <button onclick="closeDetail()" style="background:#555;">BATAL</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
