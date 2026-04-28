@@ -1,84 +1,96 @@
-/* ========================================================
-   REVISI HALAMAN FRAME: STABIL & TOMBOL MUNCUL
-   ======================================================== */
-
-#page-frame {
-    display: flex;
-    flex-direction: column; /* Konten disusun atas ke bawah */
-    align-items: center;
-    justify-content: flex-start; /* Mulai dari atas supaya tidak numpuk */
+body {
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+    font-family: 'Arial Black', sans-serif;
+    margin: 0;
     height: 100vh;
     width: 100vw;
-    padding-top: 2vh;
     overflow: hidden;
 }
 
-/* Judul Halaman Tetap Ada */
-#frame-main-title {
-    font-size: 4vh;
-    margin-bottom: 2vh;
-    text-shadow: 0 0 2vh black;
-    z-index: 10;
+section {
+    display: none;
+    height: 100vh;
+    width: 100vw;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2vh;
 }
 
-/* Layout Pilihan & Preview */
+section.active { display: flex !important; }
+
+button {
+    background: #ff4757;
+    color: white;
+    border: 0.5vh solid white;
+    padding: 1.5vh 3vw;
+    border-radius: 50px;
+    font-size: 2.2vh;
+    font-weight: 900;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+/* KAMERA */
+#camera-container { display: flex; align-items: center; gap: 3vw; }
+.video-wrapper { width: 50vw; border: 1vh solid white; border-radius: 3vh; position: relative; overflow: hidden; background: black; }
+#video { width: 100%; transform: scaleX(-1); }
+#timer { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 20vh; color: white; text-shadow: 0 0 3vh rgba(0,0,0,0.8); z-index: 10; }
+
+/* SLOT PREVIEW (SAMPING KAMERA) */
+.camera-right { width: 17vw; display: flex; flex-direction: column; gap: 1.2vh; }
+.slot { width: 100%; height: 18vh; background: rgba(0,0,0,0.3); border: 2px solid white; position: relative; border-radius: 1.5vh; overflow: hidden; cursor: pointer; }
+.slot img { width: 100%; height: 100%; object-fit: cover; }
+
+/* MODAL GALLERY */
+.modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); align-items: center; justify-content: center; }
+.modal-content { background: #222; padding: 20px; border-radius: 20px; position: relative; max-width: 90%; border: 3px solid #ff4757; text-align: center; }
+#detail-img-view { max-height: 60vh; border: 4px solid white; border-radius: 10px; margin-bottom: 15px; }
+.close-modal { position: absolute; top: 10px; right: 20px; font-size: 40px; cursor: pointer; color: white; }
+
+/* LAYOUT PILIH FRAME */
+#page-frame { justify-content: flex-start; padding-top: 3vh; }
+#frame-main-title { font-size: 4.5vh; margin-bottom: 2vh; }
+
 .editor-layout {
     display: flex;
-    flex-direction: row; /* Pilihan kiri, preview kanan */
+    flex-direction: row;
     width: 95vw;
-    height: 75vh; /* Batasi tinggi agar tombol di bawah kebagian tempat */
+    height: 70vh; /* Membatasi tinggi area editor */
     justify-content: space-around;
     align-items: center;
 }
 
-/* GRID PILIHAN FRAME (4 KOLOM) */
 #frame-options {
     display: grid !important;
     grid-template-columns: repeat(4, 1fr) !important;
     overflow-y: auto;
     width: 38vw;
-    height: 70vh;
+    height: 65vh;
     gap: 12px;
     padding: 10px;
-    scrollbar-width: thin;
-    scrollbar-color: #ff4757 transparent;
+}
+.frame-thumb { width: 100%; border: 3px solid white; border-radius: 12px; cursor: pointer; }
+
+.result-container { width: 50vw; display: flex; flex-direction: column; align-items: center; }
+#final-image-preview { 
+    height: 60vh; /* NILAI KRUCIAL: Agar tombol di bawahnya tidak hilang */
+    border: 1vh solid white; 
+    border-radius: 2vh; 
 }
 
-.frame-thumb {
-    width: 100%;
-    border: 3px solid white;
-    border-radius: 12px;
-    cursor: pointer;
+.action-buttons { 
+    margin-top: 2vh; 
+    display: flex; 
+    gap: 20px; 
+    padding-bottom: 2vh; 
 }
 
-/* AREA PREVIEW (KANAN) */
-.result-container {
-    width: 50vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-#final-image-preview {
-    height: 65vh; /* Perkecil sedikit agar tombol di bawah kelihatan */
-    width: auto;
-    border: 1vh solid white;
-    border-radius: 2vh;
-    box-shadow: 0 0 4vh rgba(0,0,0,0.7);
-}
-
-/* TOMBOL AKSI (DIBAWAH FOTO) */
-.action-buttons {
-    margin-top: 2vh; /* Jarak antara foto dan tombol */
-    display: flex;
-    gap: 20px;
-    z-index: 100;
-}
-
-/* Pastikan tombol Simpan dan Kembali terlihat jelas */
-.action-buttons button {
-    padding: 1.5vh 4vw;
-    font-size: 2.2vh;
-    min-width: 150px;
-}
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: #ff4757; border-radius: 10px; }
