@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Photobooth</title>
+    <title>Web Photobooth - Simple Version</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,24 +11,18 @@
     <section id="page-home" class="active">
         <div class="content">
             <h1>Web Photobooth</h1>
-            <button id="btn-start" onclick="goToCameraSelection()">Mulai Foto</button>
-            <button id="btn-change-bg" onclick="changeBackground()">Ganti Background</button>
+            <button id="btn-start" onclick="startCapture(4)">Mulai Foto</button>
         </div>
     </section>
 
     <section id="page-camera">
-        <div id="selection-overlay">
-            <h2>Pilih Jumlah Foto:</h2>
-            <button onclick="startCapture(3)">3 Foto</button>
-            <button onclick="startCapture(4)">4 Foto</button>
-            <button onclick="startCapture(6)">6 Foto</button>
-        </div>
-
-        <div id="camera-container" style="display:none;">
+        <div id="camera-container">
             <div class="camera-left">
-                <video id="video" autoplay playsinline></video>
-                <div id="timer"></div>
-                <button id="btn-capture" disabled>Ambil Foto</button>
+                <div class="video-wrapper">
+                    <video id="video" autoplay playsinline></video>
+                    <div id="timer"></div>
+                </div>
+                <button id="btn-go-to-frame" style="display:none;" onclick="showFrameSelection()">Lanjut ke Pilih Frame</button>
             </div>
             <div class="camera-right" id="preview-strip">
                 </div>
@@ -37,12 +31,13 @@
 
     <section id="page-frame">
         <h2>Pilih Frame</h2>
-        <div id="frame-options">
-            </div>
-        <canvas id="canvas-result" style="display:none;"></canvas>
-        <button id="btn-download">Download Hasil</button>
+        <div id="frame-options"></div>
+        <div class="result-container">
+            <canvas id="canvas-result" style="display:none;"></canvas>
+            <button id="btn-download" style="display:none;">Download Hasil</button>
+        </div>
     </section>
 
     <script src="script.js"></script>
 </body>
-</html> 
+</html>
