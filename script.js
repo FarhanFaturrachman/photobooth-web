@@ -1,7 +1,6 @@
 let photosTaken = [null, null, null, null]; 
 let currentSlot = 0;
 let stream = null;
-let targetRetakeIndex = null;
 
 const video = document.getElementById('video');
 const timerDisplay = document.getElementById('timer');
@@ -27,14 +26,17 @@ function runCountdown(sec) {
     timerDisplay.innerText = count;
     let inv = setInterval(() => {
         count--;
-        if (count > 0) timerDisplay.innerText = count;
-        else {
+        if (count > 0) {
+            timerDisplay.innerText = count;
+        } else {
             clearInterval(inv);
             timerDisplay.innerText = "📸";
             captureToSlot(currentSlot);
             setTimeout(() => { 
                 timerDisplay.innerText = "";
-                if (photosTaken.indexOf(null) === -1) document.getElementById('btn-go-to-frame').style.display = 'inline-block';
+                if (photosTaken.indexOf(null) === -1) {
+                    document.getElementById('btn-go-to-frame').style.display = 'inline-block';
+                }
             }, 600);
         }
     }, 1000);
@@ -42,6 +44,7 @@ function runCountdown(sec) {
 
 function captureToSlot(slotIndex) {
     const tempCanvas = document.createElement('canvas');
+    // MENGGUNAKAN RESOLUSI TINGGI AGAR TIDAK PECAH
     tempCanvas.width = 1280; tempCanvas.height = 720;
     const ctx = tempCanvas.getContext('2d');
     ctx.translate(tempCanvas.width, 0); ctx.scale(-1, 1);
@@ -50,25 +53,6 @@ function captureToSlot(slotIndex) {
     photosTaken[slotIndex] = dataUri;
     document.getElementById(`slot-${slotIndex}`).innerHTML = `<img src="${dataUri}">`;
 }
-
-function openDetail(index) {
-    if (!photosTaken[index]) return;
-    targetRetakeIndex = index;
-    document.getElementById('detail-img-view').src = photosTaken[index];
-    document.getElementById('confirm-box').style.display = 'none';
-    document.getElementById('photo-detail-modal').style.display = 'flex';
-}
-
-function closeDetail() { document.getElementById('photo-detail-modal').style.display = 'none'; }
-
-document.getElementById('btn-confirm-retake').onclick = () => { document.getElementById('confirm-box').style.display = 'block'; };
-
-document.getElementById('btn-yes-retake').onclick = () => {
-    photosTaken[targetRetakeIndex] = null;
-    document.getElementById(`slot-${targetRetakeIndex}`).innerHTML = `<span>${targetRetakeIndex + 1}</span>`;
-    document.getElementById('btn-go-to-frame').style.display = 'none';
-    closeDetail();
-};
 
 function showFrameSelection() {
     if (stream) stream.getTracks().forEach(t => t.stop());
@@ -93,11 +77,11 @@ function generateCollage(frameSrc) {
         canvasResult.width = frameImg.width;
         canvasResult.height = frameImg.height;
         
-        // PENTING: Rasio setting agar tidak kepotong
+        // --- LOGIKA PRESISI AGAR TIDAK KEPOTONG ---
         const imgW = canvasResult.width * 0.85; 
-        const imgH = imgW * 0.70; 
+        const imgH = imgW * 0.68; // SESUAIKAN DENGAN KOTAK DI FRAME KAMU
         const xPos = (canvasResult.width - imgW) / 2;
-        const startY = canvasResult.height * 0.04; 
+        const startY = canvasResult.height * 0.045; 
         const gap = canvasResult.height * 0.205;
 
         let processed = 0;
@@ -105,7 +89,7 @@ function generateCollage(frameSrc) {
             const pImg = new Image();
             pImg.src = data;
             pImg.onload = () => {
-                // LOGIKA CENTER CROP AGAR TIDAK KEPOTONG ATAS BAWAH
+                // LOGIKA CENTER CROP (MENGAMBIL TENGAH FOTO)
                 const imgRatio = pImg.width / pImg.height;
                 const targetRatio = imgW / imgH;
                 let sx, sy, sw, sh;
@@ -122,7 +106,6 @@ function generateCollage(frameSrc) {
                     ctx.drawImage(frameImg, 0, 0, canvasResult.width, canvasResult.height);
                     finalPreview.src = canvasResult.toDataURL('image/png');
                     finalPreview.style.display = 'block';
-                    document.getElementById('frame-options').style.display = 'none';
                     document.getElementById('btn-download').style.display = 'inline-block';
                 }
             };
