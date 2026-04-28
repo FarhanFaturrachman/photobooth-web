@@ -1,4 +1,10 @@
-/* BASE STYLE (Pertahankan yang sudah oke) */
+/* ========================================================
+   DINA PHOTOBOOTH - FULL STABLE CSS (Final Version)
+   Developer: Farhan Faturrachman
+   Settings: Camera Aspect Ratio 4:3
+   ======================================================== */
+
+/* RESET & BASE STYLE */
 body {
     background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('bg.jpg');
     background-size: cover;
@@ -18,42 +24,138 @@ section {
     align-items: center;
     justify-content: center;
     padding: 2vh;
+    box-sizing: border-box;
 }
 
 section.active { display: flex !important; }
 
-/* HOME PAGE & TIMER (Pertahankan) */
+/* HOME PAGE & TIMER */
 .hero-title { font-size: 10vh; margin: 0; text-shadow: 5px 5px 15px #000; }
 .hero-subtitle { font-size: 3vh; margin-bottom: 4vh; }
-#timer { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 30vh; color: white; font-weight: 900; text-shadow: 0 0 50px #000; z-index: 100; }
 
-/* CAMERA LAYOUT (Pertahankan) */
+#timer { 
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    font-size: 30vh; 
+    color: white; 
+    font-weight: 900; 
+    text-shadow: 0 0 50px #000; 
+    z-index: 100; 
+    pointer-events: none;
+}
+
+/* --- CAMERA LAYOUT (Rasio 4:3) --- */
 #camera-container { display: flex; gap: 2vw; align-items: center; }
-.video-wrapper { width: 50vw; border: 10px solid white; border-radius: 20px; overflow: hidden; position: relative; }
-#video { width: 100%; transform: scaleX(-1); }
-.camera-right { width: 18vw; }
-.slot { width: 100%; height: 18vh; border: 4px solid white; border-radius: 10px; margin-bottom: 1vh; cursor: pointer; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-.slot img { width: 100%; height: 100%; object-fit: contain; background: #333; }
 
-/* MODAL (Pertahankan) */
-.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
-.modal-content { background: #222; padding: 20px; border-radius: 20px; text-align: center; border: 4px solid #ff4757; position: relative; }
+.video-wrapper { 
+    width: 50vw; 
+    aspect-ratio: 4 / 3; /* Memaksa tampilan 4:3 agar tidak gepeng */
+    border: 10px solid white; 
+    border-radius: 20px; 
+    overflow: hidden; 
+    position: relative; 
+    background: #000;
+}
+
+#video { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; /* Memastikan video memenuhi area 4:3 */
+    transform: scaleX(-1); 
+}
+
+.camera-right { width: 18vw; }
+
+.slot { 
+    width: 100%; 
+    height: 18vh; 
+    border: 4px solid white; 
+    border-radius: 10px; 
+    margin-bottom: 1vh; 
+    cursor: pointer; 
+    overflow: hidden; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    background: rgba(0,0,0,0.3);
+}
+
+.slot img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: contain; 
+    background: #333; 
+}
+
+/* MODAL DETAIL */
+.modal { 
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0; top: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0,0,0,0.9); 
+    align-items: center; 
+    justify-content: center; 
+}
+
+.modal-content { 
+    background: #222; 
+    padding: 20px; 
+    border-radius: 20px; 
+    text-align: center; 
+    border: 4px solid #ff4757; 
+    position: relative; 
+}
+
 #detail-img-view { max-width: 80vw; max-height: 70vh; border: 4px solid white; }
-.close-modal { position: absolute; top: -20px; right: -20px; font-size: 40px; cursor: pointer; color: white; background: linear-gradient(to bottom, #ff4757, #b33939); width: 50px; height: 50px; border-radius: 50%; border: 2px solid white; display: flex; align-items: center; justify-content: center; }
+
+.close-modal { 
+    position: absolute; 
+    top: -20px; 
+    right: -20px; 
+    font-size: 40px; 
+    cursor: pointer; 
+    color: white; 
+    background: linear-gradient(to bottom, #ff4757, #b33939); 
+    width: 50px; 
+    height: 50px; 
+    border-radius: 50%; 
+    border: 2px solid white; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
 
 /* TOMBOL UMUM */
-.btn-main, .btn-capture, .btn-next, .btn-save, .btn-back, .btn-main-sm {
-    background: #ff4757; color: white; border: 4px solid white;
-    padding: 15px 30px; border-radius: 50px; font-weight: bold; cursor: pointer;
-    text-transform: uppercase; font-size: 2vh; transition: 0.2s;
+.btn-main, .btn-capture, .btn-next, .btn-save, .btn-back, .btn-dash {
+    background: #ff4757; 
+    color: white; 
+    border: 4px solid white;
+    padding: 15px 30px; 
+    border-radius: 50px; 
+    font-weight: bold; 
+    cursor: pointer;
+    text-transform: uppercase; 
+    font-size: 2vh; 
+    transition: 0.2s;
 }
-.btn-main:hover, .btn-capture:hover, .btn-save:hover { transform: scale(1.05); }
 
-/* --- PERUBAHAN PAGE 3: PILIH FRAME (Scroll Samping seperti Gambar 2) --- */
+.btn-main:hover, .btn-capture:hover, .btn-save:hover { 
+    transform: scale(1.05); 
+    filter: brightness(1.1);
+}
+
+/* --- PAGE 3: PILIH FRAME (Scroll Samping) --- */
 #page-frame-selection {
     justify-content: flex-start;
     padding-top: 5vh;
 }
+
 .frame-title-text { font-size: 5vh; margin-bottom: 4vh; }
 
 .frame-selection-scroll-wrapper {
@@ -68,29 +170,29 @@ section.active { display: flex !important; }
 
 #frame-options-scroll {
     display: flex;
-    flex-direction: row; /* Berjejer ke samping */
-    overflow-x: auto; /* Scroll horizontal */
+    flex-direction: row; 
+    overflow-x: auto; 
     overflow-y: hidden;
     gap: 30px;
     padding: 20px 0;
     width: 100%;
 }
 
-/* Thumbnail Frame untuk Scroll Samping */
 .frame-thumb-scroll {
-    flex: 0 0 auto; /* Jangan mengecil */
-    height: 50vh; /* Tinggi thumbnail */
+    flex: 0 0 auto; 
+    height: 50vh; 
     border: 5px solid white;
     border-radius: 15px;
     cursor: pointer;
     transition: 0.3s;
 }
-.frame-thumb-scroll:hover { transform: translateY(-10px); border-color: #ff4757; }
 
-/* --- PERUBAHAN PAGE 4: PREVIEW (Split Layout seperti Gambar 4) --- */
-/* ... (Pertahankan bagian awal body, home, timer, dan camera dari kode sebelumnya) ... */
+.frame-thumb-scroll:hover { 
+    transform: translateY(-10px); 
+    border-color: #ff4757; 
+}
 
-/* --- HALAMAN PREVIEW (STYLING FINAL) --- */
+/* --- PAGE 4: PREVIEW (Split Layout) --- */
 #page-final-preview {
     justify-content: flex-start;
     padding-top: 2vh;
@@ -106,9 +208,9 @@ section.active { display: flex !important; }
     justify-content: center;
 }
 
-/* SISI KIRI: DAFTAR FRAME (Grid 2x2 yang diperkecil) */
+/* SISI KIRI: DAFTAR FRAME SIDEBAR */
 .preview-sidebar-frames {
-    width: 20vw; /* Diperkecil agar proporsional */
+    width: 20vw; 
     height: 75vh;
     background: rgba(0,0,0,0.3);
     border-radius: 20px;
@@ -119,7 +221,7 @@ section.active { display: flex !important; }
 
 #frame-options-sidebar {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Dibuat 2 kolom (Grid) agar muat banyak */
+    grid-template-columns: repeat(2, 1fr); 
     gap: 12px;
 }
 
@@ -131,7 +233,11 @@ section.active { display: flex !important; }
     cursor: pointer;
     transition: 0.2s;
 }
-.frame-thumb-sidebar:hover { transform: scale(1.05); border-color: #ff4757; }
+
+.frame-thumb-sidebar:hover { 
+    transform: scale(1.05); 
+    border-color: #ff4757; 
+}
 
 /* SISI KANAN: PREVIEW UTAMA */
 .preview-main-content {
@@ -142,21 +248,20 @@ section.active { display: flex !important; }
 }
 
 #final-image-preview {
-    height: 65vh; /* Ukuran preview sedang agar tombol tidak terpotong */
+    height: 65vh; 
     border: 8px solid white;
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     margin-bottom: 3vh;
 }
 
-/* TOMBOL AKSI (SERAGAM & SEJAJAR) */
+/* TOMBOL AKSI SERAGAM */
 .final-action-buttons-row {
     display: flex;
     gap: 15px;
 }
 
 .final-action-buttons-row button {
-    /* Membuat semua tombol berukuran sama */
     width: 180px; 
     height: 55px;
     font-size: 1.8vh;
@@ -169,8 +274,7 @@ section.active { display: flex !important; }
     color: white;
 }
 
-/* Warna Tombol Disamakan (Atau gunakan warna identitas brand kamu) */
-.btn-save { background: #2ecc71; } /* Hijau tetap untuk Simpan sebagai pembeda positif */
+.btn-save { background: #2ecc71; }
 .btn-back { background: #ff4757; }
 .btn-dash { background: #3498db; }
 
@@ -179,6 +283,9 @@ section.active { display: flex !important; }
     filter: brightness(1.1);
 }
 
-/* Scrollbar Sidebar */
+/* SCROLLBAR CUSTOM */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: #ff4757; border-radius: 10px; }
+::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
 .preview-sidebar-frames::-webkit-scrollbar { width: 6px; }
-.preview-sidebar-frames::-webkit-scrollbar-thumb { background: #ff4757; border-radius: 10px; }
