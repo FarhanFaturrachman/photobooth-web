@@ -109,75 +109,73 @@ button:hover {
 }
 
 /* ========================================================
-   HALAMAN PILIH FRAME: SPLIT LAYOUT (KIRI & KANAN)
+   REVISI HALAMAN FRAME: GRID RAPI & SCROLL HALUS
    ======================================================== */
 
 #page-frame {
-    flex-direction: row !important; /* Susun Kiri-Kanan */
-    justify-content: space-evenly;
-    padding: 5vh;
-}
-
-/* Bagian Kiri: Daftar Pilihan Frame */
-#frame-options {
-    display: flex;
-    flex-direction: column; /* Scroll ke Bawah */
-    overflow-y: auto;
-    overflow-x: hidden;
-    width: 25vw; /* Lebar panel kiri */
-    height: 80vh;
-    gap: 20px;
-    padding: 20px;
-    scrollbar-width: thin;
-    scrollbar-color: #ff4757 rgba(255,255,255,0.1);
-}
-
-.frame-thumb {
-    width: 100%; /* Frame memenuhi lebar panel kiri */
-    height: auto;
-    border: 0.6vh solid white;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: 0.3s ease;
-    background: rgba(0,0,0,0.2);
-}
-
-.frame-thumb:hover { 
-    transform: scale(1.05); 
-    border-color: #ff4757;
-}
-
-/* Bagian Kanan: Preview Hasil Akhir */
-.result-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    width: 60vw; /* Lebar panel kanan */
-    height: 90vh;
+    justify-content: flex-start; /* Mulai dari atas */
+    padding-top: 5vh;
+}
+
+/* Judul tetap di atas */
+#page-frame h2 {
+    font-size: 5vh;
+    margin-bottom: 3vh;
+}
+
+/* KEMBALI KE FORMAT GRID (Seperti Asal tapi lebih rapi) */
+#frame-options {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 kolom menyamping */
+    gap: 20px;
+    width: 85vw;
+    max-height: 50vh; /* Batasi tinggi area pilih agar tidak nabrak bawah */
+    overflow-y: auto; /* Scroll atas bawah saja */
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05); /* Background sangat tipis */
+    border-radius: 20px;
+}
+
+/* Hilangkan garis scrollbar yang aneh di Chrome/Edge */
+#frame-options::-webkit-scrollbar {
+    width: 8px;
+}
+#frame-options::-webkit-scrollbar-thumb {
+    background: #ff4757;
+    border-radius: 10px;
+}
+
+.frame-thumb {
+    width: 100%;
+    height: auto;
+    border: 3px solid white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.frame-thumb:hover {
+    transform: scale(1.05);
+    border-color: #ff4757;
+}
+
+/* HASIL PREVIEW (Dibuat Fokus) */
+.result-container {
+    margin-top: 3vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 #final-image-preview {
-    height: 75vh; /* FOTO HASIL JADI SANGAT BESAR */
+    height: 60vh; /* Tetap besar dan gagah */
     width: auto;
-    max-width: 55vw;
-    border: 1.2vh solid white;
+    border: 1vh solid white;
     border-radius: 20px;
-    box-shadow: 0 2vh 5vh rgba(0,0,0,0.6);
-}
-
-.action-buttons {
-    display: flex;
-    gap: 20px;
-    margin-top: 3vh;
-}
-
-/* Judul ditaruh di pojok atas agar tidak makan tempat */
-#page-frame h2 {
-    position: absolute;
-    top: 2vh;
-    left: 4vh;
-    font-size: 4vh;
-    text-transform: uppercase;
-    margin: 0;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    display: none; /* Sembunyi sampai frame dipilih */
 }
