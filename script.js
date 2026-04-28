@@ -19,15 +19,14 @@ let currentBgIndex = 0;
 // --- 2. Fungsi Navigasi & UI ---
 
 function goToCameraSelection() {
+    // Sembunyikan Home, Tampilkan Kamera
     document.getElementById('page-home').classList.remove('active');
     document.getElementById('page-camera').classList.add('active');
+    
+    // Pastikan overlay pemilihan foto muncul kembali
+    document.getElementById('selection-overlay').style.display = 'block';
+    document.getElementById('camera-container').style.display = 'none';
 }
-
-function changeBackground() {
-    currentBgIndex = (currentBgIndex + 1) % backgrounds.length;
-    document.body.style.background = backgrounds[currentBgIndex];
-}
-
 // --- 3. Logika Kamera & Capture ---
 
 async function startCapture(count) {
