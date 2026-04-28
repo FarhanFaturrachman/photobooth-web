@@ -186,7 +186,7 @@ function generateCollage(frameSrc) {
         const imgW = w * 0.85;  
         const imgH = imgW * 0.70; 
         const xPos = (w - imgW) / 2;
-        const startY = h * 0.034; 
+        const startY = h * 0.033; 
         const gap = h * 0.208;
 
         let processed = 0;
