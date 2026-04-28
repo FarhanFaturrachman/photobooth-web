@@ -1,5 +1,5 @@
 /* ========================================================
-   WEB PHOTOBOOTH PRO - FULL SCALE OPTIMIZED
+   WEB PHOTOBOOTH PRO - SIDE-BY-SIDE LAYOUT
    Developer: Farhan Faturrachman
    ======================================================== */
 
@@ -13,7 +13,7 @@ body {
     margin: 0;
     height: 100vh;
     width: 100vw;
-    overflow: hidden; /* Mencegah scroll body agar tampilan clean */
+    overflow: hidden;
 }
 
 section {
@@ -40,24 +40,24 @@ button {
     background: #ff4757;
     color: white;
     border: 0.8vh solid white;
-    padding: 2.5vh 5vw;
+    padding: 2vh 4vw;
     border-radius: 10vh;
-    font-size: 3.5vh;
+    font-size: 3vh;
     font-weight: 900;
     cursor: pointer;
     transition: 0.3s ease-in-out;
     text-transform: uppercase;
     box-shadow: 0 1vh 3vh rgba(0,0,0,0.5);
-    margin: 10px;
 }
 
 button:hover { 
     transform: scale(1.05); 
     background: #ff6b81; 
-    box-shadow: 0 1.5vh 4vh rgba(255, 71, 87, 0.4);
 }
 
-/* LAYOUT KAMERA & PREVIEW */
+/* ========================================================
+   KAMERA & PREVIEW (Halaman 2)
+   ======================================================== */
 #camera-container {
     display: flex;
     align-items: center;
@@ -74,40 +74,27 @@ button:hover {
     position: relative;
     box-shadow: 0 2vh 6vh rgba(0,0,0,0.8);
     overflow: hidden;
-    line-height: 0;
 }
 
 #video { width: 100%; transform: scaleX(-1); }
 
-/* Timer Raksasa di Tengah Video */
-/* Timer Raksasa di Tengah Video */
 #timer {
     position: absolute;
-    top: 50%; 
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     font-size: 25vh;
-    
-    /* UBAH KE PUTIH DI SINI */
     color: white; 
-    
     font-weight: 900;
-    
-    /* Tambahkan bayangan hitam agar angka tetap terbaca jelas */
     text-shadow: 0 0 5vh rgba(0,0,0,1), 0 0 2vh rgba(0,0,0,0.8);
-    
     z-index: 100;
-    pointer-events: none;
 }
 
-/* Panel Preview Samping (Slot 1-4) */
 .camera-right {
     width: 18vw;
     background: rgba(0,0,0,0.6);
     padding: 2vh;
     border-radius: 3vh;
     border: 0.4vh solid #ff4757;
-    backdrop-filter: blur(5px);
 }
 
 .slot {
@@ -119,83 +106,78 @@ button:hover {
     position: relative;
     border: 0.3vh solid #555;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3vh;
-}
-
-.btn-retake-small {
-    position: absolute;
-    top: 0.5vh; right: 0.5vh;
-    background: #ff4757;
-    color: white;
-    padding: 0.5vh 1vh;
-    font-size: 1.4vh;
-    border-radius: 0.8vh;
-    border: 0.2vh solid white;
-    font-weight: bold;
-    cursor: pointer;
-    z-index: 10;
 }
 
 /* ========================================================
-   HALAMAN PILIH FRAME: JUMBO & HORIZONTAL SCROLL
+   HALAMAN PILIH FRAME: SPLIT LAYOUT (KIRI & KANAN)
    ======================================================== */
 
-#frame-options {
-    display: flex; /* Berjajar ke samping */
-    flex-wrap: nowrap;
-    overflow-x: auto; /* Bisa digeser kanan-kiri */
-    gap: 30px;
-    width: 95vw;
-    height: 60vh; /* Tinggi area pilihan frame diperbesar */
-    padding: 20px;
-    margin-bottom: 2vh;
-    box-sizing: border-box;
-    scrollbar-width: thin;
-    scrollbar-color: #ff4757 rgba(0,0,0,0.2);
+#page-frame {
+    flex-direction: row !important; /* Susun Kiri-Kanan */
+    justify-content: space-evenly;
+    padding: 5vh;
 }
 
-/* Thumbnail Frame Dibuat Besar (Jumbo) */
+/* Bagian Kiri: Daftar Pilihan Frame */
+#frame-options {
+    display: flex;
+    flex-direction: column; /* Scroll ke Bawah */
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 25vw; /* Lebar panel kiri */
+    height: 80vh;
+    gap: 20px;
+    padding: 20px;
+    scrollbar-width: thin;
+    scrollbar-color: #ff4757 rgba(255,255,255,0.1);
+}
+
 .frame-thumb {
-    flex: 0 0 auto;
-    height: 55vh; /* Thumbnail hampir memenuhi area scroll */
-    width: auto;
-    object-fit: contain;
+    width: 100%; /* Frame memenuhi lebar panel kiri */
+    height: auto;
     border: 0.6vh solid white;
-    border-radius: 20px;
+    border-radius: 15px;
     cursor: pointer;
-    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: 0.3s ease;
     background: rgba(0,0,0,0.2);
-    box-shadow: 0 1vh 3vh rgba(0,0,0,0.5);
 }
 
 .frame-thumb:hover { 
-    transform: scale(1.05) translateY(-10px); 
+    transform: scale(1.05); 
     border-color: #ff4757;
-    box-shadow: 0 2vh 5vh rgba(255, 71, 87, 0.4);
 }
 
-/* Hasil Preview Akhir (Setelah Memilih Frame) */
-#final-image-preview {
-    height: 58vh; /* Hasil kolase tampil besar dan gagah */
-    width: auto;
-    max-width: 90vw;
-    border: 1.2vh solid white;
-    border-radius: 25px;
-    margin-bottom: 2vh;
-    box-shadow: 0 2vh 6vh rgba(0,0,0,0.8);
-}
-
+/* Bagian Kanan: Preview Hasil Akhir */
 .result-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    width: 60vw; /* Lebar panel kanan */
+    height: 90vh;
+}
+
+#final-image-preview {
+    height: 75vh; /* FOTO HASIL JADI SANGAT BESAR */
+    width: auto;
+    max-width: 55vw;
+    border: 1.2vh solid white;
+    border-radius: 20px;
+    box-shadow: 0 2vh 5vh rgba(0,0,0,0.6);
 }
 
 .action-buttons {
     display: flex;
     gap: 20px;
-    margin-top: 1vh;
+    margin-top: 3vh;
+}
+
+/* Judul ditaruh di pojok atas agar tidak makan tempat */
+#page-frame h2 {
+    position: absolute;
+    top: 2vh;
+    left: 4vh;
+    font-size: 4vh;
+    text-transform: uppercase;
+    margin: 0;
 }
