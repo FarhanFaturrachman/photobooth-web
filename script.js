@@ -14,19 +14,17 @@ async function startCapture() {
         video.srcObject = stream;
         document.getElementById('page-home').classList.remove('active');
         document.getElementById('page-camera').classList.add('active');
-    } catch (err) { alert("Kamera error! Cek izin browser."); }
+    } catch (err) { alert("Kamera error!"); }
 }
 
 function triggerManualCapture() {
     currentSlot = photosTaken.indexOf(null);
     if (currentSlot !== -1) runCountdown(3);
-    else alert("Slot penuh! Klik foto untuk ulangi.");
 }
 
 function runCountdown(sec) {
     let count = sec;
     timerDisplay.innerText = count;
-    document.getElementById('btn-capture-manual').disabled = true;
     let inv = setInterval(() => {
         count--;
         if (count > 0) timerDisplay.innerText = count;
@@ -36,7 +34,6 @@ function runCountdown(sec) {
             captureToSlot(currentSlot);
             setTimeout(() => { 
                 timerDisplay.innerText = "";
-                document.getElementById('btn-capture-manual').disabled = false;
                 if (photosTaken.indexOf(null) === -1) document.getElementById('btn-go-to-frame').style.display = 'inline-block';
             }, 600);
         }
@@ -45,10 +42,10 @@ function runCountdown(sec) {
 
 function captureToSlot(slotIndex) {
     const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = 1280; tempCanvas.height = 960;
+    tempCanvas.width = 1280; tempCanvas.height = 720;
     const ctx = tempCanvas.getContext('2d');
     ctx.translate(tempCanvas.width, 0); ctx.scale(-1, 1);
-    ctx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
+    ctx.drawImage(video, 0, 0, 1280, 720);
     const dataUri = tempCanvas.toDataURL('image/png');
     photosTaken[slotIndex] = dataUri;
     document.getElementById(`slot-${slotIndex}`).innerHTML = `<img src="${dataUri}">`;
@@ -58,17 +55,13 @@ function openDetail(index) {
     if (!photosTaken[index]) return;
     targetRetakeIndex = index;
     document.getElementById('detail-img-view').src = photosTaken[index];
-    document.getElementById('btn-confirm-retake').style.display = 'inline-block';
     document.getElementById('confirm-box').style.display = 'none';
     document.getElementById('photo-detail-modal').style.display = 'flex';
 }
 
 function closeDetail() { document.getElementById('photo-detail-modal').style.display = 'none'; }
 
-document.getElementById('btn-confirm-retake').onclick = () => {
-    document.getElementById('btn-confirm-retake').style.display = 'none';
-    document.getElementById('confirm-box').style.display = 'block';
-};
+document.getElementById('btn-confirm-retake').onclick = () => { document.getElementById('confirm-box').style.display = 'block'; };
 
 document.getElementById('btn-yes-retake').onclick = () => {
     photosTaken[targetRetakeIndex] = null;
@@ -99,44 +92,40 @@ function generateCollage(frameSrc) {
     frameImg.onload = () => {
         canvasResult.width = frameImg.width;
         canvasResult.height = frameImg.height;
-        const w = canvasResult.width;
-        const h = canvasResult.height;
-        const imgW = w * 0.82; const imgH = imgW * 0.72;
-        const xPos = (w - imgW) / 2;
-        const startY = h * 0.035; const gap = h * 0.208;
+        
+        // PENTING: Rasio setting agar tidak kepotong
+        const imgW = canvasResult.width * 0.85; 
+        const imgH = imgW * 0.70; 
+        const xPos = (canvasResult.width - imgW) / 2;
+        const startY = canvasResult.height * 0.04; 
+        const gap = canvasResult.height * 0.205;
 
         let processed = 0;
         photosTaken.forEach((data, i) => {
             const pImg = new Image();
             pImg.src = data;
             pImg.onload = () => {
+                // LOGIKA CENTER CROP AGAR TIDAK KEPOTONG ATAS BAWAH
                 const imgRatio = pImg.width / pImg.height;
-                const slotRatio = imgW / imgH;
+                const targetRatio = imgW / imgH;
                 let sx, sy, sw, sh;
-                if (imgRatio > slotRatio) {
-                    sw = pImg.height * slotRatio; sh = pImg.height;
+                if (imgRatio > targetRatio) {
+                    sw = pImg.height * targetRatio; sh = pImg.height;
                     sx = (pImg.width - sw) / 2; sy = 0;
                 } else {
-                    sw = pImg.width; sh = pImg.width / slotRatio;
+                    sw = pImg.width; sh = pImg.width / targetRatio;
                     sx = 0; sy = (pImg.height - sh) / 2;
                 }
                 ctx.drawImage(pImg, sx, sy, sw, sh, xPos, startY + (i * gap), imgW, imgH);
                 processed++;
                 if (processed === 4) {
-                    ctx.drawImage(frameImg, 0, 0, w, h);
+                    ctx.drawImage(frameImg, 0, 0, canvasResult.width, canvasResult.height);
                     finalPreview.src = canvasResult.toDataURL('image/png');
                     finalPreview.style.display = 'block';
+                    document.getElementById('frame-options').style.display = 'none';
                     document.getElementById('btn-download').style.display = 'inline-block';
-                    document.getElementById('frame-main-title').innerText = "Hasil Photobooth";
                 }
             };
         });
     };
 }
-
-document.getElementById('btn-download').onclick = () => {
-    const link = document.createElement('a');
-    link.download = `Photobooth_Dina.png`;
-    link.href = canvasResult.toDataURL('image/png');
-    link.click();
-};
