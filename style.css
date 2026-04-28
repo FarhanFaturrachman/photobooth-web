@@ -1,144 +1,139 @@
 /* ========================================================
-   CSS RE-DESIGN: BIGGER & BOLDER UI
+   CSS AUTO-SCALE: MENGIKUTI UKURAN LAYAR & BACKGROUND
    ======================================================== */
 
 body {
-    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('bg.jpg');
+    background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('bg.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
     color: white;
-    font-family: 'Arial Black', Gadget, sans-serif; /* Font lebih tebal */
+    font-family: 'Arial Black', Gadget, sans-serif;
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    overflow: hidden; /* Mencegah scroll agar tetap rapi */
+    height: 100vh;
+    width: 100vw;
 }
 
-/* Judul Utama */
-h1 {
-    font-size: 60px; /* Sangat besar */
-    text-shadow: 4px 4px 15px rgba(0,0,0,0.7);
-    margin-bottom: 30px;
-    letter-spacing: 5px;
-}
-
-h2, h3 {
-    font-size: 40px;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-}
-
-p {
-    font-size: 24px;
-    margin-bottom: 40px;
-}
-
-/* Tombol-Tombol Besar */
-button {
-    background: #ff4757;
-    color: white;
-    border: 5px solid white; /* Frame putih pada tombol */
-    padding: 25px 60px; /* Padding extra besar */
-    border-radius: 100px;
-    font-size: 28px; /* Huruf di tombol diperbesar */
-    font-weight: 900;
-    cursor: pointer;
-    transition: 0.3s;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-    text-transform: uppercase;
-}
-
-button:hover {
-    background: #ff6b81;
-    transform: scale(1.1); /* Efek membesar saat hover */
-}
-
-/* Section Management */
 section {
     display: none;
-    min-height: 100vh;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 40px;
     box-sizing: border-box;
+    padding: 2vh;
 }
 
 section.active {
     display: flex !important;
 }
 
-/* Layout Kamera & Preview */
+/* Judul yang membesar otomatis sesuai tinggi layar */
+h1 {
+    font-size: 8vh; 
+    margin-bottom: 4vh;
+    text-shadow: 0.5vh 0.5vh 2vh rgba(0,0,0,0.7);
+    letter-spacing: 1vw;
+    text-transform: uppercase;
+}
+
+h2 { font-size: 5vh; margin-bottom: 3vh; }
+
+/* Tombol Raksasa & Responsif */
+button {
+    background: #ff4757;
+    color: white;
+    border: 0.8vh solid white;
+    padding: 3vh 6vw; /* Ukuran tombol mengikuti lebar & tinggi layar */
+    border-radius: 10vh;
+    font-size: 4vh; /* Tulisan tombol sangat besar */
+    font-weight: 900;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 1vh 3vh rgba(0,0,0,0.5);
+    text-transform: uppercase;
+}
+
+button:hover {
+    transform: scale(1.05);
+    background: #ff6b81;
+}
+
+/* Layout Kamera Utama */
 #camera-container {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 60px; /* Jarak antar panel */
-    width: 95%;
+    gap: 4vw;
+    width: 95vw;
 }
 
-/* Box Kamera */
+/* Area Video (Gagah & Lebar) */
 .video-wrapper {
-    width: 800px; /* Ukuran video diperbesar */
-    border: 12px solid white;
-    border-radius: 30px;
+    width: 60vw; /* Mengambil 60% lebar layar agar terlihat penuh */
+    max-width: 1100px;
+    border: 1.5vh solid white;
+    border-radius: 4vh;
     position: relative;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    box-shadow: 0 2vh 6vh rgba(0,0,0,0.8);
     overflow: hidden;
+    line-height: 0;
 }
 
 #video {
     width: 100%;
-    display: block;
+    height: auto;
     transform: scaleX(-1); /* Efek cermin */
 }
 
-/* Timer Besar di Tengah Kamera */
+/* Timer yang mencolok di tengah kamera */
 #timer {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 200px; /* Timer sangat besar */
+    font-size: 25vh; /* Seperempat dari tinggi layar laptop */
     color: #ff4757;
     font-weight: 900;
-    text-shadow: 5px 5px 20px rgba(0,0,0,0.9);
+    text-shadow: 0 0 4vh rgba(0,0,0,1);
+    z-index: 10;
     pointer-events: none;
 }
 
-/* Panel Preview di Kanan */
+/* Panel Preview (Hasil Foto Sementara) di Kanan */
 .camera-right {
-    width: 250px;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 30px;
-    border-radius: 20px;
-    border: 3px solid #ff4757;
+    width: 18vw;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 2vh;
+    border-radius: 3vh;
+    border: 0.4vh solid #ff4757;
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 1.5vh;
 }
 
-.camera-right h3 {
-    font-size: 24px;
-    margin-bottom: 20px;
+.camera-right h3 { 
+    font-size: 2.5vh; 
+    margin: 0; 
+    text-transform: uppercase;
 }
 
-/* Slot Foto Preview */
+/* Slot Preview Foto */
 .slot {
-    width: 200px; /* Slot foto lebih besar */
-    height: 150px;
+    width: 14vw;
+    height: 10vw; /* Ukuran kotak preview yang mantap */
     background: #111;
-    border: 3px solid #444;
-    border-radius: 10px;
-    margin-bottom: 20px;
+    border: 0.3vh solid #666;
+    border-radius: 1.5vh;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 40px;
+    font-size: 4vh;
     color: #333;
 }
 
@@ -151,41 +146,38 @@ section.active {
 /* Tombol Retake Kecil */
 .btn-retake-small {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 0.5vh;
+    right: 0.5vh;
     background: #ff4757;
     color: white;
-    padding: 5px 12px;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    border: 2px solid white;
+    padding: 0.6vh 1.2vh;
+    font-size: 1.4vh;
+    border-radius: 0.5vh;
+    border: 0.2vh solid white;
+    font-weight: bold;
 }
 
-/* Pilihan Frame di Halaman Akhir */
+/* Halaman Pilih Frame */
+#frame-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2vw;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding: 2vh;
+}
+
 .frame-thumb {
-    width: 180px; /* Thumbnail frame lebih besar */
-    height: auto;
-    margin: 15px;
-    border: 5px solid white;
-    border-radius: 15px;
-    cursor: pointer;
+    width: 12vw; /* Thumbnail frame mengikuti skala layar */
+    border: 0.6vh solid white;
+    border-radius: 2vh;
     transition: 0.3s;
 }
 
-.frame-thumb:hover {
-    border-color: #ff4757;
-    transform: scale(1.1);
-}
-
-/* Container Hasil Akhir */
-.result-container {
-    margin-top: 30px;
-}
-
 #final-image-preview {
-    max-width: 400px; /* Preview hasil download diperbesar */
-    border: 10px solid white;
-    border-radius: 20px;
-    margin-bottom: 20px;
+    height: 60vh; /* Preview hasil download lebih besar */
+    border: 1.2vh solid white;
+    border-radius: 3vh;
+    margin-bottom: 2vh;
 }
