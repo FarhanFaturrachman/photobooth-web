@@ -67,16 +67,19 @@ button:hover { transform: scale(1.05); background: #ff6b81; }
     z-index: 10;
 }
 
-/* PREVIEW SLOTS (DIPERBESAR) */
+/* PREVIEW SLOTS (DIPERBAIKI: LEBIH TINGGI & TIDAK TERLALU LEBAR) */
 .camera-right { 
-    width: 20vw; 
+    width: 16vw; /* Kurangi lebar sedikit agar tidak terlalu makan tempat */
     display: flex; 
     flex-direction: column; 
     gap: 1.5vh; 
 }
+
 .slot {
     width: 100%;
-    height: 16vh; /* UKURAN DIPERBESAR SESUAI PERMINTAAN */
+    /* Nilai height ini yang menentukan tinggi kotak. 
+       Naik ke 18vh agar lebih tinggi dan pas rasionya */
+    height: 18vh; 
     background: rgba(0,0,0,0.3);
     border: 3px solid white;
     position: relative; 
@@ -87,10 +90,11 @@ button:hover { transform: scale(1.05); background: #ff6b81; }
     align-items: center;
     justify-content: center;
 }
+
 .slot img { 
     width: 100%; 
     height: 100%; 
-    object-fit: cover; 
+    object-fit: cover; /* Menjaga foto tetap penuh di kotak yang lebih tinggi */
     pointer-events: none; 
 }
 
