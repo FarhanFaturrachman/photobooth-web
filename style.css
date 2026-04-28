@@ -156,43 +156,55 @@ button:hover {
     border: 0.2vh solid white;
     font-weight: bold;
 }
-
-/* Container Pilihan Frame - Kembali ke Format Grid */
+/* Container Pilihan Frame (Dibuat Scroll ke Samping) */
 #frame-options {
-    display: grid;
-    /* Membuat grid otomatis: minimal 150px per gambar, maksimal bagi rata */
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
-    gap: 3vh; /* Jarak antar frame */
-    width: 80vw; /* Lebar area pemilihan */
-    max-height: 55vh; /* Batas tinggi agar tidak menutupi tombol download */
-    overflow-y: auto; /* Jika frame banyak, bisa di-scroll ke bawah */
-    padding: 2vh;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2vh;
-    margin-bottom: 3vh;
+    display: flex; /* Berjajar ke samping */
+    flex-wrap: nowrap;
+    overflow-x: auto; /* Bisa di-scroll kanan-kiri */
+    gap: 20px;
+    width: 90vw;
+    padding: 20px;
+    margin-bottom: 2vh;
+    scrollbar-width: thin; /* Untuk browser Firefox */
 }
 
-/* Ukuran Thumbnail Frame */
+/* Ukuran Thumbnail Frame agar tidak kepotong */
 .frame-thumb {
-    width: 100%; /* Mengikuti lebar kolom grid */
-    height: auto;
-    cursor: pointer;
+    flex: 0 0 auto; /* Mencegah gambar gepeng */
+    height: 30vh; /* Tinggi tetap, lebar mengikuti */
+    width: auto;
     border: 0.5vh solid white;
-    border-radius: 1.5vh;
+    border-radius: 15px;
+    cursor: pointer;
     transition: 0.3s;
-    background: rgba(0,0,0,0.3);
 }
 
 .frame-thumb:hover {
     transform: scale(1.05);
     border-color: #ff4757;
-    box-shadow: 0 0 20px rgba(255, 71, 87, 0.5);
 }
 
-/* Merapikan area hasil akhir */
+/* Hasil Preview Setelah Dipilih (Dibuat Besar) */
+#final-image-preview {
+    height: 55vh; /* Dibuat besar agar jelas */
+    width: auto;
+    max-width: 90vw;
+    border: 1vh solid white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin: 2vh 0;
+}
+
+/* Container tombol aksi */
 .result-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2vh;
+    width: 100%;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
 }
