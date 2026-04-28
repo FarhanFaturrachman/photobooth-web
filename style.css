@@ -1,10 +1,9 @@
 /* ========================================================
-   WEB PHOTOBOOTH PRO - SIDE-BY-SIDE LAYOUT
-   Developer: Farhan Faturrachman
+   DINA PHOTOBOOTH - FINAL STABLE UI
    ======================================================== */
 
 body {
-    background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('bg.jpg');
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('bg.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -24,158 +23,133 @@ section {
     align-items: center;
     justify-content: center;
     padding: 2vh;
-    box-sizing: border-box;
 }
 
 section.active { display: flex !important; }
 
-/* Dashboard Utama */
-.content-home {
-    text-align: center;
-    transform: scale(1.2);
-}
-
-/* Tombol-Tombol Raksasa */
 button {
     background: #ff4757;
     color: white;
-    border: 0.8vh solid white;
-    padding: 2vh 4vw;
-    border-radius: 10vh;
-    font-size: 3vh;
+    border: 0.5vh solid white;
+    padding: 1.5vh 3vw;
+    border-radius: 50px;
+    font-size: 2.5vh;
     font-weight: 900;
     cursor: pointer;
-    transition: 0.3s ease-in-out;
     text-transform: uppercase;
-    box-shadow: 0 1vh 3vh rgba(0,0,0,0.5);
+    transition: 0.3s;
 }
 
-button:hover { 
-    transform: scale(1.05); 
-    background: #ff6b81; 
-}
+button:hover { transform: scale(1.05); background: #ff6b81; }
 
-/* ========================================================
-   KAMERA & PREVIEW (Halaman 2)
-   ======================================================== */
-#camera-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4vw;
-    width: 95vw;
-}
-
+/* LAYOUT KAMERA */
+#camera-container { display: flex; align-items: center; gap: 3vw; }
 .video-wrapper {
-    width: 60vw;
-    max-width: 1000px;
-    border: 1.5vh solid white;
-    border-radius: 4vh;
+    width: 55vw;
+    border: 1vh solid white;
+    border-radius: 3vh;
     position: relative;
-    box-shadow: 0 2vh 6vh rgba(0,0,0,0.8);
     overflow: hidden;
+    background: black;
 }
-
 #video { width: 100%; transform: scaleX(-1); }
-
 #timer {
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 25vh;
-    color: white; 
-    font-weight: 900;
-    text-shadow: 0 0 5vh rgba(0,0,0,1), 0 0 2vh rgba(0,0,0,0.8);
-    z-index: 100;
+    font-size: 20vh;
+    color: white;
+    text-shadow: 0 0 3vh rgba(0,0,0,0.8);
+    z-index: 10;
 }
 
-.camera-right {
-    width: 18vw;
-    background: rgba(0,0,0,0.6);
-    padding: 2vh;
-    border-radius: 3vh;
-    border: 0.4vh solid #ff4757;
-}
-
+/* PREVIEW SLOTS & TOMBOL ULANGI */
+.camera-right { width: 15vw; display: flex; flex-direction: column; gap: 2vh; }
 .slot {
     width: 100%;
-    height: 10vw;
-    background: #111;
-    margin-bottom: 1.5vh;
-    border-radius: 1.5vh;
-    position: relative;
-    border: 0.3vh solid #555;
-    overflow: hidden;
+    height: 12vh;
+    background: rgba(0,0,0,0.3);
+    border: 2px solid white;
+    position: relative; /* Kunci untuk tombol melayang */
+    border-radius: 1vh;
+}
+.slot img { width: 100%; height: 100%; object-fit: cover; border-radius: 1vh; }
+
+/* FIX: TOMBOL ULANGI AGAR TIDAK HILANG */
+.btn-retake-small {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #ff4757;
+    color: white;
+    padding: 5px 10px;
+    font-size: 12px;
+    border: 2px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 999; /* Pastikan di paling atas */
 }
 
-/* ========================================================
-   REVISI HALAMAN FRAME: GRID RAPI & SCROLL HALUS
-   ======================================================== */
-
+/* HALAMAN PILIH FRAME */
 #page-frame {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* Mulai dari atas */
-    padding-top: 5vh;
+    flex-direction: column; /* Default atas-bawah */
+    transition: all 0.5s ease;
 }
 
-/* Judul tetap di atas */
-#page-frame h2 {
-    font-size: 5vh;
-    margin-bottom: 3vh;
-}
-
-/* KEMBALI KE FORMAT GRID (Seperti Asal tapi lebih rapi) */
+/* TAMPILAN AWAL: SCROLL SAMPING FULL */
 #frame-options {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5 kolom menyamping */
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
     gap: 20px;
-    width: 85vw;
-    max-height: 50vh; /* Batasi tinggi area pilih agar tidak nabrak bawah */
-    overflow-y: auto; /* Scroll atas bawah saja */
+    width: 90vw;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.05); /* Background sangat tipis */
-    border-radius: 20px;
+    scrollbar-width: thin;
 }
 
-/* Hilangkan garis scrollbar yang aneh di Chrome/Edge */
-#frame-options::-webkit-scrollbar {
-    width: 8px;
-}
-#frame-options::-webkit-scrollbar-thumb {
-    background: #ff4757;
-    border-radius: 10px;
-}
-
+/* Thumbnail Frame */
 .frame-thumb {
-    width: 100%;
-    height: auto;
+    flex: 0 0 auto;
+    height: 40vh;
     border: 3px solid white;
     border-radius: 10px;
     cursor: pointer;
     transition: 0.3s;
 }
 
-.frame-thumb:hover {
-    transform: scale(1.05);
-    border-color: #ff4757;
+/* TAMPILAN SETELAH PILIH (Diatur via JS) */
+.split-layout {
+    flex-direction: row !important;
+    justify-content: space-around !important;
+    padding: 5vh !important;
 }
 
-/* HASIL PREVIEW (Dibuat Fokus) */
+.split-layout #frame-options {
+    flex-direction: column !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    width: 20vw !important;
+    height: 70vh !important;
+}
+
+.split-layout .frame-thumb {
+    height: auto !important;
+    width: 100% !important;
+}
+
 .result-container {
-    margin-top: 3vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
 }
 
 #final-image-preview {
-    height: 60vh; /* Tetap besar dan gagah */
-    width: auto;
+    height: 75vh;
     border: 1vh solid white;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-    display: none; /* Sembunyi sampai frame dipilih */
+    border-radius: 2vh;
+    box-shadow: 0 0 5vh black;
 }
+
+.action-buttons { margin-top: 2vh; display: flex; gap: 20px; }
