@@ -1,7 +1,7 @@
 /* ========================================================
    DINA PHOTOBOOTH - FULL STABLE CSS (Final Version)
    Developer: Farhan Faturrachman
-   Settings: Camera Aspect Ratio 4:3
+   Settings: Camera Aspect Ratio 4:3 + New Hero UI
    ======================================================== */
 
 /* RESET & BASE STYLE */
@@ -29,10 +29,70 @@ section {
 
 section.active { display: flex !important; }
 
-/* HOME PAGE & TIMER */
-.hero-title { font-size: 10vh; margin: 0; text-shadow: 5px 5px 15px #000; }
-.hero-subtitle { font-size: 3vh; margin-bottom: 4vh; }
+/* --- HOME PAGE (REVISI TAMPILAN AWAL SEPERTI GAMBAR) --- */
+#page-home {
+    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('bg.jpg');
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
 
+.content-home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.hero-title {
+    font-size: 15vh; /* Ukuran sangat besar */
+    margin: 0;
+    letter-spacing: 5px;
+    color: #ffffff;
+    text-shadow: 8px 8px 0px #ff4757; /* Efek shadow tegas modern */
+    animation: bounceIn 1.5s ease;
+}
+
+.hero-subtitle {
+    font-size: 3.5vh;
+    font-weight: bold;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 10px 30px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+}
+
+/* TOMBOL MULAI FOTO RAKSASA & 3D */
+.btn-main {
+    background: #ffffff !important;
+    color: #ff4757 !important;
+    border: none !important;
+    padding: 30px 80px !important;
+    border-radius: 100px !important;
+    font-size: 5vh !important;
+    font-weight: 900 !important;
+    cursor: pointer;
+    box-shadow: 0 15px 0px #ff6b81, 0 20px 30px rgba(0,0,0,0.5) !important;
+    transition: all 0.2s ease !important;
+    text-transform: uppercase;
+}
+
+.btn-main:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 10px 0px #ff6b81, 0 15px 25px rgba(0,0,0,0.5) !important;
+}
+
+.btn-main:active {
+    transform: translateY(10px) !important;
+    box-shadow: 0 5px 0px #ff6b81, 0 10px 15px rgba(0,0,0,0.5) !important;
+}
+
+/* --- TIMER & CAMERA LAYOUT (Rasio 4:3) --- */
 #timer { 
     position: absolute; 
     top: 50%; 
@@ -46,12 +106,11 @@ section.active { display: flex !important; }
     pointer-events: none;
 }
 
-/* --- CAMERA LAYOUT (Rasio 4:3) --- */
 #camera-container { display: flex; gap: 2vw; align-items: center; }
 
 .video-wrapper { 
     width: 50vw; 
-    aspect-ratio: 4 / 3; /* Memaksa tampilan 4:3 agar tidak gepeng */
+    aspect-ratio: 4 / 3; 
     border: 10px solid white; 
     border-radius: 20px; 
     overflow: hidden; 
@@ -62,7 +121,7 @@ section.active { display: flex !important; }
 #video { 
     width: 100%; 
     height: 100%; 
-    object-fit: cover; /* Memastikan video memenuhi area 4:3 */
+    object-fit: cover; 
     transform: scaleX(-1); 
 }
 
@@ -131,8 +190,8 @@ section.active { display: flex !important; }
     box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 
-/* TOMBOL UMUM */
-.btn-main, .btn-capture, .btn-next, .btn-save, .btn-back, .btn-dash {
+/* TOMBOL UMUM (LAINNYA) */
+.btn-capture, .btn-next, .btn-save, .btn-back, .btn-dash {
     background: #ff4757; 
     color: white; 
     border: 4px solid white;
@@ -145,12 +204,12 @@ section.active { display: flex !important; }
     transition: 0.2s;
 }
 
-.btn-main:hover, .btn-capture:hover, .btn-save:hover { 
+.btn-capture:hover, .btn-next:hover, .btn-save:hover { 
     transform: scale(1.05); 
     filter: brightness(1.1);
 }
 
-/* --- PAGE 3: PILIH FRAME (Scroll Samping) --- */
+/* --- PAGE 3: PILIH FRAME --- */
 #page-frame-selection {
     justify-content: flex-start;
     padding-top: 5vh;
@@ -208,7 +267,6 @@ section.active { display: flex !important; }
     justify-content: center;
 }
 
-/* SISI KIRI: DAFTAR FRAME SIDEBAR */
 .preview-sidebar-frames {
     width: 20vw; 
     height: 75vh;
@@ -234,12 +292,6 @@ section.active { display: flex !important; }
     transition: 0.2s;
 }
 
-.frame-thumb-sidebar:hover { 
-    transform: scale(1.05); 
-    border-color: #ff4757; 
-}
-
-/* SISI KANAN: PREVIEW UTAMA */
 .preview-main-content {
     display: flex;
     flex-direction: column;
@@ -255,7 +307,6 @@ section.active { display: flex !important; }
     margin-bottom: 3vh;
 }
 
-/* TOMBOL AKSI SERAGAM */
 .final-action-buttons-row {
     display: flex;
     gap: 15px;
@@ -278,12 +329,13 @@ section.active { display: flex !important; }
 .btn-back { background: #ff4757; }
 .btn-dash { background: #3498db; }
 
-.final-action-buttons-row button:hover {
-    transform: translateY(-5px);
-    filter: brightness(1.1);
+/* ANIMASI & UTILITY */
+@keyframes bounceIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    70% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); }
 }
 
-/* SCROLLBAR CUSTOM */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-thumb { background: #ff4757; border-radius: 10px; }
 ::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 10px; }
