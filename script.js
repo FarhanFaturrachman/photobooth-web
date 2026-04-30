@@ -25,13 +25,19 @@ function switchPage(pageId) {
  * 2. LOGIKA KAMERA & PENGAMBILAN FOTO
  */
 async function startCapture() {
+    // Matikan stream lama jika ada (penting untuk rotasi HP)
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+    }
+
     try {
         // Setting resolusi ke rasio 4:3 (1280 / 960 = 1.33)
         stream = await navigator.mediaDevices.getUserMedia({ 
             video: { 
                 width: { ideal: 1280 },
                 height: { ideal: 960 },
-                aspectRatio: 1.3333333333 
+                aspectRatio: 1.3333333333,
+                facingMode: "user"
             } 
         });
         video.srcObject = stream;
@@ -93,6 +99,7 @@ function captureToSlot(slotIndex) {
     const slotElement = document.getElementById(`slot-${slotIndex}`);
     slotElement.innerHTML = `<img src="${dataUri}" style="width:100%; height:100%; object-fit:contain; background:#333;">`;
 }
+
 /**
  * 3. LOGIKA MODAL DETAIL (GALLERY PREVIEW)
  */
@@ -200,20 +207,17 @@ function generateCollage(frameSrc) {
                 let sx, sy, sw, sh;
 
                 if (imgRatio > targetRatio) {
-                    // Foto lebih lebar dari kotak, potong samping
                     sw = pImg.height * targetRatio;
                     sh = pImg.height;
                     sx = (pImg.width - sw) / 2;
                     sy = 0;
                 } else {
-                    // Foto lebih tinggi dari kotak, potong atas bawah
                     sw = pImg.width;
                     sh = pImg.width / targetRatio;
                     sx = 0;
                     sy = (pImg.height - sh) / 2;
                 }
 
-                // Gambar dengan koordinat potong (Source) ke koordinat frame (Destination)
                 ctx.drawImage(pImg, sx, sy, sw, sh, xPos, startY + (i * gap), imgW, imgH);
                 
                 processed++;
@@ -230,6 +234,7 @@ function generateCollage(frameSrc) {
         });
     };
 }
+
 /**
  * 6. DOWNLOAD HASIL
  */
@@ -239,3 +244,15 @@ document.getElementById('btn-download').onclick = () => {
     link.href = finalPreview.src;
     link.click();
 };
+
+/**
+ * 7. AUTO-ROTATE FIX (Mendeteksi perubahan orientasi HP)
+ */
+window.addEventListener("orientationchange", function() {
+    // Tunggu sistem selesai merotasi layar (500ms) baru restart kamera
+    setTimeout(() => {
+        if (stream) {
+            startCapture();
+        }
+    }, 500);
+});
