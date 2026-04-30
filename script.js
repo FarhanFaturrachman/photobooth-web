@@ -256,3 +256,27 @@ window.addEventListener("orientationchange", function() {
         }
     }, 500);
 });
+
+/**
+ * 8. FUNGSI SHARE (WEB SHARE API)
+ */
+document.getElementById('btn-share').onclick = async () => {
+    try {
+        // Ambil data blob dari canvas hasil akhir
+        const blob = await new Promise(resolve => canvasResult.toBlob(resolve, 'image/png'));
+        const file = new File([blob], `Photobooth_Dina_${Date.now()}.png`, { type: 'image/png' });
+
+        // Cek apakah browser mendukung fitur share file
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+                files: [file],
+                title: 'Hasil Photobooth Dina',
+                text: 'Lihat hasil foto seru saya di Photobooth Dina!',
+            });
+        } else {
+            alert("Fitur bagi tidak didukung di browser ini. Silakan simpan foto secara manual.");
+        }
+    } catch (err) {
+        console.error("Gagal membagikan:", err);
+    }
+};
