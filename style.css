@@ -1,7 +1,7 @@
 /* ========================================================
    DINA PHOTOBOOTH - FULL RESPONSIVE LANDSCAPE (RESTORED)
    Developer: Farhan Faturrachman
-   Settings: Camera Aspect Ratio 4:3 + Red Close Button
+   Settings: Grid 4 Sidebar + Centered Preview
    ======================================================== */
 
 /* RESET & BASE STYLE */
@@ -13,7 +13,7 @@ body {
     color: white;
     font-family: 'Arial Black', sans-serif;
     margin: 0;
-    overflow: hidden; /* Mengunci layar agar tidak berantakan */
+    overflow: hidden; 
 }
 
 section {
@@ -44,43 +44,77 @@ section.active { display: flex !important; }
 .slot { width: 100%; aspect-ratio: 4 / 3; border: 3px solid white; border-radius: 8px; overflow: hidden; background: rgba(0,0,0,0.3); cursor: pointer; }
 .slot img { width: 100%; height: 100%; object-fit: cover; }
 
-/* --- FRAME SELECTION (FIXED SIZE) --- */
+/* --- FRAME SELECTION (PAGE 3) --- */
 .frame-selection-scroll-wrapper { width: 90vw; height: 50vh; background: rgba(0,0,0,0.2); border-radius: 20px; padding: 20px; overflow-x: auto; display: flex; align-items: center; }
 #frame-options-scroll { display: flex; gap: 20px; }
 .frame-thumb-scroll { height: 40vh; border: 4px solid white; border-radius: 10px; cursor: pointer; transition: 0.3s; }
 .frame-thumb-scroll:hover { transform: scale(1.05); border-color: #ff4757; }
 
-/* --- PREVIEW PAGE --- */
-.split-preview-container { display: flex; flex-direction: row; width: 95vw; height: 75vh; gap: 2vw; align-items: center; justify-content: center; }
-.preview-sidebar-frames { width: 15vw; height: 70vh; background: rgba(0,0,0,0.3); border-radius: 15px; padding: 10px; overflow-y: auto; }
-#frame-options-sidebar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-.frame-thumb-sidebar { width: 100%; border: 2px solid white; border-radius: 5px; cursor: pointer; }
-#final-image-preview { height: 60vh; max-width: 60vw; border: 6px solid white; border-radius: 15px; box-shadow: 0 10px 30px #000; }
+/* --- PREVIEW PAGE (PAGE 4 REVISI GRID 4) --- */
+.split-preview-container { 
+    display: flex; 
+    flex-direction: row; 
+    width: 95vw; 
+    height: 80vh; 
+    gap: 3vw; 
+    align-items: center; 
+    justify-content: center; 
+}
 
-/* --- MODAL DETAIL (FIX NGEBLANK) --- */
+.preview-sidebar-frames { 
+    width: 25vw; /* Diperlebar sedikit untuk grid 4 */
+    height: 75vh; 
+    background: rgba(0,0,0,0.3); 
+    border-radius: 15px; 
+    padding: 12px; 
+    overflow-y: auto; 
+}
+
+#frame-options-sidebar { 
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); /* GRID 4 KOLOM */
+    gap: 8px; 
+}
+
+.frame-thumb-sidebar { 
+    width: 100%; 
+    border: 2px solid white; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: 0.2s;
+}
+
+.frame-thumb-sidebar:hover { transform: scale(1.1); border-color: #ff4757; }
+
+.preview-main-content { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; /* Posisikan Tengah Vertikal */
+    width: 60vw; 
+}
+
+#final-image-preview { 
+    height: 65vh; 
+    max-width: 100%; 
+    border: 6px solid white; 
+    border-radius: 15px; 
+    box-shadow: 0 10px 30px #000; 
+}
+
+/* --- MODAL DETAIL --- */
 .modal { display: none; position: fixed; z-index: 99999; left: 0; top: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
 .modal-content { background: #222; padding: 20px; border-radius: 20px; border: 4px solid #ff4757; position: relative; text-align: center; max-width: 90vw; }
 #detail-img-view { max-height: 70vh; max-width: 100%; border: 3px solid white; }
 
-/* TOMBOL X (CLOSE MODAL) MERAH JELAS */
 .close-modal { 
-    position: absolute; 
-    top: -20px; 
-    right: -20px; 
-    font-size: clamp(25px, 4vh, 40px); 
-    cursor: pointer; 
-    color: white; 
+    position: absolute; top: -20px; right: -20px; 
+    font-size: clamp(25px, 4vh, 40px); cursor: pointer; color: white; 
     background: linear-gradient(to bottom, #ff4757, #ff2e44); 
-    width: clamp(40px, 6vh, 60px); 
-    height: clamp(40px, 6vh, 60px); 
-    border-radius: 50%; 
-    border: 3px solid white; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    z-index: 100001; 
-    transition: 0.2s ease;
+    width: clamp(40px, 6vh, 60px); height: clamp(40px, 6vh, 60px); 
+    border-radius: 50%; border: 3px solid white; 
+    display: flex; align-items: center; justify-content: center; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5); z-index: 100001; transition: 0.2s ease;
 }
 
 .close-modal:hover { transform: scale(1.1); background: #ff1a30; }
