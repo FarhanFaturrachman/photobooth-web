@@ -1,10 +1,9 @@
 /* ========================================================
-   DINA PHOTOBOOTH - FULL RESPONSIVE LANDSCAPE
+   DINA PHOTOBOOTH - REVISED RESPONSIVE (FIXED)
    Developer: Farhan Faturrachman
-   Settings: Laptop, iPad, & Mobile Landscape Support
    ======================================================== */
 
-/* RESET & BASE STYLE */
+/* RESET & BASE */
 body {
     background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('bg.jpg');
     background-size: cover;
@@ -13,117 +12,73 @@ body {
     color: white;
     font-family: 'Arial Black', sans-serif;
     margin: 0;
-    overflow-x: hidden;
+    overflow: hidden; /* Mengunci agar tidak ada scroll liar */
 }
 
 section {
     display: none;
-    min-height: 100vh;
+    height: 100vh;
     width: 100vw;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 2vh;
+    padding: 20px;
     box-sizing: border-box;
 }
 
 section.active { display: flex !important; }
 
 /* --- HOME PAGE --- */
-#page-home {
-    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('bg.jpg');
-    background-size: cover;
-    text-align: center;
-}
+.hero-title { font-size: clamp(3rem, 10vw, 6rem); text-shadow: 6px 6px 0px #ff4757; margin: 0; }
+.hero-subtitle { font-size: clamp(1rem, 2.5vw, 1.5rem); background: rgba(0,0,0,0.4); padding: 10px 20px; border-radius: 10px; margin-bottom: 20px; border: 2px solid #ff4757; }
 
-.hero-title {
-    font-size: clamp(3rem, 10vw, 7rem); /* Ukuran teks adaptif */
-    margin: 0;
-    letter-spacing: 5px;
-    color: #ffffff;
-    text-shadow: 8px 8px 0px #ff4757; 
-    animation: bounceIn 1.5s ease;
-}
-
-.hero-subtitle {
-    font-size: clamp(1rem, 3vw, 1.8rem);
-    background: rgba(0, 0, 0, 0.4);
-    padding: 10px 25px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    border: 2px solid #ff4757;
-    animation: fadeInUp 1.2s ease-out forwards, glowText 2s infinite alternate;
-}
-
-.btn-main {
-    background: #ffffff !important;
-    color: #ff4757 !important;
-    border: none !important;
-    padding: clamp(15px, 3vh, 25px) clamp(30px, 6vw, 70px) !important;
-    border-radius: 100px !important;
-    font-size: clamp(1rem, 4vh, 2rem) !important;
-    font-weight: 900 !important;
-    cursor: pointer;
-    box-shadow: 0 10px 0px #ff6b81, 0 15px 25px rgba(0,0,0,0.5) !important;
-    transition: all 0.2s ease !important;
-    text-transform: uppercase;
-}
-
-/* --- CAMERA LAYOUT (RESPONSIVE LANDSCAPE) --- */
+/* --- CAMERA PAGE (FIXED) --- */
 #camera-container {
     display: flex;
-    flex-wrap: nowrap; /* Tetap berdampingan di landscape */
-    gap: 2vw;
+    flex-direction: row;
+    gap: 20px;
     align-items: center;
-    justify-content: center;
-    width: 95%;
+    max-height: 80vh;
 }
 
 .video-wrapper { 
-    width: clamp(300px, 50vw, 800px);
-    aspect-ratio: 4 / 3;
-    border: clamp(4px, 1vw, 8px) solid white; 
+    width: 50vw; 
+    max-width: 700px;
+    aspect-ratio: 4 / 3; 
+    border: 6px solid white; 
     border-radius: 20px; 
     overflow: hidden; 
-    position: relative; 
-    background: #000;
+    position: relative;
 }
 
 #video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
 
-#timer { 
-    position: absolute; top: 50%; left: 50%; 
-    transform: translate(-50%, -50%); 
-    font-size: clamp(5rem, 20vh, 15rem); color: white; text-shadow: 0 0 30px #000; z-index: 100;
-}
+.camera-right { width: 12vw; min-width: 100px; display: flex; flex-direction: column; gap: 8px; }
+.slot { width: 100%; aspect-ratio: 4 / 3; border: 2px solid white; border-radius: 8px; overflow: hidden; background: rgba(0,0,0,0.3); }
 
-.camera-right { 
-    width: clamp(100px, 12vw, 180px);
+/* --- FRAME SELECTION (FIXED SIZE) --- */
+.frame-selection-scroll-wrapper {
+    width: 90vw;
+    height: 50vh;
+    background: rgba(0,0,0,0.2);
+    border-radius: 20px;
+    padding: 20px;
+    overflow-x: auto;
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    align-items: center;
 }
 
-.slot { 
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    border: 2px solid white; 
-    border-radius: 8px; 
-    background: rgba(0,0,0,0.3);
-    overflow: hidden;
-}
+#frame-options-scroll { display: flex; gap: 20px; }
+.frame-thumb-scroll { height: 40vh; border: 4px solid white; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+.frame-thumb-scroll:hover { transform: scale(1.05); border-color: #ff4757; }
 
-.slot img { width: 100%; height: 100%; object-fit: cover; }
-
-/* --- PREVIEW PAGE (OPTIMAL 4 BUTTONS) --- */
+/* --- PREVIEW PAGE (FIXED LAYOUT) --- */
 .split-preview-container {
     display: flex;
     flex-direction: row;
     width: 95vw;
-    height: 75vh;
-    gap: 2vw;
-    align-items: center;
-    justify-content: center;
+    height: 70vh;
+    gap: 20px;
 }
 
 .preview-sidebar-frames {
@@ -135,57 +90,48 @@ section.active { display: flex !important; }
     overflow-y: auto;
 }
 
-#frame-options-sidebar {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
+#frame-options-sidebar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.frame-thumb-sidebar { width: 100%; border: 2px solid white; border-radius: 5px; cursor: pointer; }
+
+#final-image-preview { height: 100%; max-height: 60vh; border: 5px solid white; border-radius: 10px; }
+
+/* --- MODAL DETAIL (FIX BLANK) --- */
+.modal { 
+    display: none; 
+    position: fixed; 
+    z-index: 9999; 
+    left: 0; top: 0; 
+    width: 100%; height: 100%; 
+    background: rgba(0,0,0,0.9); 
+    align-items: center; 
+    justify-content: center; 
 }
 
-.preview-main-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: auto;
+.modal-content { 
+    background: #222; 
+    padding: 20px; 
+    border-radius: 15px; 
+    position: relative;
+    max-width: 90vw;
 }
 
-#final-image-preview {
-    height: clamp(200px, 55vh, 600px);
-    border: 5px solid white;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
+#detail-img-view { max-height: 70vh; width: auto; border: 3px solid white; }
 
-.final-action-buttons-row {
-    display: flex;
-    flex-wrap: wrap; /* Tombol membungkus jika layar sempit */
-    gap: 10px;
-    justify-content: center;
-    margin-top: 15px;
-}
+/* TOMBOL AKSI */
+.final-action-buttons-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
 
-/* TOMBOL UMUM */
-.btn-capture, .btn-next, .btn-save, .btn-share, .btn-back, .btn-dash {
-    background: #ff4757; 
-    color: white; 
-    border: 3px solid white;
-    padding: clamp(8px, 1.5vh, 15px) clamp(15px, 2vw, 30px); 
-    border-radius: 50px; 
-    font-weight: bold; 
-    cursor: pointer;
-    text-transform: uppercase; 
-    font-size: clamp(0.7rem, 1.5vh, 0.9rem);
-    transition: 0.2s;
+.btn-capture, .btn-next, .btn-save, .btn-share, .btn-back, .btn-dash, .btn-main {
+    background: #ff4757; color: white; border: 3px solid white;
+    padding: 10px 20px; border-radius: 50px; font-weight: bold; cursor: pointer;
+    text-transform: uppercase; font-size: 14px; transition: 0.2s;
 }
 
 .btn-save { background: #2ecc71 !important; }
 .btn-dash { background: #3498db !important; }
 .btn-share { background: #9b59b6 !important; }
+.btn-main { padding: 20px 40px; font-size: 20px; background: white !important; color: #ff4757 !important; }
 
-/* ANIMATIONS */
-@keyframes bounceIn { 0% { transform: scale(0.5); opacity: 0; } 70% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); } }
-@keyframes fadeInUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-@keyframes glowText { from { text-shadow: 0 0 5px #fff, 0 0 10px #ff4757; } to { text-shadow: 0 0 15px #fff, 0 0 30px #ff4757; } }
-
-/* CUSTOM SCROLLBAR */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-thumb { background: #ff4757; border-radius: 10px; }
+/* UTILITY ANIMATIONS */
+@keyframes bounceIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes fadeInUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes glowText { from { text-shadow: 0 0 5px #ff4757; } to { text-shadow: 0 0 20px #ff4757; } }
