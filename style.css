@@ -1,7 +1,7 @@
 /* ========================================================
-   DINA PHOTOBOOTH - FULL STABLE CSS (Final Version)
+   DINA PHOTOBOOTH - FULL RESPONSIVE LANDSCAPE
    Developer: Farhan Faturrachman
-   Settings: Camera Aspect Ratio 4:3 + Slim Result Sidebar
+   Settings: Laptop, iPad, & Mobile Landscape Support
    ======================================================== */
 
 /* RESET & BASE STYLE */
@@ -13,12 +13,12 @@ body {
     color: white;
     font-family: 'Arial Black', sans-serif;
     margin: 0;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 section {
     display: none;
-    height: 100vh;
+    min-height: 100vh;
     width: 100vw;
     flex-direction: column;
     align-items: center;
@@ -33,18 +33,11 @@ section.active { display: flex !important; }
 #page-home {
     background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('bg.jpg');
     background-size: cover;
-}
-
-.content-home {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
+    text-align: center;
 }
 
 .hero-title {
-    font-size: 15vh;
+    font-size: clamp(3rem, 10vw, 7rem); /* Ukuran teks adaptif */
     margin: 0;
     letter-spacing: 5px;
     color: #ffffff;
@@ -53,56 +46,43 @@ section.active { display: flex !important; }
 }
 
 .hero-subtitle {
-    font-size: 3.5vh;
-    font-weight: bold;
-    color: #ffffff;
+    font-size: clamp(1rem, 3vw, 1.8rem);
     background: rgba(0, 0, 0, 0.4);
-    padding: 10px 30px;
+    padding: 10px 25px;
     border-radius: 10px;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     border: 2px solid #ff4757;
     animation: fadeInUp 1.2s ease-out forwards, glowText 2s infinite alternate;
 }
 
-/* TOMBOL MULAI */
 .btn-main {
     background: #ffffff !important;
     color: #ff4757 !important;
     border: none !important;
-    padding: 30px 80px !important;
+    padding: clamp(15px, 3vh, 25px) clamp(30px, 6vw, 70px) !important;
     border-radius: 100px !important;
-    font-size: 5vh !important;
+    font-size: clamp(1rem, 4vh, 2rem) !important;
     font-weight: 900 !important;
     cursor: pointer;
-    box-shadow: 0 15px 0px #ff6b81, 0 20px 30px rgba(0,0,0,0.5) !important;
+    box-shadow: 0 10px 0px #ff6b81, 0 15px 25px rgba(0,0,0,0.5) !important;
     transition: all 0.2s ease !important;
     text-transform: uppercase;
 }
 
-.btn-main:hover {
-    transform: translateY(-5px) !important;
-    box-shadow: 0 10px 0px #ff6b81, 0 15px 25px rgba(0,0,0,0.5) !important;
+/* --- CAMERA LAYOUT (RESPONSIVE LANDSCAPE) --- */
+#camera-container {
+    display: flex;
+    flex-wrap: nowrap; /* Tetap berdampingan di landscape */
+    gap: 2vw;
+    align-items: center;
+    justify-content: center;
+    width: 95%;
 }
-
-/* --- TIMER & CAMERA LAYOUT --- */
-#timer { 
-    position: absolute; 
-    top: 50%; left: 50%; 
-    transform: translate(-50%, -50%); 
-    font-size: 30vh; 
-    color: white; 
-    font-weight: 900; 
-    text-shadow: 0 0 50px #000; 
-    z-index: 100; 
-    pointer-events: none;
-}
-
-#camera-container { display: flex; gap: 3vw; align-items: center; justify-content: center; width: 95vw; }
 
 .video-wrapper { 
-    width: 55vw; 
-    aspect-ratio: 4 / 3; 
-    border: 10px solid white; 
+    width: clamp(300px, 50vw, 800px);
+    aspect-ratio: 4 / 3;
+    border: clamp(4px, 1vw, 8px) solid white; 
     border-radius: 20px; 
     overflow: hidden; 
     position: relative; 
@@ -111,125 +91,101 @@ section.active { display: flex !important; }
 
 #video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
 
-/* --- PERBAIKAN: UKURAN HASIL FOTO DIPERKECIL --- */
+#timer { 
+    position: absolute; top: 50%; left: 50%; 
+    transform: translate(-50%, -50%); 
+    font-size: clamp(5rem, 20vh, 15rem); color: white; text-shadow: 0 0 30px #000; z-index: 100;
+}
+
 .camera-right { 
-    width: 13vw; /* Diperkecil dari 18vw/14vw */
+    width: clamp(100px, 12vw, 180px);
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-.preview-title {
-    font-size: 2vh;
-    text-align: center;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-}
-
 .slot { 
-    width: 100%; 
-    aspect-ratio: 4 / 3; 
-    border: 3px solid white; /* Border lebih tipis agar pas dengan ukuran kecil */
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border: 2px solid white; 
     border-radius: 8px; 
-    cursor: pointer; 
-    overflow: hidden; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
     background: rgba(0,0,0,0.3);
+    overflow: hidden;
 }
 
-.slot img { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
+.slot img { width: 100%; height: 100%; object-fit: cover; }
+
+/* --- PREVIEW PAGE (OPTIMAL 4 BUTTONS) --- */
+.split-preview-container {
+    display: flex;
+    flex-direction: row;
+    width: 95vw;
+    height: 75vh;
+    gap: 2vw;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-sidebar-frames {
+    width: 15vw;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+    border-radius: 15px;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+#frame-options-sidebar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.preview-main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+}
+
+#final-image-preview {
+    height: clamp(200px, 55vh, 600px);
+    border: 5px solid white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.final-action-buttons-row {
+    display: flex;
+    flex-wrap: wrap; /* Tombol membungkus jika layar sempit */
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
 }
 
 /* TOMBOL UMUM */
 .btn-capture, .btn-next, .btn-save, .btn-share, .btn-back, .btn-dash {
     background: #ff4757; 
     color: white; 
-    border: 4px solid white;
-    padding: 15px 30px; 
+    border: 3px solid white;
+    padding: clamp(8px, 1.5vh, 15px) clamp(15px, 2vw, 30px); 
     border-radius: 50px; 
     font-weight: bold; 
     cursor: pointer;
     text-transform: uppercase; 
-    font-size: 1.8vh; 
+    font-size: clamp(0.7rem, 1.5vh, 0.9rem);
     transition: 0.2s;
-}
-
-/* --- PAGE 3: PILIH FRAME --- */
-#page-frame-selection { justify-content: flex-start; padding-top: 5vh; }
-.frame-title-text { font-size: 5vh; margin-bottom: 4vh; }
-
-.frame-selection-scroll-wrapper {
-    width: 95vw; height: 60vh;
-    display: flex; align-items: center;
-    background: rgba(0,0,0,0.2);
-    border-radius: 20px; padding: 0 20px;
-}
-
-#frame-options-scroll {
-    display: flex; flex-direction: row; 
-    overflow-x: auto; overflow-y: hidden;
-    gap: 30px; padding: 20px 0; width: 100%;
-}
-
-.frame-thumb-scroll { flex: 0 0 auto; height: 50vh; border: 5px solid white; border-radius: 15px; cursor: pointer; transition: 0.3s; }
-.frame-thumb-scroll:hover { transform: translateY(-10px); border-color: #ff4757; }
-
-/* --- PAGE 4: PREVIEW --- */
-.split-preview-container { display: flex; flex-direction: row; width: 95vw; height: 82vh; gap: 3vw; align-items: center; justify-content: center; }
-
-.preview-sidebar-frames { width: 20vw; height: 75vh; background: rgba(0,0,0,0.3); border-radius: 20px; padding: 15px; overflow-y: auto; border: 2px solid rgba(255,255,255,0.1); }
-
-#frame-options-sidebar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-
-.frame-thumb-sidebar { width: 100%; height: auto; border: 2px solid white; border-radius: 8px; cursor: pointer; transition: 0.2s; }
-
-.preview-main-content { display: flex; flex-direction: column; align-items: center; width: 60vw; }
-
-#final-image-preview { height: 65vh; border: 8px solid white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 3vh; }
-
-.final-action-buttons-row { display: flex; gap: 15px; }
-
-.final-action-buttons-row button {
-    width: 180px; height: 55px;
-    font-size: 1.8vh; border-radius: 50px;
-    border: 3px solid white; font-weight: 900;
-    cursor: pointer; text-transform: uppercase;
-    transition: 0.3s; color: white;
 }
 
 .btn-save { background: #2ecc71 !important; }
 .btn-dash { background: #3498db !important; }
 .btn-share { background: #9b59b6 !important; }
-/* MODAL DETAIL */
-.modal { 
-    display: none; position: fixed; z-index: 1000; 
-    left: 0; top: 0; width: 100%; height: 100%; 
-    background: rgba(0,0,0,0.9); align-items: center; justify-content: center; 
-}
 
-.modal-content { background: #222; padding: 20px; border-radius: 20px; text-align: center; border: 4px solid #ff4757; position: relative; }
+/* ANIMATIONS */
+@keyframes bounceIn { 0% { transform: scale(0.5); opacity: 0; } 70% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); } }
+@keyframes fadeInUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes glowText { from { text-shadow: 0 0 5px #fff, 0 0 10px #ff4757; } to { text-shadow: 0 0 15px #fff, 0 0 30px #ff4757; } }
 
-/* --- ANIMATIONS & UTILITY --- */
-@keyframes bounceIn {
-    0% { transform: scale(0.5); opacity: 0; }
-    70% { transform: scale(1.1); opacity: 1; }
-    100% { transform: scale(1); }
-}
-
-@keyframes fadeInUp {
-    from { transform: translateY(30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes glowText {
-    from { text-shadow: 0 0 5px #fff, 0 0 10px #ff4757; }
-    to { text-shadow: 0 0 15px #fff, 0 0 30px #ff4757; }
-}
-
-::-webkit-scrollbar { width: 8px; height: 8px; }
+/* CUSTOM SCROLLBAR */
+::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-thumb { background: #ff4757; border-radius: 10px; }
